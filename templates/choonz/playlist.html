@@ -1,4 +1,4 @@
-{% extends 'rango/base.html' %}
+{% extends 'choonz/base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -30,7 +30,7 @@
 		{% if pages %}
 			<ul>
 				{% for page in pages %}
-					<li><a href="{% url 'rango:goto' %}?page_id={{page.id}}">{{ page.title }}</a>
+					<li><a href="{% url 'choonz:goto' %}?page_id={{page.id}}">{{ page.title }}</a>
 						{% if page.views > 1 %}
 			                ({{ page.views }} views)
 			            {% elif page.views == 1 %}
@@ -47,7 +47,7 @@
 		{% if user.is_authenticated %}
 
 		<div>
-			<form class="form-inline" id="user-form" method="post" action="{% url 'rango:show_playlist' playlist.slug %}">
+			<form class="form-inline" id="user-form" method="post" action="{% url 'choonz:show_playlist' playlist.slug %}">
 				{% csrf_token %}
 
 				<div class="form-group">
@@ -66,7 +66,7 @@
 						<div class="list-group-item">
 			                <h3 class="list-group-item-heading">
 			                    <a href="{{ result.link }}">{{ result.title|safe|escape }}</a>
-			                    <button class="btn btn-info btn-sm rango-page-add" data-playlistid="{{ playlist.id }}" data-title="{{ result.title }}" data-url="{{ result.link }}" type="button">
+			                    <button class="btn btn-info btn-sm choonz-page-add" data-playlistid="{{ playlist.id }}" data-title="{{ result.title }}" data-url="{{ result.link }}" type="button">
 								Add
 							</button>
 			                </h3>
