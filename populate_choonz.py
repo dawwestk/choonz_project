@@ -59,29 +59,25 @@ def populate():
         }
     ]
 
-    cats = {
-        "Python": {"pages": python_pages, "views": 128, "likes": 64},
-        "Django": {"pages": django_pages, "views": 64, "likes": 32},
-        "Other Frameworks": {"pages": other_pages,  "views": 32, "likes": 16},
-        "Pascal": {"pages": [], "views": 0, "likes": 0},
-        "Perl": {"pages": [], "views": 0, "likes": 0},
-        "PHP": {"pages": [], "views": 0, "likes": 0},
-        "Prolog": {"pages": [], "views": 0, "likes": 0},
-        "PostScript": {"pages": [], "views": 0, "likes": 0},
-        "Programming": {"pages": [], "views": 0, "likes": 0},
+    lists = {
+        "Country Anthems": {"pages": python_pages, "views": 128, "likes": 64},
+        "K-Pop Forever": {"pages": django_pages, "views": 64, "likes": 32},
+        "Now That's What I Call Romanian Folk-Pop": {"pages": other_pages,  "views": 32, "likes": 16},
+        "NedBeatz": {"pages": [], "views": 0, "likes": 0},
+        "i luv you stacy plz come back": {"pages": [], "views": 0, "likes": 0},
     }
 
-    for cat, cat_data in cats.items():
-        c = add_cat(cat, cat_data["views"], cat_data["likes"])
-        for p in cat_data["pages"]:
+    for list, list_data in lists.items():
+        c = add_cat(list, list_data["views"], list_data["likes"])
+        for p in list_data["pages"]:
             add_page(c, p["title"], p["url"], p["views"])
 
     for c in Playlist.objects.all():
-        for p in Page.objects.filter(Playlist=c):
+        for p in Page.objects.filter(playlist=c):
             print("- {0} - {1}".format(str(c), str(p)))
 
-def add_page(cat, title, url, views):
-    p = Page.objects.get_or_create(Playlist=cat, title=title)[0]
+def add_page(list, title, url, views):
+    p = Page.objects.get_or_create(playlist=list, title=title)[0]
     p.url=url
     p.views=views
     p.save()
