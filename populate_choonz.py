@@ -7,7 +7,7 @@ from choonz.models import Playlist, Page
 
 def populate():
     # Create a list of dictionaries containing pages to add to each Playlist
-    # Then create dictionaries for our categories
+    # Then create dictionaries for our playlist
     # This allows us to iterate through each data structure and add data to out models
 
     python_pages = [
