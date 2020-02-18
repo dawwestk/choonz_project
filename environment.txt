@@ -4,3 +4,9 @@ pip install requests
 
 if that doesnt work try:
 	pip -m install requests
+
+if you can then execute runserver, but the browser shows an error about tables, try:
+	python manage.py makemigrations --run-syncdb
+
+then:
+	python populate.py
