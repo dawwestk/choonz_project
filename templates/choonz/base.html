@@ -26,108 +26,96 @@
 <body>
 
 <header>
-
     <div class="container-fluid" id="headerContainer">
         <h1 class="display-4" id="titleHeader">Choonz</h1>
         <p class="lead"></p>
     </div>
-
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark p-0">
-        <a class="navbar-brand p-2" href="{% url 'choonz:index' %}">choonz</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
-                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'choonz:index' %}">Home</a></li>
-                <li class="nav-item "><a class="nav-link" href="{% url 'choonz:about' %}">About</a></li>
-
-                {% if user.is_authenticated %}
-                    <li class="nav-item "><a class="nav-link" href="{% url 'choonz:restricted' %}">Restricted</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'auth_logout' %}?next=/choonz/">Logout</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'choonz:add_playlist' %}">Add Playlist</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'auth_password_change' %}">Change Password</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'choonz:profile' user.username %}">Profile</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'choonz:list_profiles' %}">List Profiles</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'registration_register' %}">Register Here</a>
-                    </li>
-                    <li class="nav-item "><a class="nav-link" href="{% url 'auth_login' %}">Login</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
 </header>
 
-        <div class="container-fluid">
-            <div class="row">
-                <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                    <div class="w-75 ml-3">
-                        <input type="search" id="search-input" class="form-control ds-input" placeholder="Search..." />
-                    </div>
-
-                    <div class="sidebar-sticky" id="playlists-listing">
-                    {% block sidebar_block %}
-                        {% get_playlist_list playlist %}
-                    {% endblock %}
-                    </div>
-                </nav>
-
-                <main role="main" class="col-md-9  ml-sm-auto col-lg-10 px-4">
-                    {% block body_block %}
-                    {% endblock %}
-                </main>
-            </div>
-        </div>
+<div class="header"></div>
+<input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
+<label for="openSidebarMenu" class="sidebarIconToggle">
+    <div class="spinner diagonal part-1"></div>
+    <div class="spinner horizontal"></div>
+    <div class="spinner diagonal part-2"></div>
+</label>
 
 
-{#    <div class="container-fluid" id="cardBox">#}
-{#        <div class="col-sm">#}
-{#            <div class="card" style="width: 18rem;">#}
-{#                <div class="card-body">#}
-{#                    <h5 class="card-title">Test</h5>#}
-{#                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the#}
-{#                        card's content.</p>#}
-{#                </div>#}
-{#            </div>#}
+<div id="sidebarMenu">
+    <ul class="sidebarMenuInner">
+        {% if user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'choonz:profile' user.username %}">Profile</a></li>
+
+            <li class="nav-item"><a class="nav-link" href="{% url 'choonz:index' %}">Home</a></li>
+
+            <li class="nav-item "><a class="nav-link" href="{% url 'choonz:restricted' %}">Restricted</a></li>
+
+            <li class="nav-item"><a class="nav-link" href="{% url 'choonz:add_playlist' %}">Add Playlist</a></li>
+
+            <li class="nav-item"><a class="nav-link" href="{% url 'auth_password_change' %}">Change Password</a></li>
+
+            <li class="nav-item"><a class="nav-link" href="{% url 'choonz:list_profiles' %}">List Profiles</a></li>
+
+            <li class="nav-item"><a class="nav-link" href="{% url 'auth_logout' %}?next=/choonz/">Logout</a></li>
+        {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'registration_register' %}">Register Here</a>
+            </li>
+            <li class="nav-item "><a class="nav-link" href="{% url 'auth_login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+
+<!-- This here is the navbar -->
+
+{#<div>#}
+{#    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark p-0">#}
+{#        <a class="navbar-brand p-2" href="{% url 'choonz:index' %}">choonz</a>#}
+{#        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"#}
+{#                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{##}
+{#        <div class="collapse navbar-collapse" id="navbarCollapse">#}
+{#            <ul class="navbar-nav mr-auto">#}
+
+{##}
+
+{#            </ul>#}
 {#        </div>#}
-{#        <div class="col-sm">#}
-{#            <div class="card" style="width: 18rem;">#}
-{#                <div class="card-body">#}
-{#                    <h5 class="card-title">Test</h5>#}
-{#                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the#}
-{#                        card's content.</p>#}
-{#                </div>#}
+{#    </nav>#}
+{#</div>#}
+
+{#<div class="container-fluid">#}
+{#    <div class="row">#}
+{#        <nav class="col-md-2 d-none d-md-block bg-light sidebar">#}
+{#            <div class="w-75 ml-3">#}
+{#                <input type="search" id="search-input" class="form-control ds-input" placeholder="Search..."/>#}
 {#            </div>#}
-{#        </div>#}
-{#        <div class="col-sm">#}
-{#            <div class="card" style="width: 18rem;">#}
-{#                <div class="card-body">#}
-{#                    <h5 class="card-title">Test</h5>#}
-{#                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the#}
-{#                        card's content.</p>#}
-{#                </div>#}
+{##}
+{#            <div class="sidebar-sticky" id="playlists-listing">#}
+{#                {% block sidebar_block %}#}
+{#                    {% get_playlist_list playlist %}#}
+{#                {% endblock %}#}
 {#            </div>#}
-{#        </div>#}
-{#    </div>#}
+{#        </nav>#}
+{##}
+
+
+<!-- Body Block -->
+<main role="main" class="col-md-9  ml-sm-auto col-lg-10 px-4" id="baseMain">
+    {% block body_block %}
+    {% endblock %}
+</main>
+</div>
+</div>
 
 
 <footer class="footer">
-
-    <!-- Copyright -->
     <div class="footer-copyright text-center py-3">© 2020 Groopeez:
-        <a href=""> About Us </a>
+        <a href="{% url 'choonz:about' %}"> About Us </a>
         <a href=""> Contact Us </a>
     </div>
-    <!-- Copyright -->
-
 </footer>
 
 <!-- Bootstrap core JavaScript -->
