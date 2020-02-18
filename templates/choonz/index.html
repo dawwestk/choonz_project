@@ -8,11 +8,11 @@
 {% block body_block %}
 	<div class="jumbotron p-4">
 		<div class="container">
-			<h1 class="jumbotron-heading">choonz says...</h1>
+			<h1 class="jumbotron-heading">Your Choonz are beat</h1>
 			<div>
 				<h2 class="h2">
 				{% if user.is_authenticated %}
-					howdy {{user.username }}!
+					Hi {{user.username }}, ready to get your playlist on?
 				{% else %}
 					hey there partner!
 				{% endif %}

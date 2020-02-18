@@ -21,7 +21,7 @@ class IndexView(View):
         page_list = Page.objects.order_by('-views')[:5]
 
         context_dict = {}
-        context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
+        context_dict['boldmessage'] = 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!'
         context_dict['playlists'] = playlist_list
         context_dict['pages'] = page_list
 
