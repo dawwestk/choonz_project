@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from choonz.models import Page, Playlist, UserProfile
+from choonz.models import Playlist, UserProfile
 
 class PlaylistForm(forms.ModelForm):
     name = forms.CharField(max_length=Playlist.max_length_char, help_text="Please enter the playlist name.")
@@ -14,6 +14,7 @@ class PlaylistForm(forms.ModelForm):
         model = Playlist
         fields = ('name',)
 
+'''
 class PageForm(forms.ModelForm):
     title = forms.CharField(max_length=Playlist.max_length_char, help_text="Please enter the title of the page.")
     url = forms.URLField(max_length=200, help_text="Please enter the URL of the page.")
@@ -38,6 +39,7 @@ class PageForm(forms.ModelForm):
             cleaned_data['url'] = url
 
         return cleaned_data
+'''
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -49,4 +51,4 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('website', 'picture',)
+        fields = ('picture',)

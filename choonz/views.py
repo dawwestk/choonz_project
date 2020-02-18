@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
-from choonz.models import Playlist, Page, UserProfile
+from choonz.models import Playlist, UserProfile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from choonz.forms import PlaylistForm, PageForm, UserForm, UserProfileForm
+from choonz.forms import PlaylistForm, UserForm, UserProfileForm
 from datetime import datetime
 from choonz.bing_search import run_query
 from django.views import View
@@ -18,12 +18,12 @@ class IndexView(View):
         # query database for all playlists, order by number of likes
         # retrieve only top 5, place in context_dict
         playlist_list = Playlist.objects.order_by('-likes')[:5]
-        page_list = Page.objects.order_by('-views')[:5]
+        user_list = User.objects.order_by('-views')[:5]
 
         context_dict = {}
         context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
         context_dict['playlists'] = playlist_list
-        context_dict['pages'] = page_list
+        context_dict['users'] = user_list
 
         # keep this call to increment the counter
         visitor_cookie_handler(request)
@@ -50,17 +50,17 @@ class ShowPlaylistView(View):
             # find playlist from slug?
             playlist = Playlist.objects.get(slug=playlist_name_slug)
 
-            # retrieve all pages in this playlist (using filter())
-            pages = Page.objects.filter(playlist=playlist)
-            page_list = pages.order_by('-views')
+            # retrieve all users in this playlist (using filter())
+            users = User.objects.filter(playlist=playlist)
+            user_list = users.order_by('-views')
             # Add results to context dict
-            context_dict['pages'] = page_list
+            context_dict['users'] = user_list
 
             # Also add playlist to verify (in the template) it exists
             context_dict['playlist'] = playlist
         except Playlist.DoesNotExist:
             context_dict['playlist'] = None
-            context_dict['pages'] = None
+            context_dict['users'] = None
 
         return context_dict
 
@@ -120,7 +120,7 @@ def add_playlist(request):
             print(form.errors)
 
     return render(request, 'choonz/add_playlist.html', {'form': form})
-'''
+
 
 class AddPageView(View):
     def get_playlist_name(self, playlist_name_slug):
@@ -162,7 +162,7 @@ class AddPageView(View):
 
         context_dict = {'form': form, 'playlist': playlist}
         return render(request, 'choonz/add_page.html', context_dict)
-
+'''
 
 '''
     --------------- Login/Registration code now handled by registration-redux
@@ -281,7 +281,7 @@ def search(request):
         if query:
             result_list = run_query(query)
     return render(request, 'choonz/search.html', {'result_list': result_list, 'query': query})
-'''
+
 
 class GoToView(View):
     def get(self, request):
@@ -293,6 +293,7 @@ class GoToView(View):
             return redirect(page.url)
         except Page.DoesNotExist:
             return redirect(reverse('index'))
+'''
 
 class RegisterProfileView(View):
     @method_decorator(login_required)
@@ -413,6 +414,7 @@ class PlaylistSuggestionView(View):
 
         return render(request, 'choonz/playlists.html', {'playlists': playlist_list})
 
+'''
 class SearchAddPage(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -431,5 +433,5 @@ class SearchAddPage(View):
 
         pages = Page.objects.filter(playlist=playlist).order_by('-views')
         return render(request, 'choonz/page_listing.html', {'pages': pages})
-
+'''
 
