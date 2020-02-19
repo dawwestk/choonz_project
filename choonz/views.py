@@ -331,7 +331,7 @@ class ProfileView(View):
             return None
 
         user_profile = UserProfile.objects.get_or_create(user=user)[0]
-        form = UserProfileForm({'website': user_profile.website, 'picture': user_profile.picture})
+        form = UserProfileForm({'picture': user_profile.picture})
 
         return (user, user_profile, form)
 
