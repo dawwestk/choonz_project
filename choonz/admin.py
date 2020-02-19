@@ -1,5 +1,5 @@
 from django.contrib import admin
-from choonz.models import Playlist, Page, UserProfile
+from choonz.models import Playlist, UserProfile
 
 # Register your models here.
 
@@ -10,5 +10,4 @@ class PageAdmin(admin.ModelAdmin):
     list_display = ('title', 'playlist', 'url')
 
 admin.site.register(Playlist, PlaylistAdmin)
-admin.site.register(Page, PageAdmin)
 admin.site.register(UserProfile)
