@@ -60,7 +60,7 @@ def populate():
     ]
 
     lists = {
-        "Country Anthems": {"pages": python_pages, "views": 128, "likes": 64},
+        "Country Anthems": {"pages": python_pages, "views": 128, "likes": 64, "creator":"JerryMander"},
         "K-Pop Forever": {"pages": django_pages, "views": 64, "likes": 32},
         "Now That's What I Call Romanian Folk-Pop": {"pages": other_pages,  "views": 32, "likes": 16},
         "NedBeatz": {"pages": [], "views": 0, "likes": 0},
