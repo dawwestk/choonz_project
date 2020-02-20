@@ -29,6 +29,21 @@
     <div class="container-fluid" id="headerContainer">
         <h1 class="display-4" id="titleHeader">~Choonz~</h1>
         <p class="lead"></p>
+        <div id="loginButtons">
+            {% if user.is_authenticated %}
+                {% if user_profile.picture %}
+                    <img id="profileImage" src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="70" height="70"
+                         alt="{{ selected_user.username }}'s profile image"/>
+                {% else %}
+                    <img id="profileImage" src="https://loremflickr.com/320/240/lizard" width="70" height="70"
+                         alt="No profile image"/>
+                {% endif %}
+                <button type="button" class="btn btn-info" href="{% url 'auth_logout' %}?next=/choonz/">Log Out</button>
+            {% else %}
+                <button type="button" class="btn btn-info" href="{% url 'auth_login' %}">Log In</button>
+                <button type="button" class="btn btn-info" href="{% url 'registration_register' %}">Sign Up</button>
+            {% endif %}
+        </div>
     </div>
 </header>
 
@@ -115,7 +130,7 @@
     <div class="footer-copyright text-center py-3">
         <a href="{% url 'choonz:about' %}"> About Us </a>
         <a href=""> Contact Us </a>
-        <br />
+        <br/>
         <p>© 2020 Groopeez</p>
     </div>
 </footer>

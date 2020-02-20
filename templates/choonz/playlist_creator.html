@@ -1,0 +1,106 @@
+{% extends 'choonz/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Playlist Creator
+{% endblock %}
+
+{% block body_block %}
+    <div class="container-fluid" id="headerContainer">
+        <h1 class="display-4" id="titleHeader">Choonbuilder</h1>
+        <p class="lead"></p>
+    </div>
+
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="playlist_creator.html">Create a Playlist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="drafts.html/">My Drafts</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container-fluid" id="cardBox">
+            <div class="row">
+                <div class="col">
+                    <div class="card" style="width: 25rem;">
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Song Name:</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Song Name" aria-label="SongName"
+                                       aria-describedby="basic-addon1">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Artist:</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Artist" aria-label="Artist "
+                                       aria-describedby="basic-addon1">
+                            </div>
+
+
+                            <label for="basic-url">Youtube Link?</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon3">https://youtube.com/</span>
+                                </div>
+                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card" style="width: 25rem;">
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Playlist Name:</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Playlist Name"
+                                       aria-label="PlaylistName"
+                                       aria-describedby="basic-addon1">
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Playlist Tags:</span>
+                                </div>
+                                <input type="text" class="form-control" placeholder="Tags" aria-label="TagBox"
+                                       aria-describedby="basic-addon1">
+                            </div>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Playlist Description:</span>
+                                </div>
+                                <textarea class="form-control" aria-label="With textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card" style="width: 25rem;">
+                        <div class="card-body">
+                            <div class="card-body" id="playlist-header">
+                                <h4>Playlist Title</h4>
+                                <h4> by Author</h4>
+                                <img>
+                            </div>
+                            <ul>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

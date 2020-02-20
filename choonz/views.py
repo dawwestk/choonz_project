@@ -11,6 +11,7 @@ from choonz.bing_search import run_query
 from django.views import View
 from django.utils.decorators import method_decorator
 
+
 class IndexView(View):
     def get(self, request):
         # construct a dictionary to pass template engine as its context
@@ -34,6 +35,7 @@ class IndexView(View):
         response = render(request, 'choonz/index.html', context=context_dict)
         return response
 
+
 class AboutView(View):
     def get(self, request):
         context_dict = {}
@@ -42,6 +44,7 @@ class AboutView(View):
         context_dict['visits'] = request.session['visits']
 
         return render(request, 'choonz/about.html', context_dict)
+
 
 class ShowPlaylistView(View):
 
@@ -81,6 +84,7 @@ class ShowPlaylistView(View):
 
         return render(request, 'choonz/playlist.html', context_dict)
 
+
 class AddPlaylistView(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -104,6 +108,8 @@ class AddPlaylistView(View):
             print(form.errors)
 
         return render(request, 'choonz/add_playlist.html', {'form': form})
+
+
 '''
 @login_required
 def add_playlist(request):
@@ -246,15 +252,17 @@ def user_logout(request):
     --------------- Login/Registration code now handled by registration-redux
 '''
 
+
 class RestrictedView(View):
     @method_decorator(login_required)
     def get(self, request):
         return render(request, 'choonz/restricted.html')
 
+
 def visitor_cookie_handler(request):
     # get number of visits to site
     # use the COOKIES.get() function
-    visits = int(get_server_side_cookie(request, 'visits', '1'))    # default = 1 if nothing found
+    visits = int(get_server_side_cookie(request, 'visits', '1'))  # default = 1 if nothing found
 
     last_visit_cookie = get_server_side_cookie(request, 'last_visit', str(datetime.now()))
     last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
@@ -270,11 +278,13 @@ def visitor_cookie_handler(request):
 
     request.session['visits'] = visits
 
+
 def get_server_side_cookie(request, cookie, default_val=None):
     val = request.session.get(cookie)
     if not val:
         val = default_val
     return val
+
 
 '''
 def search(request):
@@ -298,6 +308,7 @@ class GoToView(View):
         except Page.DoesNotExist:
             return redirect(reverse('index'))
 '''
+
 
 class RegisterProfileView(View):
     @method_decorator(login_required)
@@ -327,6 +338,7 @@ class RegisterProfileView(View):
         context_dict = {'form': profile_form}
         return render(request, 'choonz/profile_registration.html', context_dict)
 
+
 class ProfileView(View):
     def get_user_details(self, username):
         try:
@@ -346,11 +358,11 @@ class ProfileView(View):
         except TypeError:
             return redirect(reverse('choonz:index'))
 
-        playlists = Playlist.objects.filter(creator=user) 
+        playlists = Playlist.objects.filter(creator=user)
 
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form, 'playlists': playlists}
 
-        return render(request, 'choonz/profile.html',context_dict)
+        return render(request, 'choonz/profile.html', context_dict)
 
     @method_decorator(login_required)
     def post(self, request, username):
@@ -369,7 +381,8 @@ class ProfileView(View):
 
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form}
 
-        return render(request, 'choonz/profile.html',context_dict)
+        return render(request, 'choonz/profile.html', context_dict)
+
 
 class ListPlaylistView(View):
     @method_decorator(login_required)
@@ -385,13 +398,30 @@ class ListProfileView(View):
 
         return render(request, 'choonz/list_profiles.html', {'user_profile_list': profiles})
 
+
+class PlaylistCreatorView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        profiles = UserProfile.objects.all()
+
+        return render(request, 'choonz/playlist_creator.html')
+
+
+class DraftView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        profiles = UserProfile.objects.all()
+
+        return render(request, 'choonz/drafts.html')
+
+
 class LikePlaylistView(View):
     @method_decorator(login_required)
     def get(self, request):
         playlist_id = request.GET['playlist_id']
 
         try:
-            playlist = Playlist.objects.get(id=int(playlist_id))    # remember to cast int
+            playlist = Playlist.objects.get(id=int(playlist_id))  # remember to cast int
         except Playlist.DoesNotExist:
             return HttpResponse(-1)
         except ValueError:
@@ -401,6 +431,7 @@ class LikePlaylistView(View):
         playlist.save()
 
         return HttpResponse(playlist.likes)
+
 
 def get_playlist_list(max_results=0, starts_with=''):
     playlist_list = []
@@ -413,6 +444,7 @@ def get_playlist_list(max_results=0, starts_with=''):
             playlist_list = playlist_list[:max_results]
 
     return playlist_list
+
 
 class PlaylistSuggestionView(View):
     def get(self, request):
@@ -427,6 +459,7 @@ class PlaylistSuggestionView(View):
             playlist_list = Playlist.objects.order_by('-likes')
 
         return render(request, 'choonz/playlists.html', {'playlists': playlist_list})
+
 
 '''
 class SearchAddPage(View):
@@ -448,4 +481,3 @@ class SearchAddPage(View):
         pages = Page.objects.filter(playlist=playlist).order_by('-views')
         return render(request, 'choonz/page_listing.html', {'pages': pages})
 '''
-
