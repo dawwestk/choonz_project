@@ -92,6 +92,9 @@ class AddPlaylistView(View):
         # if the form valid?
         if form.is_valid():
             form.save(commit=True)
+            playlist = Playlist.objects.get(name=request.POST.get('name'))
+            user = request.GET.get('user')
+            playlist.creator = user
             # redirect back to index
             return redirect(reverse('choonz:index'))
         else:

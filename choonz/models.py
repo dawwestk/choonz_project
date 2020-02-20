@@ -41,31 +41,6 @@ class Playlist(models.Model):
     def __str__(self):
         return self.name
 
-
-
-    '''
-    
-    See:
-    https://stackoverflow.com/questions/1110153/what-is-the-most-efficient-way-to-store-a-list-in-the-django-models
-    
-    Using ManyToManyField relations and properties:
-
-class MyDjangoClass(models.Model):
-    name = models.CharField(...)
-    friends = models.ManyToManyField("self")
-
-    @property
-    def friendlist(self):
-        # Watch for large querysets: it loads everything in memory
-        return list(self.friends.all())
-You can access a user's friend list this way:
-
-joseph = MyDjangoClass.objects.get(name="Joseph")
-friends_of_joseph = joseph.friendlist
-Note however that these relations are symmetrical: if Joseph is a friend of Bob, then Bob is a friend of Joseph.
-    
-    '''
-
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Playlist, self).save(*args, **kwargs)
