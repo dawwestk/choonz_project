@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
-from choonz.models import Playlist, UserProfile
+from choonz.models import Playlist, UserProfile, Song
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -19,11 +19,13 @@ class IndexView(View):
         # retrieve only top 5, place in context_dict
         playlist_list = Playlist.objects.order_by('-likes')[:5]
         user_list = User.objects.order_by('-views')[:5]
+        song_list = Song.objects.order_by('artist')
 
         context_dict = {}
         context_dict['boldmessage'] = 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!'
         context_dict['playlists'] = playlist_list
         context_dict['users'] = user_list
+        context_dict['songs'] = song_list
 
         # keep this call to increment the counter
         visitor_cookie_handler(request)
@@ -91,10 +93,9 @@ class AddPlaylistView(View):
 
         # if the form valid?
         if form.is_valid():
+            playlist = form.save(commit=False)
+            playlist.creator = request.user
             form.save(commit=True)
-            playlist = Playlist.objects.get(name=request.POST.get('name'))
-            user = request.GET.get('user')
-            playlist.creator = user
             # redirect back to index
             return redirect(reverse('choonz:index'))
         else:

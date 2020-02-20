@@ -61,6 +61,24 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-md-6">
+				<div class="card mb-6">
+					<div class="card-body">
+						<h2>Songs</h2>
+						<p class="card-text">
+							{% if songs %}
+								<ul class="list-group">
+									{% for song in songs %}
+										<li class="list-group-item">{{ song.title }}</li>
+									{% endfor %}
+								</ul>
+							{% else %}
+								<strong>There are no pages present.</strong>
+							{% endif %}
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
