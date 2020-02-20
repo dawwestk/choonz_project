@@ -30,7 +30,18 @@
 		{% if songs %}
 			<ul>
 				{% for song in songs %}
-					<li class="list-group-item">{{ song.title }} by {{ song.artist }}</li>
+				<li class="list-group-item">{{ song.title }} by 
+					{% if song.artist.webpage %}
+						<a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
+					{% else %}
+						{{ song.artist }}
+					{% endif %}
+					{% if song.linkToSpotify %}
+						<a class="btn btn-primary" href="{{ song.linkToSpotify }}" target="_blank" name="submit">Listen with Spotify</a>
+					{% else %}
+						<button class="btn btn-primary" name="submit">Add Link to Spotify</button>
+					{% endif %}
+				</li>
 				{% endfor %}
 			</ul>
 		</div>

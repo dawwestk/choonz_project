@@ -110,7 +110,7 @@ def add_playlist(list, tags, creator, date1, date2, description):
 
 def add_artist(name):
     artist = Artist.objects.get_or_create(name=name)[0]
-    artist.website = "www." + name + ".com"
+    artist.webpage = "www." + name.replace(" ","") + ".com"
     artist.save()
     return artist
 
