@@ -38,10 +38,10 @@
                     <img id="profileImage" src="https://loremflickr.com/320/240/lizard" width="70" height="70"
                          alt="No profile image"/>
                 {% endif %}
-                <button type="button" class="btn btn-info" href="{% url 'auth_logout' %}?next=/choonz/">Log Out</button>
+                <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'auth_logout' %}?next=/choonz/';">Log Out</button>
             {% else %}
-                <button type="button" class="btn btn-info" href="{% url 'auth_login' %}">Log In</button>
-                <button type="button" class="btn btn-info" href="{% url 'registration_register' %}">Sign Up</button>
+                <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'auth_login' %}';">Log In</button>
+                <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'registration_register' %}';">Sign Up</button>
             {% endif %}
         </div>
     </div>
