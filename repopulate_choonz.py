@@ -86,7 +86,7 @@ def populate():
             song = Song.objects.get(title=s)
             print(" - - readying song {0} for addition".format(song.title))
             playlist.songs.add(song)
-            print(" - - Song {0} added to playlist {1}".format(str(s.title), playlist.name))
+            print(" - - Song {0} added to playlist {1}".format(song.title, playlist.name))
 
 def add_tag(description):
     t = Tag.objects.get_or_create(description=description,)[0]
