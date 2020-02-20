@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
-from choonz.models import Playlist, UserProfile, Song
+from choonz.models import Playlist, UserProfile, Song, Rating
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -360,9 +360,11 @@ class ProfileView(View):
 
         playlists = Playlist.objects.filter(creator=user)
 
-        context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form, 'playlists': playlists}
+        rated_playlists = Rating.objects.values_list('playlist', flat=True).filter(user=user)
 
-        return render(request, 'choonz/profile.html', context_dict)
+        context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form, 'playlists': playlists, 'rated_playlists': rated_playlists}
+
+        return render(request, 'choonz/profile.html',context_dict)
 
     @method_decorator(login_required)
     def post(self, request, username):
@@ -381,7 +383,7 @@ class ProfileView(View):
 
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form}
 
-        return render(request, 'choonz/profile.html', context_dict)
+        return render(request, 'choonz/profile.html',context_dict)
 
 
 class ListPlaylistView(View):
