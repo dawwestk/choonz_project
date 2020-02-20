@@ -1,0 +1,42 @@
+{% extends 'choonz/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	All Playlists
+{% endblock %}
+
+{% block body_block %}
+	
+	<div class="jumbotron p-4">
+		<div class="container">
+			<h1 class="jumbotron-heading">All Playlists</h1>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			{% if playlist_list %}
+			<div class="panel-body">
+				<div class="list-group">
+					{% for playlist in playlist_list %}
+						<div class="list-group-item">
+							<h4 class="list-group-item-heading">
+								<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}
+								</a>
+								{% if playlist.picture %}
+									<img src="{{ MEDIA_URL }}{{ playlist.picture }}" width="30" height="30" alt="{{ playlist.name }}'s playlist image" />
+								{% else %}
+									<img src="http://lorempixel.com/30/30" width="30" height="30" alt="No playlist image" />
+								{% endif %}
+							</h4>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			{% else %}
+				<p>There are no playlists at present.</p>
+			{% endif %}
+		</div>
+	</div>
+
+{% endblock %}

@@ -371,6 +371,13 @@ class ProfileView(View):
 
         return render(request, 'choonz/profile.html',context_dict)
 
+class ListPlaylistView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        playlists = Playlist.objects.all()
+
+        return render(request, 'choonz/list_playlists.html', {'playlist_list': playlists})
+
 class ListProfileView(View):
     @method_decorator(login_required)
     def get(self, request):
