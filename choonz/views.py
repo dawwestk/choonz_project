@@ -345,9 +345,11 @@ class ProfileView(View):
         except TypeError:
             return redirect(reverse('choonz:index'))
 
-        context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form}
+        playlists = Playlist.objects.filter(creator=user) 
 
-        return render(request, 'choonz/profile.html', context_dict)
+        context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form, 'playlists': playlists}
+
+        return render(request, 'choonz/profile.html',context_dict)
 
     @method_decorator(login_required)
     def post(self, request, username):
@@ -365,7 +367,8 @@ class ProfileView(View):
             print(form.errors)
 
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form}
-        return render(request, 'choonz/profile.html', context_dict)
+
+        return render(request, 'choonz/profile.html',context_dict)
 
 class ListProfileView(View):
     @method_decorator(login_required)

@@ -7,17 +7,84 @@
 
 {% block body_block %}
 
-	<div class="jumbotron p-4">
+	<div class="jumbotron p-3">
 		<div class="container">
-			<h1 class="jumbotron-heading">{{ selected_user.username }}'s Profile</h1>
+			<h1 class="jumbotron-heading">
+				{% if user_profile.picture %}
+					<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="70" height="70" alt="{{ selected_user.username }}'s profile image" />
+				{% else %}
+					<img src="https://loremflickr.com/320/240/lizard" width="70" height="70" alt="No profile image" />
+				{% endif %}
+				{% if selected_user == user %}
+					My Profile
+				{% else %}	
+					{{ selected_user.username }}'s Profile
+				{% endif %}
+			</h1> </br>
+			<button class="btn btn-light" type="submit" name="submit" id="viewPlaylistsButton">Playlists</button>
+			<button class="btn btn-light" type="submit" name="submit" id="seeUserReviewsButton">Reviews</button>
+			{% if selected_user == user %}
+				<button class="btn btn-light" type="submit" name="submit" id="newPlaylistButton">Create Playlist</button>
+				<button class="btn btn-light" type="submit" name="submit" id="editProfileButton">Edit Profile</button>
+			{% endif %}
 		</div>
 	</div>
-	<div class="container">
+
+	<div id="playlistView" class="container"> 
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card mb-6">
+					<div class="card-body">
+						<h2>{{ selected_user.username }}'s Playlists</h2>
+						<p class="card-text">
+							{% if playlists %}
+								<ul class="list-group">
+									{% for playlist in playlists %}
+											<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
+									{% endfor %}
+								</ul>
+							{% else %}
+								<strong>There are no playlists present.</strong>
+							{% endif %}
+						</p>
+					</div>
+				</div>
+			</div>
+		{% if selected_user == user %}	
+			<div class="col-md-6">
+				<div class="card mb-6">
+					<div class="card-body">
+						<h2>Private Playlists</h2>
+						<p class="card-text">
+							{% if playlists %}
+								<ul class="list-group">
+									{% for playlist in playlists %}
+										{% if playlist.creator == selected_user and not public %}
+											<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
+										{% endif %}	
+									{% endfor %}
+								</ul>
+							{% else %}
+								<strong>There are no playlists present.</strong>
+							{% endif %}
+						</p>
+					</div>
+				</div>
+			</div>
+		{% endif %}	
+		</div>
+	</div>
+
+	<div id="reviewsView" class="container" > 
+
+	</div>
+	
+	<div id="editProfileView" class="container" style="display:none">
 		<div class="row">
 			{% if user_profile.picture %}
-				<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="300" height="300" alt="{{ selected_user.username }}'s profile image" />
+				<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240" alt="{{ selected_user.username }}'s profile image" />
 			{% else %}
-				<img src="http://lorempixel.com/300/300" width="300" height="300" alt="No profile image" />
+				<img src="https://loremflickr.com/320/240/lizard" width="320" height="240" alt="No profile image" />
 			{% endif %}
 			<br />
 			<div>
