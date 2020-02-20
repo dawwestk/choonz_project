@@ -6,5 +6,23 @@
 {% endblock %}
 
 {% block body_block %}
+    <div class="container-fluid" id="headerContainer">
+        <h1 class="display-4" id="titleHeader">Choonbuilder</h1>
+        <p class="lead"></p>
+    </div>
 
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'choonz:add_playlist' %}">Add a Playlist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'choonz:playlist_creator' %}">Edit a Playlist</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'choonz:drafts' %}">Draft Playlists</a>
+                </li>
+            </ul>
+        </div>
 {% endblock %}

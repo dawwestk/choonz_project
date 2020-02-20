@@ -20,7 +20,7 @@ urlpatterns = [
     path('profiles/', views.ListProfileView.as_view(), name='list_profiles'),
     path('like_playlist/', views.LikePlaylistView.as_view(), name='like_playlist'),
     path('suggest/', views.PlaylistSuggestionView.as_view(), name='suggest'),
-    path('add_playlist/playlist_creator/', views.PlaylistCreatorView.as_view(), name='playlist_creator'),
+    path('playlist_creator/', views.PlaylistCreatorView.as_view(), name='playlist_creator'),
     path('drafts/', views.DraftView.as_view(), name='drafts'),
     #path('search_add_page/', views.SearchAddPage.as_view(), name='search_add_page'),
 ]
