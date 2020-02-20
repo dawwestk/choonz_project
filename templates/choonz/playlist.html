@@ -27,21 +27,15 @@
 		</div>
 		
 		<div id="page-listing">
-		{% if pages %}
+		{% if songs %}
 			<ul>
-				{% for page in pages %}
-					<li><a href="{% url 'choonz:goto' %}?page_id={{page.id}}">{{ page.title }}</a>
-						{% if page.views > 1 %}
-			                ({{ page.views }} views)
-			            {% elif page.views == 1 %}
-			                ({{ page.views}} view)
-			            {% endif %}
-		        	</li>
+				{% for song in songs %}
+					<li class="list-group-item">{{ song.title }} by {{ song.artist }}</li>
 				{% endfor %}
 			</ul>
 		</div>
 		{% else %}
-			<strong>No pages currently in playlist.</strong>
+			<strong>No songs currently in playlist.</strong>
 		{% endif %}
 
 		{% if user.is_authenticated %}

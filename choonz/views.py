@@ -53,16 +53,16 @@ class ShowPlaylistView(View):
             playlist = Playlist.objects.get(slug=playlist_name_slug)
 
             # retrieve all users in this playlist (using filter())
-            users = User.objects.filter(playlist=playlist)
-            user_list = users.order_by('-views')
+            songs = Song.objects.filter(playlist=playlist)
+            song_list = songs.order_by('title')
             # Add results to context dict
-            context_dict['users'] = user_list
+            context_dict['songs'] = song_list
 
             # Also add playlist to verify (in the template) it exists
             context_dict['playlist'] = playlist
         except Playlist.DoesNotExist:
             context_dict['playlist'] = None
-            context_dict['users'] = None
+            context_dict['songs'] = None
 
         return context_dict
 

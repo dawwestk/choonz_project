@@ -12,19 +12,6 @@ class PlaylistForm(forms.ModelForm):
     createdDate = forms.DateField(widget=forms.HiddenInput(), initial=date.today())
     lastUpdatedDate = forms.DateField(widget=forms.HiddenInput(), initial=date.today())
 
-    '''
-    songs = models.ManyToManyField("Song")
-    tags = models.ManyToManyField("Tag")
-        averageRating = models.FloatField(default=0.0)
-    creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-        createdDate = models.DateTimeField(blank=True, null=True)
-        lastUpdatedDate = models.DateTimeField(blank=True, null=True)
-        numberOfRatings = models.IntegerField(default=0)
-        description = models.CharField(max_length=max_char_length*2, default='Description...')
-    image = models.FileField(blank=True)
-        public = models.BooleanField(default=False)
-    '''
-
     # Meta is an inline class to provide addition info
     class Meta:
         # Associate ModelForm and a model (in this case, Playlist)
