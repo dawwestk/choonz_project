@@ -6,10 +6,13 @@
 {% endblock %}
 
 {% block body_block %}
-	<div class="jumbotron p-4" id="indexJumbotron">
+	<div class="jumbotron jumbotron-fluid" id="indexJumbotron">
+	<link rel="stylesheet" href="{% static 'css/index.css' %}">
 		<div class="container">
-			<h1 class="jumbotron-heading">Your Choonz are beat</h1>
+			<h1 class="jumbotron-heading"></h1>
 			<div>
+
+
 				<h2 class="h2">
 				{% if user.is_authenticated %}
 					Hi {{user.username }}, ready to get your playlist on?
@@ -17,16 +20,17 @@
 					hey there partner!
 				{% endif %}
 				</h2>
-				<strong>{{ boldmessage }}</strong><br />
+
+
 			</div>
 		</div>
 	</div>
 
 	<div class="container" id="indexContainer">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-sm-4">
 				<div class="card mb-6">
-					<div class="card-body">
+					<div class="card-body1">
 						<h2>Most Liked Playlists</h2>
 						<p class="card-text">
 							{% if playlists %}
@@ -43,9 +47,9 @@
 				</div>
 			</div>
 			
-			<div class="col-md-6">
+			<div class="col-sm-4">
 				<div class="card mb-6">
-					<div class="card-body">
+					<div class="card-body2">
 						<h2>Most Viewed Pages</h2>
 						<p class="card-text">
 							{% if pages %}
@@ -61,9 +65,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-sm-4">
 				<div class="card mb-6">
-					<div class="card-body">
+					<div class="card-body3">
 						<h2>Songs</h2>
 						<p class="card-text">
 							{% if songs %}
@@ -81,11 +85,5 @@
 			</div>
 		</div>
 	</div>
-
-{#	<div>#}
-{#		<img src="{% static 'images/choonz.jpg' %}" alt="Picture of choonz" />#}
-{#	</div>#}
-
-
 
 {% endblock %}
