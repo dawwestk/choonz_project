@@ -19,7 +19,7 @@ class Playlist(models.Model):
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
-    songs = models.ManyToManyField("self")
+    songs = models.ManyToManyField("Song")
     tags = models.ManyToManyField("Tag")
     averageRating = models.FloatField(default=0.0)
     creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -93,7 +93,7 @@ class Song(models.Model):
     linkOther = models.URLField(blank=True)
 
     def __str__(self):
-        return self.title + " by " + self.artist
+        return self.title + " by " + self.artist.name
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
