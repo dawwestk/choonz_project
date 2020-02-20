@@ -27,7 +27,7 @@
 
 <header>
     <div class="container-fluid" id="headerContainer">
-        <h1 class="display-4" id="titleHeader">~Choonz~</h1>
+        <div class="display-4" id="titleHeader"><a href="{% url 'index' %}"><img src="{% static 'images/choonz_logo.png' %}" alt="Choonz Logo" /></a> </div>
         <p class="lead"></p>
         <div id="loginButtons">
             {% if user.is_authenticated %}
