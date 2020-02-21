@@ -360,13 +360,21 @@ class ProfileView(View):
 
         playlists = Playlist.objects.filter(creator=user)
 	
-        ratings_by_user = Rating.objects.filter(user=user).values_list()
-		# [1, 2, 3, 4, 5]
+        ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
+
         #ratings_by_user.filter(playlist=i)
-        rated_playlists = {}
-        #for i in range(0, len(ratings_by_user)):
-        #    rated_playlists["playlist"] = Playlist.objects.get(id=1)
-        #    rated_playlists["stars"] = ratings_by_user["stars"]
+        rated_playlists = []
+        for i in range(0, len(ratings_by_user)):
+            playlist_info = {}
+            playlist = Playlist.objects.get(id=ratings_by_user[i])
+            playlist_info["playlist"] = playlist.name
+            playlist_info["slug"] = playlist.slug
+            playlist_info["averageRating"] = playlist.averageRating
+            playlist_info["numberOfRatings"] = playlist.numberOfRatings
+            rating = Rating.objects.get(id=ratings_by_user[i])
+            playlist_info["stars"] = rating.stars
+
+            rated_playlists.append(playlist_info)
 
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form, 'playlists': playlists, 'rated_playlists': rated_playlists}
 
