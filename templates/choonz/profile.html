@@ -14,18 +14,24 @@
 
 	<div class="jumbotron p-3">
 		<div class="container">
-			<h1 class="jumbotron-heading">
-				{% if user_profile.picture %}
-					<img src="{{ MEDIA_URL }}{{ form }}" width="70" height="70" alt="{{ selected_user.username }}'s profile image" />
-				{% else %}
-					<img id="profileImage" src="{% static 'images/dfault_profile_img.png' %}" width="70" height="70" alt="No profile image" />
-				{% endif %}
-				{% if selected_user == user %}
-					My Profile
-				{% else %}	
-					{{ selected_user.username }}'s Profile
-				{% endif %}
-			</h1> </br>
+			<div class="row">
+				<div class="col mb-3">
+					<h1 class="jumbotron-heading">
+						{% if selected_user == user %}
+							My Profile
+						{% else %}	
+							{{ selected_user.username }}'s Profile
+						{% endif %}
+					</h1> 
+				</div>
+				<div class="col mb-3">
+					{% if user_profile.picture %}
+						<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="70" height="70" alt="{{ selected_user.username }}'s profile image" />
+					{% else %}
+						<img id="profileImage" src="{% static 'images/default_profile_img.png' %}" width="70" height="70" alt="No profile image" />
+					{% endif %}
+				</div>
+			</div>
 			<button class="btn btn-info" type="submit" name="submit" id="view-playlists-button" onclick="showPlaylistView()">Playlists</button>
 			<button class="btn btn-info" type="submit" name="submit" id="see-rated-playlists-button" onclick="showRatedPlaylistsView()">Rated Playlists</button>
 			{% if selected_user == user %}
@@ -128,43 +134,45 @@
 	</div>
 	
 	<div id="edit-profile-view" class="container">
-		
-				{% if selected_user == user %}
+		{% if selected_user == user %}
+		<div class="row">
+			<div class="col">
 				<div class="card p-4">
-					{% if user_profile.picture %}
-						<img src="{{ MEDIA_URL }}{{ form }}" width="320" height="240" alt="{{ selected_user.username }}'s profile image" />
-					{% else %}
-						<img src="{% static 'images/dfault_profile_img.png' %}" width="320" height="240" alt="No profile image" />
-					{% endif %}
-					<br />
-					<form method="post" action="{% url 'choonz:register_profile' %}" enctype="multipart/form-data">
-						{% csrf_token %}
-						<div class="card-body">
-							<div class="input-group mb-3">
-								<p class="required">
-		                            <div class="input-group-prepend">
-		                                <span class="input-group-text" id="basic-addon1">Profile Picture:</span>
-		                            </div>
-		                            <input class="form-control" type="file" id="picture" name="picture">
-		                        </p>
-		                    </div>
-		                    <p>
-		                    	<span class="helptext">
-									Upload a profile picture!
-								</span>
-							</p>
-						</div>
-						<input class="btn btn-info" type="submit" value="Save Changes" />
-					</form>
+					<div class="container-fluid">
+						{% if user_profile.picture %}
+							<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240" alt="{{ selected_user.username }}'s profile image" />
+						{% else %}
+							<img src="{% static 'images/dfault_profile_img.png' %}" width="320" height="240" alt="No profile image" />
+						{% endif %}
+					</div>
 				</div>
-				{% else %}
-					<p>
-						<strong>Website:</strong>
-						<a href="{{ user_profile.website }}">{{ user_profile.website }}</a>
-					</p>
-				{% endif %}
+			</div>
+				<div class="col">
+					<div class="card p-2">
+						<form method="post" action="{% url 'choonz:register_profile' %}" enctype="multipart/form-data">
+							{% csrf_token %}
+							<div class="card-body">
+								<div class="input-group mb-3">
+									<p class="required">
+			                            <div class="input-group-prepend">
+			                                <span class="input-group-text" id="basic-addon1">Profile Picture:</span>
+			                            </div>
+			                            <input class="form-control" type="file" id="picture" name="picture">
+			                        </p>
+			                    </div>
+			                    <p>
+			                    	<span class="helptext">
+										Upload a profile picture!
+									</span>
+								</p>
+							</div>
+							<input class="btn btn-info ml-4 mb-4" type="submit" value="Save Changes" />
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
+		{% endif %}
 	</div>
 
-{% endblock %}
+{% endblock 
