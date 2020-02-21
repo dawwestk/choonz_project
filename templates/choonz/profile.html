@@ -111,7 +111,7 @@
 								{% for playlist in rated_playlists %}
 									<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.playlist }}</a>
 										<div>
-											<span class="badge badge-light p-2">Your Rating: {{playlist.stars}}</span>
+											<span class="badge badge-light p-2">{{ selected_user.username }}'s Rating: {{playlist.stars}}</span>
 											<span class="badge badge-light p-2">Number of Ratings: {{playlist.numberOfRatings}}</span>
 											<span class="badge badge-light p-2">Avg. Rating: {{playlist.averageRating}}</span>
 										</div>
