@@ -18,7 +18,7 @@
 				{% if user_profile.picture %}
 					<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="70" height="70" alt="{{ selected_user.username }}'s profile image" />
 				{% else %}
-					<img id="temp_profile_image" src="https://loremflickr.com/320/240/paris" width="70" height="70" alt="No profile image" />
+					<img id="profileImage" src="https://loremflickr.com/320/240/lizard" width="70" height="70" alt="No profile image" />
 				{% endif %}
 				{% if selected_user == user %}
 					My Profile
@@ -110,7 +110,12 @@
 								<ul class="list-group">
 								<li class="list-group-item">{{ rated_playlists }} </li>
 									{% for playlist in rated_playlists %}
-										<li class="list-group-item">{{ playlist.name }}
+										<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a>
+											<div>
+												<span class="badge badge-light p-2">Your Rating: {{playlist.averageRating}}</span>
+												<span class="badge badge-light p-2">Number of Ratings: {{playlist.numberOfRatings}}</span>
+												<span class="badge badge-light p-2">Avg. Rating: {{playlist.averageRating}}</span>
+											</div>
 										</li>
 									{% endfor %}
 								</ul>
@@ -126,33 +131,20 @@
 	
 	<div id="edit-profile-view" class="container">
 		<div class="row">
+			{% if user_profile.picture %}
+				<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240" alt="{{ selected_user.username }}'s profile image" />
+			{% else %}
+				<img src="https://loremflickr.com/320/240/lizard" width="320" height="240" alt="No profile image" />
+			{% endif %}
+			<br />
 			<div>
 				{% if selected_user == user %}
-				<div class="card p-4">
-					{% if user_profile.picture %}
-						<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240" alt="{{ selected_user.username }}'s profile image" style="display: block" />
-					{% else %}
-						<div id="temp_profile_image">No image</div>
-					{% endif %}
-					<form method="post" action="{% url 'choonz:register_profile' %}" enctype="multipart/form-data">
-						{% csrf_token %}
-						<div class="card-body">
-							<div class="input-group mb-3">
-								<p class="required">
-		                            <div class="input-group-prepend">
-		                                <span class="input-group-text" id="basic-addon1">Profile Picture:</span>
-		                            </div>
-		                            <input class="form-control" type="file" id="picture" name="picture">
-		                        </p>
-		                    </div>
-		                    <p>
-		                    	<span class="helptext">
-									Upload a profile picture!
-								</span>
-							</p>
-						</div>
-					</form>
-				</div>
+				<form method="post" action="." enctype="multipart/form-data">
+					{% csrf_token %}
+					{{ form.as_p }}
+
+					<input type="submit" value="Update" />
+				</form>
 				{% else %}
 					<p>
 						<strong>Website:</strong>
