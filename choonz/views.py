@@ -359,8 +359,17 @@ class ProfileView(View):
         except TypeError:
             return redirect(reverse('choonz:index'))
 
+<<<<<<< HEAD
         # All Playlists made by the profile owner
         playlists = Playlist.objects.filter(creator=user)
+=======
+        public_playlists = Playlist.objects.filter(creator=user, public=True)
+        draft_playlists = Playlist.objects.filter(creator=user, public=False)
+	
+        ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
+	
+        ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
+>>>>>>> 94bb36f4ec5a4b82739fabcc1cf9685260dc0431
 
         # All Ratings the profile owner has given
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
@@ -377,7 +386,7 @@ class ProfileView(View):
 
             rated_playlists.append(playlist_info)
 
-        context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form, 'playlists': playlists, 'rated_playlists': rated_playlists}
+        context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form, 'public_playlists': public_playlists, 'draft_playlists':draft_playlists, 'rated_playlists': rated_playlists}
 
         return render(request, 'choonz/profile.html',context_dict)
 
