@@ -14,11 +14,29 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<form method="post" action="{% url 'choonz:register_profile' %}" enctype="multipart/form-data">
-				{% csrf_token %}
-				{{ form.as_p }}
-				<input type="submit" value="Create Profile" />
-			</form>
+			<div class="container">
+				<div class="card p-4">
+					<form method="post" action="{% url 'choonz:register_profile' %}" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="card-body">
+							<div class="input-group mb-3">
+								<p class="required">
+		                            <div class="input-group-prepend">
+		                                <span class="input-group-text" id="basic-addon1">Profile Picture:</span>
+		                            </div>
+		                            <input class="form-control" type="file" id="picture" name="picture">
+		                        </p>
+		                    </div>
+		                    <p>
+		                    	<span class="helptext">
+									Upload a profile picture!
+								</span>
+							</p>
+						</div>
+						<input class="btn btn-primary" type="submit" value="Create Profile" />
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 
