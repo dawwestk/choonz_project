@@ -32,15 +32,25 @@
                     {% for hidden in form.hidden_fields %}
                         {{ hidden }}
                     {% endfor %}
-                    {% for field in form.visible_fields %}
-                        {{ field.errors }}
-                        {{ field.help_text }}
-                        {{ field }} <br/>
-                        <div class="p-2"></div>
-                    {% endfor %}
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Playlist name:</span>
+                                </div>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="{{ form.name.help_text }}" required autofocus size="50">
+                            </p>
+                        </div>
+                        <div class="input-group mb-3">
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Description:</span>
+                                </div>
+                                <input type="text" name="description" id="description" class="form-control" placeholder="{{ form.description.help_text }}" size="100">
+                            </p>
+                        </div>
                     <button class="btn btn-primary" type="submit" name="submit">Create Playlist</button>
-                    <br/>
-                    <div class="p-5"></div>
+                    </div>
                 </form>
             </div>
         </div>
