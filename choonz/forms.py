@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from choonz.models import Playlist, UserProfile
+from choonz.models import Playlist, UserProfile, Rating
 from datetime import datetime, date
 
 class PlaylistForm(forms.ModelForm):
@@ -57,3 +57,11 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('picture',)
+
+class RatingForm(forms.ModelForm):
+    stars = forms.FloatField(max_value=5.0, min_value=0.0)
+    comment = forms.CharField(max_length=Playlist.max_length_char*2, help_text="What did you think of this playlist...", required=True)
+
+    class Meta:
+        model = Rating
+        fields = ('stars', 'comment')

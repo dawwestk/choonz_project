@@ -5,7 +5,7 @@ from choonz.models import Playlist, UserProfile, Song, Rating
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from choonz.forms import PlaylistForm, UserForm, UserProfileForm
+from choonz.forms import PlaylistForm, UserForm, UserProfileForm, RatingForm
 from datetime import datetime
 from choonz.bing_search import run_query
 from django.views import View
@@ -421,6 +421,38 @@ class PlaylistCreatorView(View):
         profiles = UserProfile.objects.all()
 
         return render(request, 'choonz/playlist_creator.html')
+
+class PlaylistRatingView(View):
+    @method_decorator(login_required)
+    def get(self, request, playlist_name_slug):
+        playlist = Playlist.objects.get(slug=playlist_name_slug)
+        form = RatingForm()
+        context_dict = {'form': form, 'playlist': playlist}
+        return render(request, 'choonz/rate_playlist.html', context_dict)
+
+    @method_decorator(login_required)
+    def post(self, request, playlist_name_slug):
+        form = RatingForm(request.POST)
+        playlist = Playlist.objects.get(slug=playlist_name_slug)
+
+        # if the form valid?
+        if form.is_valid():
+            rating = form.save(commit=False)
+            rating.user = request.user
+            rating.playlist = playlist
+            rating.date = datetime.today()
+            form.save(commit=True)
+            context_dict = {}
+            context_dict["playlist"] = playlist
+            context_dict["songs"] = playlist.get_song_list
+            return render(request, 'choonz/playlist.html', context=context_dict)
+        else:
+            # form contained errors
+            # print them to the terminal
+            print(form.errors)
+
+        context_dict = {'form': form, 'playlist': playlist}
+        return render(request, 'choonz/rate_playlist.html', context=context_dict)
 
 
 class DraftView(View):
