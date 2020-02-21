@@ -23,11 +23,19 @@ class IndexView(View):
         user_list = User.objects.order_by('-views')[:5]
         song_list = Song.objects.order_by('artist')
 
+        try:
+            user = request.user
+            user_profile = UserProfile.objects.get(user=user)
+        except:
+            user=None
+            user_profile=None
+
         context_dict = {}
         context_dict['boldmessage'] = 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!'
         context_dict['playlists'] = playlist_list
         context_dict['users'] = user_list
         context_dict['songs'] = song_list
+        context_dict['user_profile'] = user_profile
 
         # keep this call to increment the counter
         visitor_cookie_handler(request)
