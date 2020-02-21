@@ -31,6 +31,7 @@
         <p class="lead"></p>
         <div id="loginButtons">
             {% if user.is_authenticated %}
+                <a  href="{% url 'choonz:profile' user.username %}">
                 {% if user_profile.picture %}
                     <img id="profileImage" src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="70" height="70"
                          alt="{{ selected_user.username }}'s profile image"/>
@@ -38,6 +39,7 @@
                     <img id="profileImage" src="https://loremflickr.com/320/240/lizard" width="70" height="70"
                          alt="No profile image"/>
                 {% endif %}
+                </a>
                 <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'auth_logout' %}?next=/choonz/';">Log Out</button>
             {% else %}
                 <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'auth_login' %}';">Log In</button>
