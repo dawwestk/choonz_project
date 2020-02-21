@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.db.models import Avg, Count
 
 max_char_length = 128
 # Create your models here.
@@ -29,6 +30,15 @@ class Playlist(models.Model):
     description = models.CharField(max_length=max_char_length*2, default='Description...')
     image = models.FileField(blank=True)
     public = models.BooleanField(default=False)
+
+    @property
+    def averageRating(self):
+        return self.rating_set.aggregate(Avg('stars'))['stars__avg']
+
+    @property
+    def numberOfRatings(self):
+        playlist_ratings = Playlist.objects.annotate(num_ratings=Count('rating'))  # annotate the queryset
+        return playlist_ratings.get(id=self.id).num_ratings
 
     @property
     def get_song_list(self):
@@ -66,6 +76,11 @@ class Song(models.Model):
     linkToSpotify = models.URLField(blank=True)
     numberOfPlaylists = models.IntegerField(default=0)
     linkOther = models.URLField(blank=True)
+
+    @property
+    def numberOfPlaylists(self):
+        playlist_count = Song.objects.annotate(num_playlists=Count('playlist'))  # annotate the queryset
+        return playlist_count.get(id=self.id).num_playlists
 
     def __str__(self):
         return self.title + " by " + self.artist.name

@@ -10,6 +10,7 @@ from datetime import datetime
 from choonz.bing_search import run_query
 from django.views import View
 from django.utils.decorators import method_decorator
+from django.db.models import Avg, Count
 
 
 class IndexView(View):
@@ -362,7 +363,6 @@ class ProfileView(View):
 	
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
 
-        #ratings_by_user.filter(playlist=i)
         rated_playlists = []
         for i in range(0, len(ratings_by_user)):
             playlist_info = {}
