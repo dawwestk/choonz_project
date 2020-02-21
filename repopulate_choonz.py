@@ -63,6 +63,14 @@ def populate():
         "Garth Brooks": {"songs": garth_songs, "playlist": "Country Anthems"},
         "George Michael": {"songs": george_songs, "playlist": "i luv you stacy plz come back"},
     }
+	
+    rating_info = {
+		"Rating1": {"user": bob, "playlist": "Country Anthems", "stars": 5, "comment": "This takes me back to the good ol days riding my tractor into the sunset", "date": today},
+		"Rating2": {"user": bob, "playlist": "K-Pop Forever", "stars": 3, "comment": "Not my cup of tea, but has some catchy tunes", "date": today},
+		"Rating3": {"user": bob, "playlist": "NedBeatz", "stars": 1, "comment": "This is garbage. Truly garbage.", "date": today},
+		"Rating4": {"user": bob, "playlist": "i luv you stacy plz come back", "stars": 5, "comment": "I hope you see this Stacy, i miss u", "date": today},
+		"Rating5": {"user": bob, "playlist": "Now That's What I Call Romanian Folk-Pop", "stars": 4, "comment": "Never been to Romania but if they have jams like this I'll be going soon!", "date": today},
+    }
 
 
     for tag_description in tags:
@@ -87,6 +95,13 @@ def populate():
             print(" - - readying song {0} for addition".format(song.title))
             playlist.songs.add(song)
             print(" - - Song {0} added to playlist {1}".format(song.title, playlist.name))
+			
+    for rating, rating_data in rating_info.items():
+	    playlist = Playlist.objects.get(name=rating_data["playlist"])
+	    user = User.objects.get(username=rating_data["user"])
+	    add_rating(user, playlist, rating_data["stars"], rating_data["comment"], rating_data["date"])
+	    print("Rating: <{0} - {1}> added".format(str(user), str(playlist)))
+		
 
 def add_tag(description):
     t = Tag.objects.get_or_create(description=description,)[0]
@@ -119,6 +134,14 @@ def add_song(artist, song_title):
     print(" - Song {0} created".format(str(song_title)))
     s.save()
     return s
+	
+def add_rating(user, playlist, stars, comment, date):
+    rating = Rating.objects.get_or_create(user=user, playlist=playlist)[0]
+    rating.stars = stars
+    rating.comment = comment
+    rating.date = date
+    rating.save()
+    return rating
 
 if __name__ == '__main__':
     print("Starting choonz population script...")

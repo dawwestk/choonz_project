@@ -78,7 +78,7 @@ class Rating(models.Model):
     date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return self.user + " review of " + self.playlist
+        return self.user.username + " review of " + self.playlist.name
 
 class UserProfile(models.Model):
     # link UserProfile to User model instance

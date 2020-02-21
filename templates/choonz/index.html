@@ -8,21 +8,15 @@
 {% block body_block %}
 	<div class="jumbotron jumbotron-fluid" id="indexJumbotron">
 	<link rel="stylesheet" href="{% static 'css/index.css' %}">
-		<div class="container">
-			<h1 class="jumbotron-heading"></h1>
-			<div>
+		<div>
 
-
-				<h2 class="h2">
-				{% if user.is_authenticated %}
-					Hi {{user.username }}, ready to get your playlist on?
-				{% else %}
-					hey there partner!
-				{% endif %}
-				</h2>
-
-
-			</div>
+			<h2 class="h2">
+			{% if user.is_authenticated %}
+				Hi {{user.username }}, ready to get your playlist on?
+			{% else %}
+				hey there partner!
+			{% endif %}
+			</h2>
 		</div>
 	</div>
 

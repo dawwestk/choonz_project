@@ -108,13 +108,9 @@
 						<p class="card-text">
 							{% if rated_playlists %}
 								<ul class="list-group">
+								<li class="list-group-item">{{ rated_playlists }} </li>
 									{% for playlist in rated_playlists %}
-										<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a>
-											<div>
-												<span class="badge badge-light p-2">Your Rating: {{playlist.averageRating}}</span>
-												<span class="badge badge-light p-2">Number of Ratings: {{playlist.numberOfRatings}}</span>
-												<span class="badge badge-light p-2">Avg. Rating: {{playlist.averageRating}}</span>
-											</div>
+										<li class="list-group-item">{{ playlist.name }}
 										</li>
 									{% endfor %}
 								</ul>

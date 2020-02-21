@@ -359,8 +359,14 @@ class ProfileView(View):
             return redirect(reverse('choonz:index'))
 
         playlists = Playlist.objects.filter(creator=user)
-
-        rated_playlists = Rating.objects.values_list('playlist', flat=True).filter(user=user)
+	
+        ratings_by_user = Rating.objects.filter(user=user).values_list()
+		# [1, 2, 3, 4, 5]
+        #ratings_by_user.filter(playlist=i)
+        rated_playlists = {}
+        #for i in range(0, len(ratings_by_user)):
+        #    rated_playlists["playlist"] = Playlist.objects.get(id=1)
+        #    rated_playlists["stars"] = ratings_by_user["stars"]
 
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form, 'playlists': playlists, 'rated_playlists': rated_playlists}
 
