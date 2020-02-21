@@ -403,7 +403,7 @@ class ProfileView(View):
 class ListPlaylistView(View):
     @method_decorator(login_required)
     def get(self, request):
-        playlists = Playlist.objects.all()
+        playlists = Playlist.objects.filter(public=True)
 
         return render(request, 'choonz/list_playlists.html', {'playlist_list': playlists})
 

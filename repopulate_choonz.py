@@ -120,6 +120,7 @@ def add_playlist(list, tags, creator, date1, date2, description):
     p.createdDate = date1
     p.lastUpdatedDate = date2
     p.description = description
+    p.public = True
     p.save()
     return p
 
