@@ -11,12 +11,27 @@
 			<h1 class="jumbotron-heading">Login to choonz</h1>
 		</div>
 	</div>
-	<form id="login_form" method="POST" action="{% url 'choonz:login' %}">
-		{% csrf_token %}
-		Username: <input type="text" name="username" value="" size="50" />
-		<br />
-		Password: <input type="password" name="password" value="" size="50" />
-		<br />
-		<input type="submit" value="submit" />
-	</form>
+	<div class="container">
+		<div class="card p-4">
+			<form id="login_form" method="POST" action="{% url 'choonz:login' %}">
+				{% csrf_token %}
+				<div class="input-group mb-3">
+					<p class="required">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Username:</span>
+                        </div>
+                        <input class="form-control" size="50" value="" name="username" type="text" />
+                    </p>
+                </div>
+                <div class="input-group mb-3">
+					<p class="required">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">Password:</span>
+                        </div>
+                        <input class="form-control" size="50" value="" name="password" type="password" />
+                    </p>
+                </div>
+			</form>
+		</div>
+	</div>
 {% endblock %}

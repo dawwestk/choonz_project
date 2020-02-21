@@ -10,12 +10,25 @@
 			<h1 class="jumbotron-heading">Login to choonz</h1>
 			<form class="form-signin" role="form" method="post" action=".">
 				{% csrf_token %}
-
-				<label for="inputUsername" class="sr-only">Username</label>
-				<input type="text" name="username" id="id_username" class="form-control" placeholder="Username" required autofocus>
-				<label for="inputPassword" class="sr-only">Password</label>
-				<input type="password" name="password" id="id_password" class="form-control" placeholder="Password" required>
+				<div class="card-body">
+					<div class="input-group mb-3">
+						<p class="required">
+	                        <div class="input-group-prepend">
+	                            <span class="input-group-text" id="basic-addon1">Username:</span>
+	                        </div>
+	                        <input type="text" name="username" id="id_username" class="form-control" placeholder="Username" required autofocus>
+	                    </p>
+	                </div>
+					<div class="input-group mb-3">
+						<p class="required">
+	                        <div class="input-group-prepend">
+	                            <span class="input-group-text" id="basic-addon1">Password:</span>
+	                        </div>
+	                        <input type="password" name="password" id="id_password" class="form-control" placeholder="Password" required>
+	                    </p>
+	                </div>
 				<button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Sign in</button>
+				</div>
 			</form>
 		</div>
 	</div>
