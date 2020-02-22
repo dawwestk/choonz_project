@@ -372,6 +372,7 @@ class ProfileView(View):
 
         public_playlists = Playlist.objects.filter(creator=user, public=True)
         draft_playlists = Playlist.objects.filter(creator=user, public=False)
+        popular_playlists = public_playlists.order_by("-views")[:10]
 
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
 
@@ -392,7 +393,7 @@ class ProfileView(View):
 
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form,
                         'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
-                        'rated_playlists': rated_playlists}
+                        'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists}
 
         return render(request, 'choonz/profile.html', context_dict)
 
