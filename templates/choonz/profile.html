@@ -16,6 +16,12 @@
 		<div class="container">
 			<div class="row">
 				<div class="col mb-3">
+					{% if user_profile.picture %}
+						<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="70" height="70" alt="{{ selected_user.username }}'s profile image" />
+					{% else %}
+						<img id="profileImage" src="{% static 'images/default_profile_img.png' %}" width="70" height="70" alt="No profile image" />
+					{% endif %}
+					</br>
 					<h1 class="jumbotron-heading">
 						{% if selected_user == user %}
 							My Profile
@@ -24,33 +30,56 @@
 						{% endif %}
 					</h1> 
 				</div>
-				<div class="col mb-3">
-					{% if user_profile.picture %}
-						<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="70" height="70" alt="{{ selected_user.username }}'s profile image" />
-					{% else %}
-						<img id="profileImage" src="{% static 'images/default_profile_img.png' %}" width="70" height="70" alt="No profile image" />
-					{% endif %}
-				</div>
 			</div>
 			<button class="btn btn-info" type="submit" name="submit" id="view-playlists-button" onclick="showPlaylistView()">Playlists</button>
 			<button class="btn btn-info" type="submit" name="submit" id="see-rated-playlists-button" onclick="showRatedPlaylistsView()">Rated Playlists</button>
 			{% if selected_user == user %}
 				<button class="btn btn-info" type="submit" name="submit" id="edit-profile-button" onclick="showEditProfileView()">Edit Profile</button>
-				<button class="btn btn-info" type="submit" name="submit" id="new-playlist-button" onclick='location.href="{% url 'choonz:add_playlist' %}"'>Create Playlist</button>
+				<button class="btn btn-info" type="submit" name="submit" id="new-playlist-button" 
+						onclick='location.href="{% url 'choonz:add_playlist' %}"'>Create Playlist
+				</button>
 			{% endif %}
 		</div>
 	</div>
 
 	<div id="playlist-view" class="container"> 
 		<div class="row">
-			<div class="col-md-6">
-				<div class="card mb-6">
+			<div class="col-md-4">
+				<div class="card mb-3">
 					<div class="card-body">
 						<h2>{{ selected_user.username }}'s Playlists</h2>
 						<p class="card-text">
 							{% if public_playlists %}
 								<ul class="list-group">
-									{% for playlist in public_playlists %}
+								{% for playlist in public_playlists %}										
+									<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a>
+										<div>
+											<span class="badge badge-light p-2">Number of Ratings: {{playlist.numberOfRatings}}</span>
+											<span class="badge badge-light p-2">Avg. Rating: {{playlist.averageRating}}</span>
+											{% if selected_user == user %}
+												<button class="btn btn-info btn-sm" type="submit" name="submit" id="edit-playlist-button">Edit</button>
+												<button class="btn btn-info btn-sm" type="submit" name="submit" id="delete-playlist-button">Delete</button>	
+											{% endif %}
+										</div>
+									</li>
+								{% endfor %}
+								</ul>
+							{% else %}
+								<strong>No published playlists</strong>
+							{% endif %}
+						</p>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-4">
+				<div class="card mb-3">
+					<div class="card-body">
+						<h2>Popular Playlists</h2>
+						<p class="card-text">
+							{% if public_playlists %}
+								<ul class="list-group">
+									{% for playlist in popular_playlists %}
 										
 											<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a>
 												<div>
@@ -71,9 +100,10 @@
 					</div>
 				</div>
 			</div>
-		{% if selected_user == user %}	
-			<div class="col-md-6">
-				<div class="card mb-6">
+		
+			{% if selected_user == user %}	
+			<div class="col-md-4">
+				<div class="card mb-3">
 					<div class="card-body">
 						<h2>Draft Playlists</h2>
 						<p class="card-text">
@@ -133,46 +163,41 @@
 		</div>
 	</div>
 	
+	{% if selected_user == user %}
 	<div id="edit-profile-view" class="container">
-		{% if selected_user == user %}
 		<div class="row">
 			<div class="col">
 				<div class="card p-4">
 					<div class="container-fluid">
+						<div class="card p-4">
 						{% if user_profile.picture %}
-							<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240" alt="{{ selected_user.username }}'s profile image" />
+							<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240" 
+								alt="{{ selected_user.username }}'s profile image"/>
 						{% else %}
-							<img src="{% static 'images/dfault_profile_img.png' %}" width="320" height="240" alt="No profile image" />
+							<img src="{% static 'images/dfault_profile_img.png' %}" width="320" height="240" 
+								alt="No profile image" />
 						{% endif %}
+						</div>
 					</div>
+					<h3 align="center">Profile Picture</h3>
 				</div>
 			</div>
 				<div class="col">
 					<div class="card p-2">
-						<form method="post" action="{% url 'choonz:register_profile' %}" enctype="multipart/form-data">
+						<form method="post" action="." enctype="multipart/form-data">
 							{% csrf_token %}
-							<div class="card-body">
-								<div class="input-group mb-3">
-									<p class="required">
-			                            <div class="input-group-prepend">
-			                                <span class="input-group-text" id="basic-addon1">Profile Picture:</span>
-			                            </div>
-			                            <input class="form-control" type="file" id="picture" name="picture">
-			                        </p>
-			                    </div>
-			                    <p>
-			                    	<span class="helptext">
-										Upload a profile picture!
-									</span>
-								</p>
-							</div>
-							<input class="btn btn-info ml-4 mb-4" type="submit" value="Save Changes" />
+							{{ form.as_p }}
+							<input class="btn btn-info btn-block" type="submit" value="Update" />
 						</form>
 					</div>
+					<div class="card p-2">
+						<button class="btn btn-info" type="submit" name="submit" id="new-playlist-button" 
+								onclick='location.href="{% url 'auth_password_change' %}"'>Change Password
+						</button>
+					</div>	
 				</div>
 			</div>
-		</div>
-		{% endif %}
-	</div>
+		</div>	
 
+	{% endif %}
 {% endblock %}
