@@ -353,6 +353,7 @@ class ProfileView(View):
 
         # All Ratings the profile owner has given
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
+        print(ratings_by_user)
         rated_playlists = []
         for i in range(0, len(ratings_by_user)):
             playlist_info = {}
@@ -362,10 +363,9 @@ class ProfileView(View):
             playlist_info["averageRating"] = playlist.averageRating
             playlist_info["numberOfRatings"] = playlist.numberOfRatings
             try:
-                rating = Rating.objects.get(id=ratings_by_user[i])
+                rating = Rating.objects.get(user=user, playlist=playlist)
                 playlist_info["stars"] = rating.stars
-            except:
-                Rating.DoesNotExist
+            except Rating.DoesNotExist:
                 playlist_info["stars"] = 0
 
             rated_playlists.append(playlist_info)
