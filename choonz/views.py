@@ -447,10 +447,17 @@ class PlaylistCreatorView(View):
 
 class PlaylistRatingView(View):
     @method_decorator(login_required)
+    def get(self, request, playlist_name_slug):
+        playlist = Playlist.objects.get(slug=playlist_name_slug)
+        form = RatingForm()
+        context_dict = {'form': form, 'playlist': playlist}
+        return render(request, 'choonz/rate_playlist.html', context_dict)
+
+    @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
         playlist = Playlist.objects.get(slug=playlist_name_slug)
-        if request.POST['rating']:
-            rating = Rating.objects.get(id=request.POST['rating'])
+        if request.POST.get('rating'):
+            rating = Rating.objects.get(id=request.POST.get('rating'))
             form = RatingForm()
             context_dict = {'form': form, 'playlist': playlist, 'rating': rating}
             return render(request, 'choonz/rate_playlist.html', context_dict)
@@ -459,11 +466,20 @@ class PlaylistRatingView(View):
 
             # if the form valid?
             if form.is_valid():
-                rating = form.save(commit=False)
-                rating.user = request.user
-                rating.playlist = playlist
-                rating.date = datetime.today()
-                form.save(commit=True)
+                try:
+                    rating = Rating.objects.get(user=request.user, playlist=playlist)
+                    rating.stars = request.POST.get('stars')
+                    rating.comment = request.POST.get('comment')
+                    rating.date = datetime.today()
+                    rating.save()
+
+                except Rating.DoesNotExist:
+                    rating = form.save(commit=False)
+                    rating.user = request.user
+                    rating.playlist = playlist
+                    rating.date = datetime.today()
+                    form.save(commit=True)
+
                 context_dict = {}
                 context_dict["playlist"] = playlist
                 context_dict["songs"] = playlist.get_song_list
