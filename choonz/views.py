@@ -84,6 +84,10 @@ class ShowPlaylistView(View):
 
             # Also add playlist to verify (in the template) it exists
             context_dict['playlist'] = playlist
+
+            all_ratings = Rating.objects.filter(playlist_id=playlist.id)
+            context_dict['ratings'] = all_ratings
+
             # All Ratings the profile owner has given
             ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
             if playlist.id in ratings_by_user:
@@ -97,6 +101,7 @@ class ShowPlaylistView(View):
             context_dict['songs'] = None
             context_dict['user_has_rated'] = None
             context_dict['rating'] = None
+            context_dict['ratings'] = None
 
         return context_dict
 

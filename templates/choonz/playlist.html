@@ -77,8 +77,10 @@
 			</div>
 		</div>
 		
-		<div id="page-listing">
+		
 		{% if songs %}
+		<div id="songs-listing">
+			<h3 class="card">Track List</h3>
 			<ul>
 				{% for song in songs %}
 				<li class="list-group-item">{{ song.title }} by 
@@ -98,6 +100,21 @@
 				{% endfor %}
 			</ul>
 		</div>
+
+			{% if ratings %}
+			<div id="rating-listing">
+			<h3 class="card">Ratings for {{ playlist.name }}</h3>
+				<ul>
+					{% for rating in ratings %}
+					<li class="list-group-item">{{ rating.stars }} - {{ rating.comment }} by 
+						<a href="{% url 'choonz:profile' rating.user.username %}">{{ rating.user.username }}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+			{% else %}
+				<strong>No ratings for current playlist.</strong>
+			{% endif %}
 		{% else %}
 			<strong>No songs currently in playlist.</strong>
 		{% endif %}
