@@ -57,9 +57,10 @@ class AboutView(View):
 
 class ShowPlaylistView(View):
 
-    def create_context_dict(self, playlist_name_slug):
+    def create_context_dict(self, playlist_name_slug, request):
         context_dict = {}
-
+        user = request.user
+        context_dict['user'] = user
         try:
             # find playlist from slug?
             playlist = Playlist.objects.get(slug=playlist_name_slug)
@@ -72,24 +73,26 @@ class ShowPlaylistView(View):
 
             # Also add playlist to verify (in the template) it exists
             context_dict['playlist'] = playlist
+            # All Ratings the profile owner has given
+            ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
+            if playlist.id in ratings_by_user:
+                context_dict['user_has_rated'] = True
+            else:
+                context_dict['user_has_rated'] = False
         except Playlist.DoesNotExist:
             context_dict['playlist'] = None
             context_dict['songs'] = None
+            context_dict['user_has_rated'] = None
 
         return context_dict
 
     def get(self, request, playlist_name_slug):
-        context_dict = self.create_context_dict(playlist_name_slug)
+        context_dict = self.create_context_dict(playlist_name_slug, request)
         return render(request, 'choonz/playlist.html', context_dict)
 
     @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
-        context_dict = self.create_context_dict(playlist_name_slug)
-        #query = request.POST['query'].strip()
-
-        #if query:
-        #    context_dict['result_list'] = run_query(query)
-        #    context_dict['query'] = query
+        context_dict = self.create_context_dict(playlist_name_slug, request)
 
         return render(request, 'choonz/playlist.html', context_dict)
 
@@ -373,8 +376,6 @@ class ProfileView(View):
         public_playlists = Playlist.objects.filter(creator=user, public=True)
         draft_playlists = Playlist.objects.filter(creator=user, public=False)
         popular_playlists = public_playlists.order_by("-views")[:10]
-
-        ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
 
         # All Ratings the profile owner has given
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
