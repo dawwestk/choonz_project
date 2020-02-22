@@ -501,6 +501,23 @@ class LikePlaylistView(View):
 
 class PublishPlaylistView(View):
     @method_decorator(login_required)
+    def get(self, request):
+        playlist_id = request.GET['playlist_id']
+
+        try:
+            playlist = Playlist.objects.get(id=int(playlist_id))  # remember to cast int
+        except Playlist.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+
+        playlist.public = False
+        playlist.save()
+        user = request.user
+
+        return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
+
+    @method_decorator(login_required)
     def post(self, request):
         playlist_id = request.POST['playlist_id']
 
@@ -513,8 +530,9 @@ class PublishPlaylistView(View):
 
         playlist.public = True
         playlist.save()
+        user = request.user
 
-        return HttpResponse(playlist.public)
+        return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
 
 def get_playlist_list(max_results=0, starts_with=''):

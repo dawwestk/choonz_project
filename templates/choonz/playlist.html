@@ -45,7 +45,13 @@
 								</div>
 							{% else %}
 								{% if playlist.public %}
-
+									<div>
+										<form class="form-inline" id="user-form" method="get" action="{% url 'choonz:publish_playlist' %}">
+											{% csrf_token %}
+											<input id="playlist_id" name="playlist_id" type="hidden" value="{{ playlist.id }}">
+											<button class="btn btn-warning" type="submit" data-playlist_id="{{ playlist.id }}" name="submit">Send to Drafts</button>
+										</form>
+									</div>
 								{% else %}
 									<div>
 										<form class="form-inline" id="user-form" method="post" action="{% url 'choonz:publish_playlist' %}">
