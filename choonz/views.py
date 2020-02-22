@@ -77,12 +77,15 @@ class ShowPlaylistView(View):
             ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
             if playlist.id in ratings_by_user:
                 context_dict['user_has_rated'] = True
+                rating = Rating.objects.get(playlist=playlist, user=user)
+                context_dict['rating'] = rating
             else:
                 context_dict['user_has_rated'] = False
         except Playlist.DoesNotExist:
             context_dict['playlist'] = None
             context_dict['songs'] = None
             context_dict['user_has_rated'] = None
+            context_dict['rating'] = None
 
         return context_dict
 
@@ -444,35 +447,34 @@ class PlaylistCreatorView(View):
 
 class PlaylistRatingView(View):
     @method_decorator(login_required)
-    def get(self, request, playlist_name_slug):
-        playlist = Playlist.objects.get(slug=playlist_name_slug)
-        form = RatingForm()
-        context_dict = {'form': form, 'playlist': playlist}
-        return render(request, 'choonz/rate_playlist.html', context_dict)
-
-    @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
-        form = RatingForm(request.POST)
         playlist = Playlist.objects.get(slug=playlist_name_slug)
-
-        # if the form valid?
-        if form.is_valid():
-            rating = form.save(commit=False)
-            rating.user = request.user
-            rating.playlist = playlist
-            rating.date = datetime.today()
-            form.save(commit=True)
-            context_dict = {}
-            context_dict["playlist"] = playlist
-            context_dict["songs"] = playlist.get_song_list
-            return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist_name_slug}))
+        if request.POST['rating']:
+            rating = Rating.objects.get(id=request.POST['rating'])
+            form = RatingForm()
+            context_dict = {'form': form, 'playlist': playlist, 'rating': rating}
+            return render(request, 'choonz/rate_playlist.html', context_dict)
         else:
-            # form contained errors
-            # print them to the terminal
-            print(form.errors)
+            form = RatingForm(request.POST)
 
-        context_dict = {'form': form, 'playlist': playlist}
-        return render(request, 'choonz/rate_playlist.html', context=context_dict)
+            # if the form valid?
+            if form.is_valid():
+                rating = form.save(commit=False)
+                rating.user = request.user
+                rating.playlist = playlist
+                rating.date = datetime.today()
+                form.save(commit=True)
+                context_dict = {}
+                context_dict["playlist"] = playlist
+                context_dict["songs"] = playlist.get_song_list
+                return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist_name_slug}))
+            else:
+                # form contained errors
+                # print them to the terminal
+                print(form.errors)
+
+            context_dict = {'form': form, 'playlist': playlist}
+            return render(request, 'choonz/rate_playlist.html', context=context_dict)
 
 
 class DraftView(View):

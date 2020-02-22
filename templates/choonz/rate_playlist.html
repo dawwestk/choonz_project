@@ -26,7 +26,11 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">Stars rating: </span>
                                     </div>
-                                    <input type="text" name="stars" id="stars" class="form-control" placeholder="" required autofocus size="10">
+                                    {% if rating %}
+                                        <input type="text" name="stars" id="stars" class="form-control" placeholder="{{ rating.stars }}" required autofocus size="10">
+                                    {% else %}
+                                        <input type="text" name="stars" id="stars" class="form-control" placeholder="" required autofocus size="10">
+                                    {% endif %}
                                 </p>
                             </div>
                             <div class="input-group mb-3">
@@ -34,7 +38,11 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="basic-addon1">Comment: </span>
                                     </div>
-                                    <input type="text" name="comment" id="comment" class="form-control" placeholder="" size="100">
+                                    {% if rating %}
+                                        <input type="text" name="comment" id="comment" class="form-control" placeholder="{{ rating.comment }}" size="100">
+                                    {% else %}    
+                                        <input type="text" name="comment" id="comment" class="form-control" placeholder="" size="100">
+                                    {% endif %}
                                 </p>
                             </div>
                         <button class="btn btn-primary" type="submit" name="submit">Rate Playlist</button>

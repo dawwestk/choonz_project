@@ -39,8 +39,9 @@
 							{% if user != playlist.creator %}
 								{% if user_has_rated %}
 									<div>
-										<form class="form-inline" id="user-form" method="get" action="{% url 'choonz:rate_playlist' playlist.slug %}">
+										<form class="form-inline" id="user-form" method="post" action="{% url 'choonz:rate_playlist' playlist.slug %}">
 											{% csrf_token %}
+											<input id="rating" name="rating" type="hidden" value="{{ rating.id }}">
 											<button class="btn btn-warning" type="submit" name="submit">Edit My Rating</button>
 										</form>
 									</div>
