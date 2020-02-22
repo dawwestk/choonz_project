@@ -80,12 +80,23 @@
 							{% if draft_playlists %}
 								<ul class="list-group">
 									{% for playlist in draft_playlists %}
-										<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}
-											</a>												
-											<div>
-												<button class="btn btn-info btn-sm" type="submit" name="submit" id="edit-playlist-button">Edit</button>
-												<button class="btn btn-info btn-sm" type="submit" name="submit" id="delete-playlist-button">Delete</button>
-											</div>
+										<li class="list-group-item">
+											<div class="row">
+												<div class="col">
+													<p><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}
+													</a></p>
+													<p>Rating: {{ playlist.numberOfRatings }}</p>
+													<p>Average: {{ playlist.averageRating }}</p>
+												</div>												
+												<div class="col">
+													<form class="form-inline" id="user-form" method="get" action="{% url 'choonz:show_playlist' playlist.slug %}">
+														<button class="btn btn-info btn-sm" type="submit" name="submit">Edit</button>
+													</form>
+													<br />
+													<form class="form-inline" id="user-form" method="get" action="{% url 'choonz:show_playlist' playlist.slug %}">
+														<button class="btn btn-info btn-sm" type="submit" name="submit">Delete</button>
+													</form>
+												</div>
 										</li>
 									{% endfor %}
 								</ul>

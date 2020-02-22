@@ -85,11 +85,11 @@ class ShowPlaylistView(View):
     @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
         context_dict = self.create_context_dict(playlist_name_slug)
-        query = request.POST['query'].strip()
+        #query = request.POST['query'].strip()
 
-        if query:
-            context_dict['result_list'] = run_query(query)
-            context_dict['query'] = query
+        #if query:
+        #    context_dict['result_list'] = run_query(query)
+        #    context_dict['query'] = query
 
         return render(request, 'choonz/playlist.html', context_dict)
 
@@ -483,7 +483,7 @@ class DraftView(View):
 
 class LikePlaylistView(View):
     @method_decorator(login_required)
-    def get(self, request):
+    def post(self, request):
         playlist_id = request.GET['playlist_id']
 
         try:
@@ -496,7 +496,24 @@ class LikePlaylistView(View):
         playlist.likes = playlist.likes + 1
         playlist.save()
 
-        return HttpResponse(playlist.likes)
+        return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
+
+class PublishPlaylistView(View):
+    @method_decorator(login_required)
+    def post(self, request):
+        playlist_id = request.POST['playlist_id']
+
+        try:
+            playlist = Playlist.objects.get(id=int(playlist_id))  # remember to cast int
+        except Playlist.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+
+        playlist.public = True
+        playlist.save()
+
+        return HttpResponse(playlist.public)
 
 
 def get_playlist_list(max_results=0, starts_with=''):

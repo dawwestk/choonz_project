@@ -19,6 +19,7 @@ urlpatterns = [
     path('profile/<username>/', views.ProfileView.as_view(), name='profile'),
     path('profiles/', views.ListProfileView.as_view(), name='list_profiles'),
     path('like_playlist/', views.LikePlaylistView.as_view(), name='like_playlist'),
+    path('publish_playlist/', views.PublishPlaylistView.as_view(), name='publish_playlist'),
     path('suggest/', views.PlaylistSuggestionView.as_view(), name='suggest'),
     path('playlist_creator/', views.PlaylistCreatorView.as_view(), name='playlist_creator'),
     path('drafts/', views.DraftView.as_view(), name='drafts'),
