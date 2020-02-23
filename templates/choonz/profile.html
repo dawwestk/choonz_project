@@ -4,13 +4,8 @@
 {% block title_block %}
 	Profile for {{ selected_user.username }}
 {% endblock %}
-
+<body onload="showPlaylistView()">
 {% block body_block %}
-	<script>
-	    $(document).ready( function () {
-  			showPlaylistView();
-		});
-	</script>
 
 	<div class="jumbotron p-3">
 		<div class="container">
@@ -212,3 +207,4 @@
 
 	{% endif %}
 {% endblock %}
+</body>
