@@ -37,7 +37,7 @@
                         <div class="input-group mb-3">
                             <p class="required">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Playlist name:</span>
+                                    <span class="input-group-text" id="playlist-name-prompt">Playlist name:</span>
                                 </div>
                                 <input type="text" name="name" id="name" class="form-control" placeholder="{{ form.name.help_text }}" required autofocus size="50">
                             </p>
@@ -45,7 +45,7 @@
                         <div class="input-group mb-3">
                             <p class="required">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Description:</span>
+                                    <span class="input-group-text" id="playlist-description-prompt">Description:</span>
                                 </div>
                                 <input type="text" name="description" id="description" class="form-control" placeholder="{{ form.description.help_text }}" size="100">
                             </p>
@@ -53,13 +53,21 @@
                         <div class="input-group mb-3">
                             <p class="required">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Tags:</span>
+                                    <span class="input-group-text" id="playlist-tags-prompt">Tags:</span>
                                 </div>
-                                <textarea id="tags-input" class="form-control" placeholder="{{ form.tags.help_text }}" rows="1"></textarea>
+                                <input type="text" name="tags-input" id="tags-input" class="form-control" placeholder="{{ form.tags.help_text }}"></input>
                             </p>
-                            <div class="container" id="tag-listing">
+                        </div>
+                        <div class="input-group mb-3">
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="playlist-search-tags-prompt">Search for Tags:</span>
+                                </div>
+                                <textarea id="tag-search-input" class="form-control" placeholder="Search all tags..." rows="1"></textarea>
+                            </p>
+                            <div class="container m-4" id="tag-listing">
                                 {% block sidebar_block %}
-                                    
+                                    {% get_tag_list tag %}
                                 {% endblock %}
                             </div>
                         </div>

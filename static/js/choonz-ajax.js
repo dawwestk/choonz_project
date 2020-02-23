@@ -1,3 +1,8 @@
+// stopping caching while developing
+$.ajaxSetup({
+    cache: false
+});
+
 $(document).ready(function(){
 	$('#like_btn').click(function(){
 		var playlistIdVar
@@ -12,7 +17,7 @@ $(document).ready(function(){
 		})
 	})
 
-	$('#tags-input').keyup(function() {
+	$('#tag-search-input').keyup(function() {
 		var query;
 		query = $(this).val();
 
@@ -21,8 +26,9 @@ $(document).ready(function(){
 				$('#tag-listing').html(data);
 			})
 		} else {
-			$('#tag-suggestions').empty();
+			$('#tag-suggestion-list').empty();
 		}
+		// ^ Else only needed if we move from vertical list layout of tag suggestions
 		
 	})
 
@@ -39,5 +45,10 @@ $(document).ready(function(){
 
 	})
 	
+})
+
+// separated from document.ready as the tag-suggestions are added/updated AFTER the DOM model is created
+$(document).on("click", ".tag-suggestion", function(e) {
+	$('#tags-input').val($('#tags-input').val() + $(this).text());
 })
 
