@@ -374,10 +374,12 @@ class ProfileView(View):
                 playlist_info["stars"] = 0
 
             rated_playlists.append(playlist_info)
+            # most_common_tags = rated_playlists.values("tags").annotate(count=Count('tags')).order_by("-count")
 
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form,
                         'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
                         'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists}
+                        # , "common_tags":most_common_tags}
 
         return render(request, 'choonz/profile.html', context_dict)
 

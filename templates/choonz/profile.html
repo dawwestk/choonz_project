@@ -159,8 +159,7 @@
 						<p class="card-text">
 							{% if rated_playlists %}
 								<ul class="list-group">
-								{% for playlist in rated_playlists %}
-												
+								{% for playlist in rated_playlists %}												
 									<li class="list-group-item">
 										{% if playlist.image %}
 											<img src="{{ MEDIA_URL }}{{ playlist.image }}" width="50" height="50" 
@@ -169,8 +168,7 @@
 											<img src="{% static 'images/default_profile_img.png' %}" width="50" height="50" 
 												alt="No playlist image" />
 										{% endif %}	
-
-										<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.playlist|truncatechars:20 }}</a>
+										<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.playlist|truncatechars:40 }}</a>
 										<div>
 											{% if selected_user == user %}
 												<span class="badge badge-light p-2">Your Rating: {{playlist.stars}}</span>
@@ -183,6 +181,27 @@
 									</li>
 								{% endfor %}
 								</ul>
+							{% else %}
+								<strong>No rated playlists</strong>
+							{% endif %}
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<div class="card mb-6">
+					<div class="card-body">
+						<h2>{{ selected_user.username }}'s Favourite Tags</h2>
+						<p class="card-text">
+							{% if rated_playlists %}
+								<ul class="list-group">
+								{% for playlist in rated_playlists %}												
+									<li class="list-group-item">	
+										<a href="{% url 'choonz:show_playlist' playlist.slug %}">#{{ playlist.tag|truncatechars:40 }}</a>
+									</li>
+								{% endfor %}
+									</ul>
 							{% else %}
 								<strong>No rated playlists</strong>
 							{% endif %}
