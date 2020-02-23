@@ -1,0 +1,17 @@
+<div class="text-tags" id="tag-suggestions">
+	{% if tags %}
+		{% for c in tags %}
+			<div class="text-tag">
+				<div class="btn btn-warning">
+					<span class="text-label" data-feather="chevron-right">{{ c.description }}</span><a class="text-remove"/>
+				</div>
+			</div>
+		{% endfor %}
+	{% else %}
+	<div class="text-tag">
+		<div class="container">
+			<span class="text-label">No matching tags.</span>
+		</div>
+	</div>
+	{% endif %}
+</div>

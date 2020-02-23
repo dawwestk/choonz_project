@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
-from choonz.models import Playlist, UserProfile, Song, Rating
+from choonz.models import Playlist, UserProfile, Song, Rating, Tag
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -264,33 +264,35 @@ class PublishPlaylistView(View):
 
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
-class PlaylistSuggestionView(View):
+class TagSuggestionView(View):
     def get(self, request):
         if 'suggestion' in request.GET:
             suggestion = request.GET['suggestion']
         else:
             suggestion = ''
 
-        playlist_list = get_playlist_list(max_results=8, starts_with=suggestion)
+        # possibly change the ordering to be by number of playlists?
+        tag_list = get_tag_list(max_results=8, starts_with=suggestion).order_by('description')
 
-        if len(playlist_list) == 0:
-            playlist_list = Playlist.objects.order_by('-likes')
+        #if nothing is written in the field so we want to show all or nothing?
+        #if len(tag_list) == 0:
+        #    tag_list = [] #Tag.objects.order_by('description')
 
-        return render(request, 'choonz/playlists.html', {'playlists': playlist_list})
+        return render(request, 'choonz/tags.html', {'tags': tag_list})
 
 
 
-def get_playlist_list(max_results=0, starts_with=''):
-    playlist_list = []
+def get_tag_list(max_results=0, starts_with=''):
+    tag_list = []
 
     if starts_with:
-        playlist_list = Playlist.objects.filter(name__istartswith=starts_with)
+        tag_list = Tag.objects.filter(description__istartswith=starts_with)
 
     if max_results > 0:
-        if len(playlist_list) > max_results:
-            playlist_list = playlist_list[:max_results]
+        if len(tag_list) > max_results:
+            tag_list = tag_list[:max_results]
 
-    return playlist_list
+    return tag_list
 
 
 '''
@@ -358,7 +360,7 @@ class ProfileView(View):
 
         # All Ratings the profile owner has given
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
-        print(ratings_by_user)
+
         rated_playlists = []
         for i in range(0, len(ratings_by_user)):
             playlist_info = {}

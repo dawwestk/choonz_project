@@ -11,12 +11,13 @@ class PlaylistForm(forms.ModelForm):
     slug = forms.CharField(widget=forms.HiddenInput(), required=False)
     createdDate = forms.DateField(widget=forms.HiddenInput(), initial=date.today())
     lastUpdatedDate = forms.DateField(widget=forms.HiddenInput(), initial=date.today())
+    tags = forms.CharField(max_length=Playlist.max_length_char, help_text="Enter tags to help people find your playlist!", required=False)
 
     # Meta is an inline class to provide addition info
     class Meta:
         # Associate ModelForm and a model (in this case, Playlist)
         model = Playlist
-        fields = ('name', 'description', 'createdDate', 'lastUpdatedDate',)
+        fields = ('name', 'description', 'createdDate', 'lastUpdatedDate', 'tags')
 
 
 '''

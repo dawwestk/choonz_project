@@ -1,5 +1,6 @@
 {% extends 'choonz/base.html' %}
 {% load staticfiles %}
+{% load choonz_template_tags %}
 
 {% block title_block %}
     Add a Playlist
@@ -48,6 +49,19 @@
                                 </div>
                                 <input type="text" name="description" id="description" class="form-control" placeholder="{{ form.description.help_text }}" size="100">
                             </p>
+                        </div>
+                        <div class="input-group mb-3">
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">Tags:</span>
+                                </div>
+                                <textarea id="tags-input" class="form-control" placeholder="{{ form.tags.help_text }}" rows="1"></textarea>
+                            </p>
+                            <div class="container" id="tag-listing">
+                                {% block sidebar_block %}
+                                    
+                                {% endblock %}
+                            </div>
                         </div>
                     <button class="btn btn-primary" type="submit" name="submit">Create Playlist</button>
                     </div>

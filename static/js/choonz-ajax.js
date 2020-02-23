@@ -12,13 +12,18 @@ $(document).ready(function(){
 		})
 	})
 
-	$('#search-input').keyup(function() {
+	$('#tags-input').keyup(function() {
 		var query;
 		query = $(this).val();
 
-		$.get('/choonz/suggest/', {'suggestion': query}, function(data){
-			$('#playlists-listing').html(data);
-		})
+		if(query){
+			$.get('/choonz/suggest/', {'suggestion': query}, function(data){
+				$('#tag-listing').html(data);
+			})
+		} else {
+			$('#tag-suggestions').empty();
+		}
+		
 	})
 
 	$('.choonz-page-add').click(function() {
