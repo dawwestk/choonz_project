@@ -140,7 +140,7 @@ class AddPlaylistView(View):
                     playlist.tags.add(found_tag)
                 playlist.save()
             # redirect back to index
-            return redirect(reverse('choonz:index'))
+            return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
         else:
             # form contained errors
             # print them to the terminal
