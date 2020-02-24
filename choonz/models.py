@@ -32,11 +32,11 @@ class Playlist(models.Model):
     public = models.BooleanField(default=False)
 
     @property
-    def averageRating(self):
+    def getAverageRating(self):
         return self.rating_set.aggregate(Avg('stars'))['stars__avg']
 
     @property
-    def numberOfRatings(self):
+    def getNumberOfRatings(self):
         playlist_ratings = Playlist.objects.annotate(num_ratings=Count('rating'))  # annotate the queryset
         return playlist_ratings.get(id=self.id).num_ratings
 
@@ -45,7 +45,7 @@ class Playlist(models.Model):
         return list(self.songs.all())
 
     @property
-    def get_tag_list(self):
+    def get_playlist_tag_list(self):
         return list(self.tags.all())
 
     def __str__(self):

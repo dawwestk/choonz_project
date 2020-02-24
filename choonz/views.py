@@ -130,7 +130,15 @@ class AddPlaylistView(View):
         if form.is_valid():
             playlist = form.save(commit=False)
             playlist.creator = request.user
-            form.save(commit=True)
+            playlist.save()
+            if request.POST.get('tags'):
+                tag_string = request.POST.get('tags')
+                tag_string = tag_string.replace(',', '')
+                tag_list = tag_string.split(' ')
+                for t in tag_list:
+                    found_tag = Tag.objects.get(description=t)
+                    playlist.tags.add(found_tag)
+                playlist.save()
             # redirect back to index
             return redirect(reverse('choonz:index'))
         else:

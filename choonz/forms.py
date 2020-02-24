@@ -6,8 +6,7 @@ from datetime import datetime, date
 class PlaylistForm(forms.ModelForm):
     name = forms.CharField(max_length=Playlist.max_length_char, help_text="Please enter the playlist name.")
     description = forms.CharField(max_length=Playlist.max_length_char*2, help_text="Describe your playlist...", required=False)
-    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-    likes = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
+    averageRating = forms.FloatField(widget=forms.HiddenInput(), initial=0.0)
     slug = forms.CharField(widget=forms.HiddenInput(), required=False)
     createdDate = forms.DateField(widget=forms.HiddenInput(), initial=date.today())
     lastUpdatedDate = forms.DateField(widget=forms.HiddenInput(), initial=date.today())
@@ -17,7 +16,7 @@ class PlaylistForm(forms.ModelForm):
     class Meta:
         # Associate ModelForm and a model (in this case, Playlist)
         model = Playlist
-        fields = ('name', 'description', 'createdDate', 'lastUpdatedDate', 'tags')
+        fields = ('name', 'description', 'createdDate', 'lastUpdatedDate', 'tags', 'averageRating')
 
 
 '''

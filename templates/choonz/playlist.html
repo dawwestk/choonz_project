@@ -1,5 +1,6 @@
 {% extends 'choonz/base.html' %}
 {% load staticfiles %}
+{% load choonz_template_tags %}
 
 {% block title_block %}
 	{% if playlist %}
@@ -77,6 +78,12 @@
 			</div>
 		</div>
 		
+		<h3 class="card">Tags:</h3>
+		<div class="card m-4" id="tag-listing">
+            {% block sidebar_block %}
+                {% get_tag_list tag playlist %}
+            {% endblock %}
+        </div> 
 		
 		{% if songs %}
 		<div id="songs-listing">

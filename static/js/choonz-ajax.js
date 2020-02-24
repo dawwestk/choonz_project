@@ -25,9 +25,9 @@ $(document).ready(function(){
 			$.get('/choonz/suggest/', {'suggestion': query}, function(data){
 				$('#tag-listing').html(data);
 			})
-		} else {
-			$('#tag-suggestion-list').empty();
-		}
+		}//else {
+		//	$('#tag-suggestion-list').empty();
+		//}
 		// ^ Else only needed if we move from vertical list layout of tag suggestions
 		
 	})
@@ -49,6 +49,21 @@ $(document).ready(function(){
 
 // separated from document.ready as the tag-suggestions are added/updated AFTER the DOM model is created
 $(document).on("click", ".tag-suggestion", function(e) {
-	$('#tags-input').val($('#tags-input').val() + $(this).text());
+	var currentTags = $('#tags').val();
+	var clickedTag = $(this).text();
+
+	// Check if tag already on the list
+	if (currentTags.includes(clickedTag)) {
+		// Already featured
+		alert("Cannot add tags more than one");
+	} else {
+		var output = currentTags;
+		if(currentTags.slice(currentTags.length - 1) == ','){
+			output = output + ' ' + clickedTag + ',';
+		} else {
+			output = output + clickedTag + ',';
+		}
+		$('#tags').val(output);
+	}
 })
 
