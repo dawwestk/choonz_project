@@ -23,12 +23,16 @@ REGISTRATION_OPEN = True    # if true, users can register
 REGISTRATION_AUTO_LOGIN = True  #if ture, the user will be auto logged in after registering
 LOGIN_REDIRECT_URL = 'choonz:index'
 LOGIN_URL = 'auth_login'
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_GITHUB_KEY = '66ef7a0981b65a005df2'
 SOCIAL_AUTH_GITHUB_SECRET = '599ec699a7f2d21f6e032d638b44b291917aa30d'
 SOCIAL_AUTH_TWITTER_KEY = 'RGCiyLHdWHZoMfNl00QTxUNGo'
 SOCIAL_AUTH_TWITTER_SECRET = 'dC84S1sncHI7amRtpY4qjZda4FsmEbbBDj01hBSzhyzuJuwa0t'
-SOCIAL_AUTH_FACEBOOK_KEY = '705285186670773'  # App ID
-SOCIAL_AUTH_FACEBOOK_SECRET = '04ef9a888abc1b44c1325baa38a07acf'  # App Secret
+SOCIAL_AUTH_SPOTIFY_KEY = 'e09593bcb854470184181ebe501205af'
+SOCIAL_AUTH_SPOTIFY_SECRET = '35de71dede0449cd9df50f1f6fabc1d2'
+# SOCIAL_AUTH_LOGIN_ERROR_URL = '/index/'
+# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -105,7 +109,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.facebook.FacebookOAuth2',
-
+    'social_core.backends.spotify.SpotifyOAuth2',
     'django.contrib.auth.backends.ModelBackend',
 )
 

@@ -9,12 +9,18 @@ from choonz.forms import PlaylistForm, UserForm, UserProfileForm, RatingForm
 from datetime import datetime
 from django.views import View
 from django.utils.decorators import method_decorator
+from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+from social_django.models import UserSocialAuth
 
 '''
 
     Index View
 
 '''
+
+
 class IndexView(View):
     def get(self, request):
         # construct a dictionary to pass template engine as its context
@@ -29,8 +35,8 @@ class IndexView(View):
             user = request.user
             user_profile = UserProfile.objects.get(user=user)
         except:
-            user=None
-            user_profile=None
+            user = None
+            user_profile = None
 
         context_dict = {}
         context_dict['boldmessage'] = 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!'
@@ -46,11 +52,14 @@ class IndexView(View):
         response = render(request, 'choonz/index.html', context=context_dict)
         return response
 
+
 '''
 
     About View
 
 '''
+
+
 class AboutView(View):
     def get(self, request):
         context_dict = {}
@@ -66,6 +75,8 @@ class AboutView(View):
     Playlist Views Section
 
 '''
+
+
 class ShowPlaylistView(View):
 
     def create_context_dict(self, playlist_name_slug, request):
@@ -147,6 +158,7 @@ class AddPlaylistView(View):
             print(form.errors)
 
         return render(request, 'choonz/add_playlist.html', {'form': form})
+
 
 class ListPlaylistView(View):
     @method_decorator(login_required)
@@ -237,6 +249,7 @@ class LikePlaylistView(View):
 
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
+
 class PublishPlaylistView(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -272,6 +285,7 @@ class PublishPlaylistView(View):
 
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
+
 class TagSuggestionView(View):
     def get(self, request):
         if 'suggestion' in request.GET:
@@ -282,12 +296,11 @@ class TagSuggestionView(View):
         # possibly change the ordering to be by number of playlists?
         tag_list = get_tag_list(max_results=8, starts_with=suggestion).order_by('description')
 
-        #if nothing is written in the field so we want to show all or nothing?
-        #if len(tag_list) == 0:
+        # if nothing is written in the field so we want to show all or nothing?
+        # if len(tag_list) == 0:
         #    tag_list = [] #Tag.objects.order_by('description')
 
         return render(request, 'choonz/tags.html', {'tags': tag_list})
-
 
 
 def get_tag_list(max_results=0, starts_with=''):
@@ -310,6 +323,7 @@ def get_tag_list(max_results=0, starts_with=''):
     
     ------------------------------------------------------------------------------------
 '''
+
 
 class RegisterProfileView(View):
     @method_decorator(login_required)
@@ -389,7 +403,7 @@ class ProfileView(View):
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form,
                         'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
                         'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists}
-                        # , "common_tags":most_common_tags}
+        # , "common_tags":most_common_tags}
 
         return render(request, 'choonz/profile.html', context_dict)
 
@@ -420,11 +434,14 @@ class ListProfileView(View):
 
         return render(request, 'choonz/list_profiles.html', {'user_profile_list': profiles})
 
+
 '''
 
     Misc Views/Methods
 
 '''
+
+
 class RestrictedView(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -456,7 +473,6 @@ def get_server_side_cookie(request, cookie, default_val=None):
     if not val:
         val = default_val
     return val
-
 
 
 '''
@@ -601,9 +617,6 @@ def user_logout(request):
     --------------- Login/Registration code now handled by registration-redux
 '''
 
-
-
-
 '''
 def search(request):
     result_list = []
@@ -626,12 +639,6 @@ class GoToView(View):
         except Page.DoesNotExist:
             return redirect(reverse('index'))
 '''
-
-
-
-
-
-
 
 '''
 class SearchAddPage(View):
