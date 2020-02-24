@@ -21,6 +21,9 @@ from django.conf.urls.static import static
 from registration.backends.simple.views import RegistrationView
 from django.urls import reverse
 from choonz.views import IndexView
+from django.conf.urls import url, include
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 class MyRegistrationView(RegistrationView):
     def get_success_url(self, user):
@@ -32,4 +35,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/register/', MyRegistrationView.as_view(), name='registration_register'),
     path('accounts/', include('registration.backends.simple.urls')),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -43,6 +43,11 @@
             {% else %}
                 <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'auth_login' %}';">Log In</button>
                 <button type="button" class="btn btn-info" onclick="window.location.href = '{% url 'registration_register' %}';">Sign Up</button>
+                <br>
+                <p><strong>-- OR --</strong></p>
+                <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
+                <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a><br>
+                <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
             {% endif %}
         </div>
     </div>
@@ -121,7 +126,7 @@
 <!-- Body Block -->
 <main role="main" class="col-md-9  ml-sm-auto col-lg-10 px-4" id="baseMain">
 
-{% endblock %}    
+{% endblock %}
     {% block body_block %}
     {% endblock %}
 </main>

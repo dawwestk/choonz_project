@@ -23,6 +23,12 @@ REGISTRATION_OPEN = True    # if true, users can register
 REGISTRATION_AUTO_LOGIN = True  #if ture, the user will be auto logged in after registering
 LOGIN_REDIRECT_URL = 'choonz:index'
 LOGIN_URL = 'auth_login'
+SOCIAL_AUTH_GITHUB_KEY = '66ef7a0981b65a005df2'
+SOCIAL_AUTH_GITHUB_SECRET = '599ec699a7f2d21f6e032d638b44b291917aa30d'
+SOCIAL_AUTH_TWITTER_KEY = 'RGCiyLHdWHZoMfNl00QTxUNGo'
+SOCIAL_AUTH_TWITTER_SECRET = 'dC84S1sncHI7amRtpY4qjZda4FsmEbbBDj01hBSzhyzuJuwa0t'
+SOCIAL_AUTH_FACEBOOK_KEY = '705285186670773'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '04ef9a888abc1b44c1325baa38a07acf'  # App Secret
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -47,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'choonz',
     'registration',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -57,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'choonz_project.urls'
@@ -73,6 +81,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -90,6 +100,14 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 
 # Password validation
