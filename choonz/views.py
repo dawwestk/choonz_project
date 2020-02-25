@@ -389,6 +389,8 @@ class ProfileView(View):
 
         all_rated_tags = []
         rated_playlists = []
+        flat_tags = []
+        tag_obs = None
         for i in range(0, len(ratings_by_user)):
             playlist_info = {}
             playlist = Playlist.objects.get(id=ratings_by_user[i])
@@ -402,14 +404,16 @@ class ProfileView(View):
                 playlist_info["stars"] = rating.stars
             except Rating.DoesNotExist:
                 playlist_info["stars"] = 0
+            try:
+                all_rated_tags.append(playlist_info['tags'])
+                for i in all_rated_tags:
+                  for j in i:
+                    flat_tags.append(j)
 
-            all_rated_tags.append(playlist_info['tags'])
-            flat_tags = []
-            for i in all_rated_tags:
-              for j in i:
-                flat_tags.append(j)
-            
-            tag_obs = Tag.objects.filter(description__in=flat_tags)
+                tag_obs = Tag.objects.filter(description__in=flat_tags)
+            except:
+                flat_tags = None
+                tag_obs = None
 
             rated_playlists.append(playlist_info)
             # most_common_tags = rated_playlists.values("tags").annotate(count=Count('tags')).order_by("-count")
