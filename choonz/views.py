@@ -472,12 +472,21 @@ class TestView(View):
         while playlists:
             for i, playlist in enumerate(playlists['items']):
                 print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'], playlist['name']))
+                results = sp.playlist(playlist['id'], fields="tracks")
+                tracks = results['tracks']
+                spotify_show_tracks(tracks)
             if playlists['next']:
                 playlists = sp.next(playlists)
             else:
                 playlists = None
 
         return HttpResponse("Printed playlists")
+
+def spotify_show_tracks(tracks):
+    for i, item in enumerate(tracks['items']):
+        track = item['track']
+        print("   %d %32.32s %s" % (i, track['artists'][0]['name'],
+            track['name']))
 
 def setup_spotify():
     # SPOTIPY_CLIENT_ID = 'e09593bcb854470184181ebe501205af'
