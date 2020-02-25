@@ -1,7 +1,9 @@
 import os
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'choonz_project.settings')
 
 import django
+
 django.setup()
 from choonz.models import Tag, Playlist, Artist, Song, Rating
 from datetime import datetime
@@ -9,6 +11,7 @@ from django.contrib.auth.models import User
 
 today = datetime.today()
 bob = User.objects.get_or_create(username="bobby")[0]
+
 
 def populate():
     # Create a list of dictionaries containing pages to add to each Playlist
@@ -30,11 +33,17 @@ def populate():
     ]
 
     playlist_info = {
-        "Country Anthems": {"tags": tags[:3], "creator": bob, "createdDate": today, "lastUpdatedDate": today, "description": "Bangin country anthems", },
-        "K-Pop Forever": {"tags": tags[4:6], "creator": bob, "createdDate": today, "lastUpdatedDate": today, "description": "Bangin k-pop anthems", },
-        "Now That's What I Call Romanian Folk-Pop": {"tags": tags[8:], "creator": bob, "createdDate": today, "lastUpdatedDate": today, "description": "Bangin folk-pop anthems", },
-        "NedBeatz": {"tags": tags[7:], "creator": bob, "createdDate": today, "lastUpdatedDate": today, "description": "Bangin ned anthems", },
-        "i luv you stacy plz come back": {"tags": tags, "creator": bob, "createdDate": today, "lastUpdatedDate": today, "description": "Why did you leave me", },
+        "Country Anthems": {"tags": tags[:3], "creator": bob, "createdDate": today, "lastUpdatedDate": today,
+                            "description": "Bangin country anthems", },
+        "K-Pop Forever": {"tags": tags[4:6], "creator": bob, "createdDate": today, "lastUpdatedDate": today,
+                          "description": "Bangin k-pop anthems", },
+        "Now That's What I Call Romanian Folk-Pop": {"tags": tags[8:], "creator": bob, "createdDate": today,
+                                                     "lastUpdatedDate": today,
+                                                     "description": "Bangin folk-pop anthems", },
+        "NedBeatz": {"tags": tags[7:], "creator": bob, "createdDate": today, "lastUpdatedDate": today,
+                     "description": "Bangin ned anthems", },
+        "i luv you stacy plz come back": {"tags": tags, "creator": bob, "createdDate": today, "lastUpdatedDate": today,
+                                          "description": "Why did you leave me", },
     }
 
     '''
@@ -63,22 +72,29 @@ def populate():
         "Garth Brooks": {"songs": garth_songs, "playlist": "Country Anthems"},
         "George Michael": {"songs": george_songs, "playlist": "i luv you stacy plz come back"},
     }
-	
-    rating_info = {
-		"Rating1": {"user": bob, "playlist": "Country Anthems", "stars": 5, "comment": "This takes me back to the good ol days riding my tractor into the sunset", "date": today},
-		"Rating2": {"user": bob, "playlist": "K-Pop Forever", "stars": 3, "comment": "Not my cup of tea, but has some catchy tunes", "date": today},
-		"Rating3": {"user": bob, "playlist": "NedBeatz", "stars": 1, "comment": "This is garbage. Truly garbage.", "date": today},
-		"Rating4": {"user": bob, "playlist": "i luv you stacy plz come back", "stars": 5, "comment": "I hope you see this Stacy, i miss u", "date": today},
-		"Rating5": {"user": bob, "playlist": "Now That's What I Call Romanian Folk-Pop", "stars": 4, "comment": "Never been to Romania but if they have jams like this I'll be going soon!", "date": today},
-    }
 
+    rating_info = {
+        "Rating1": {"user": bob, "playlist": "Country Anthems", "stars": 5,
+                    "comment": "This takes me back to the good ol days riding my tractor into the sunset",
+                    "date": today},
+        "Rating2": {"user": bob, "playlist": "K-Pop Forever", "stars": 3,
+                    "comment": "Not my cup of tea, but has some catchy tunes", "date": today},
+        "Rating3": {"user": bob, "playlist": "NedBeatz", "stars": 1, "comment": "This is garbage. Truly garbage.",
+                    "date": today},
+        "Rating4": {"user": bob, "playlist": "i luv you stacy plz come back", "stars": 5,
+                    "comment": "I hope you see this Stacy, i miss u", "date": today},
+        "Rating5": {"user": bob, "playlist": "Now That's What I Call Romanian Folk-Pop", "stars": 4,
+                    "comment": "Never been to Romania but if they have jams like this I'll be going soon!",
+                    "date": today},
+    }
 
     for tag_description in tags:
         add_tag(tag_description)
         print("Tag {0} added successfully".format(str(tag_description)))
 
     for p, pdata in playlist_info.items():
-        add_playlist(p, pdata['tags'], pdata['creator'], pdata['createdDate'], pdata['lastUpdatedDate'], pdata['description'])
+        add_playlist(p, pdata['tags'], pdata['creator'], pdata['createdDate'], pdata['lastUpdatedDate'],
+                     pdata['description'])
         print("Playlist data for {0} added successfully".format(str(p)))
 
     for artist_name, artist_songs in artist_info.items():
@@ -95,18 +111,19 @@ def populate():
             print(" - - readying song {0} for addition".format(song.title))
             playlist.songs.add(song)
             print(" - - Song {0} added to playlist {1}".format(song.title, playlist.name))
-			
+
     for rating, rating_data in rating_info.items():
-	    playlist = Playlist.objects.get(name=rating_data["playlist"])
-	    user = User.objects.get(username=rating_data["user"])
-	    add_rating(user, playlist, rating_data["stars"], rating_data["comment"], rating_data["date"])
-	    print("Rating: <{0} - {1}> added".format(str(user), str(playlist)))
-		
+        playlist = Playlist.objects.get(name=rating_data["playlist"])
+        user = User.objects.get(username=rating_data["user"])
+        add_rating(user, playlist, rating_data["stars"], rating_data["comment"], rating_data["date"])
+        print("Rating: <{0} - {1}> added".format(str(user), str(playlist)))
+
 
 def add_tag(description):
-    t = Tag.objects.get_or_create(description=description,)[0]
+    t = Tag.objects.get_or_create(description=description, )[0]
     t.save()
     return t
+
 
 def add_playlist(list, tags, creator, date1, date2, description):
     p = Playlist.objects.get_or_create(name=list)[0]
@@ -124,18 +141,21 @@ def add_playlist(list, tags, creator, date1, date2, description):
     p.save()
     return p
 
+
 def add_artist(name):
     artist = Artist.objects.get_or_create(name=name)[0]
-    artist.webpage = "www." + name.replace(" ","") + ".com"
+    artist.webpage = "www." + name.replace(" ", "") + ".com"
     artist.save()
     return artist
+
 
 def add_song(artist, song_title):
     s = Song.objects.get_or_create(artist=artist, title=song_title)[0]
     print(" - Song {0} created".format(str(song_title)))
     s.save()
     return s
-	
+
+
 def add_rating(user, playlist, stars, comment, date):
     rating = Rating.objects.get_or_create(user=user, playlist=playlist)[0]
     rating.stars = stars
@@ -144,7 +164,7 @@ def add_rating(user, playlist, stars, comment, date):
     rating.save()
     return rating
 
+
 if __name__ == '__main__':
     print("Starting choonz population script...")
     populate()
-

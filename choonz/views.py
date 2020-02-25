@@ -488,13 +488,24 @@ class RestrictedView(View):
     @method_decorator(login_required)
     def post(self, request):
         sp = self.setup()
-        tracks = []
+        results_list = []
 
         results = sp.search(q=request.POST.get('query'), limit=20)
         for idx, track in enumerate(results['tracks']['items']):
-            tracks.append(track['name'])
+            # track + any of the below (and more)
+            # ['popularity'], ['preview_url'], ['external_urls']['spotify']
+            # ['album']['name'], ['album']['images'][0]
+            # ['artists']['name']
+            track_info = {}
+            track_info['track_name'] = track['name']
+            track_info['album_name'] = track['album']['name']
+            track_info['artist_name'] = track['artists'][0]['name']
+            track_info['album_image'] = track['album']['images'][0]['url']
+            track_info['link'] = track['external_urls']['spotify']
+            results_list.append(track_info)
         context_dict = {}
-        context_dict['tracks'] = tracks
+        context_dict['results'] = results_list
+        print(context_dict)
         return render(request, 'choonz/restricted.html', context_dict)
 
 
