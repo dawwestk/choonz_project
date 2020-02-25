@@ -490,7 +490,8 @@ class RestrictedView(View):
         sp = self.setup()
         results_list = []
 
-        results = sp.search(q=request.POST.get('query'), limit=20)
+        query = request.POST.get('query')
+        results = sp.search(q=query, limit=20)
         for idx, track in enumerate(results['tracks']['items']):
             # track + any of the below (and more)
             # ['popularity'], ['preview_url'], ['external_urls']['spotify']
@@ -505,7 +506,8 @@ class RestrictedView(View):
             results_list.append(track_info)
         context_dict = {}
         context_dict['results'] = results_list
-        print(context_dict)
+        context_dict['query'] = query
+        
         return render(request, 'choonz/restricted.html', context_dict)
 
 
