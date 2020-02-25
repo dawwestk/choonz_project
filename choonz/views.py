@@ -147,16 +147,15 @@ class AddPlaylistView(View):
             playlist.save()
             if request.POST.get('tags'):
                 tag_string = request.POST.get('tags')
-                tag_string = tag_string.replace(',', '')
-                tag_list = tag_string.split(' ')
+                tag_string = tag_string.replace(', ', ',')
+                tag_list = tag_string.split(',')
                 for t in tag_list:
                     if t:
-                        print(t + " not blank")
                         found_tag = Tag.objects.get(description=t)
                         playlist.tags.add(found_tag)
                 playlist.save()
             # redirect back to index
-            return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
+            return redirect(reverse('choonz:playlist_editor', kwargs={'playlist_name_slug': playlist.slug}))
         else:
             # form contained errors
             # print them to the terminal
@@ -173,12 +172,14 @@ class ListPlaylistView(View):
         return render(request, 'choonz/list_playlists.html', {'playlist_list': playlists})
 
 
-class PlaylistCreatorView(View):
+class PlaylistEditorView(View):
     @method_decorator(login_required)
-    def get(self, request):
-        profiles = UserProfile.objects.all()
+    def get(self, request, playlist_name_slug):
+        user_profile = UserProfile.objects.get(user=request.user)
+        context_dict = {}
+        context_dict['playlist_name_slug'] = playlist_name_slug
 
-        return render(request, 'choonz/playlist_creator.html')
+        return render(request, 'choonz/playlist_editor.html', context_dict)
 
 
 class PlaylistRatingView(View):
