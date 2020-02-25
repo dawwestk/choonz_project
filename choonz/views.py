@@ -232,10 +232,11 @@ class DraftView(View):
         return render(request, 'choonz/drafts.html')
 
 
+'''
 class LikePlaylistView(View):
     @method_decorator(login_required)
-    def post(self, request):
-        playlist_id = request.GET['playlist_id']
+    def get(self, request):
+        playlist_id = request.GET.get('playlist_id')
 
         try:
             playlist = Playlist.objects.get(id=int(playlist_id))  # remember to cast int
@@ -247,8 +248,8 @@ class LikePlaylistView(View):
         playlist.likes = playlist.likes + 1
         playlist.save()
 
-        return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
-
+        return HttpResponse(playlist.likes) # redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
+'''
 
 class PublishPlaylistView(View):
     @method_decorator(login_required)
