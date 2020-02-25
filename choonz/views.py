@@ -463,18 +463,34 @@ class ListProfileView(View):
 '''
 
 
-class RestrictedView(View):	
-    @method_decorator(login_required)
-    def get(self, request):
+class RestrictedView(View):
+    def setup(self):
         SPOTIPY_CLIENT_ID = 'e09593bcb854470184181ebe501205af'
         SPOTIPY_CLIENT_SECRET = '35de71dede0449cd9df50f1f6fabc1d2'
         cid = SPOTIPY_CLIENT_ID
         secret = SPOTIPY_CLIENT_SECRET
         sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=cid, client_secret=secret))
+        return sp
+
+    @method_decorator(login_required)
+    def get(self, request):
+        sp = self.setup()
 		
         tracks = []
 		
         results = sp.search(q='dolly parton', limit=20)
+        for idx, track in enumerate(results['tracks']['items']):
+            tracks.append(track['name'])
+        context_dict = {}
+        context_dict['tracks'] = tracks
+        return render(request, 'choonz/restricted.html', context_dict)
+
+    @method_decorator(login_required)
+    def post(self, request):
+        sp = self.setup()
+        tracks = []
+
+        results = sp.search(q=request.POST.get('query'), limit=20)
         for idx, track in enumerate(results['tracks']['items']):
             tracks.append(track['name'])
         context_dict = {}
