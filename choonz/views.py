@@ -13,6 +13,9 @@ from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeFor
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from social_django.models import UserSocialAuth
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
 
 '''
 
@@ -443,9 +446,18 @@ class ListProfileView(View):
 '''
 
 
-class RestrictedView(View):
+class RestrictedView(View):	
     @method_decorator(login_required)
     def get(self, request):
+        SPOTIPY_CLIENT_ID = 'e09593bcb854470184181ebe501205af'
+        SPOTIPY_CLIENT_SECRET = '35de71dede0449cd9df50f1f6fabc1d2'
+        cid = SPOTIPY_CLIENT_ID
+        secret = SPOTIPY_CLIENT_SECRET
+        sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=cid, client_secret=secret))
+
+        results = sp.search(q='weezer', limit=20)
+        for idx, track in enumerate(results['tracks']['items']):
+            print(idx, track['name'])
         return render(request, 'choonz/restricted.html')
 
 
@@ -474,6 +486,7 @@ def get_server_side_cookie(request, cookie, default_val=None):
     if not val:
         val = default_val
     return val
+
 
 
 '''
