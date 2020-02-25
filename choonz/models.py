@@ -13,7 +13,7 @@ class Tag(models.Model):
 	
     @property
     def getNumberOfPlaylists(self):
-        playlist_tags = Tag.objects.annotate(num_playlists=Count('tag'))  # annotate the queryset
+        playlist_tags = Tag.objects.annotate(num_playlists=Count('playlist'))  # annotate the queryset
         return playlist_tags.get(id=self.id).num_playlists
 
     def __str__(self):
