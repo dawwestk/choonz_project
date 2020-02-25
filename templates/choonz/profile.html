@@ -34,6 +34,7 @@
 				<button class="btn btn-info" type="submit" name="submit" id="new-playlist-button" 
 						onclick='location.href="{% url 'choonz:add_playlist' %}"'>Create Playlist
 				</button>
+
 			{% endif %}
 		</div>
 	</div>
@@ -172,7 +173,9 @@
 										<div>
 											{% if selected_user == user %}
 												<span class="badge badge-light p-2">Your Rating: {{playlist.stars}}</span>
+												<span class="badge badge-light p-2">The Tags: {{playlist.tags}}</span>
 											{% else %}
+												<span class="badge badge-light p-2">The Tags: {{playlist.tags}}</span>
 												<span class="badge badge-light p-2">{{ selected_user.username }}'s Rating: {{playlist.stars}}</span>
 											{% endif %}
 											<span class="badge badge-light p-2">Number of Ratings: {{playlist.numberOfRatings}}</span>
@@ -194,11 +197,12 @@
 					<div class="card-body">
 						<h2>{{ selected_user.username }}'s Favourite Tags</h2>
 						<p class="card-text">
-							{% if rated_playlists %}
+							{% if all_rated_tags %}
 								<ul class="list-group">
-								{% for playlist in rated_playlists %}												
-									<li class="list-group-item">	
-										<a href="{% url 'choonz:show_playlist' playlist.slug %}">#{{ playlist.tag|truncatechars:40 }}</a>
+								{% for tag in tag_obs %}												
+									<li class="list-group-item">
+										<span class="badge badge-light p-2">The Tags: {{ tag.description }}</span>	
+										
 									</li>
 								{% endfor %}
 									</ul>
