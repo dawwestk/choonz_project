@@ -15,6 +15,7 @@ from django.contrib import messages
 from social_django.models import UserSocialAuth
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
+from django.conf import settings
 
 
 '''
@@ -461,20 +462,35 @@ class ListProfileView(View):
     Misc Views/Methods
 
 '''
-
-
-class RestrictedView(View):
-    def setup(self):
-        SPOTIPY_CLIENT_ID = 'e09593bcb854470184181ebe501205af'
-        SPOTIPY_CLIENT_SECRET = '35de71dede0449cd9df50f1f6fabc1d2'
-        cid = SPOTIPY_CLIENT_ID
-        secret = SPOTIPY_CLIENT_SECRET
-        sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=cid, client_secret=secret))
-        return sp
-
+class TestView(View):
     @method_decorator(login_required)
     def get(self, request):
-        sp = self.setup()
+        sp = setup_spotify()
+        username = request.user.username
+
+        playlists = sp.user_playlists(username)
+        while playlists:
+            for i, playlist in enumerate(playlists['items']):
+                print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'], playlist['name']))
+            if playlists['next']:
+                playlists = sp.next(playlists)
+            else:
+                playlists = None
+
+        return HttpResponse("Printed playlists")
+
+def setup_spotify():
+    # SPOTIPY_CLIENT_ID = 'e09593bcb854470184181ebe501205af'
+    # SPOTIPY_CLIENT_SECRET = '35de71dede0449cd9df50f1f6fabc1d2'
+    cid = settings.SPOTIPY_CLIENT_ID
+    secret = settings.SPOTIPY_CLIENT_SECRET
+    sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=cid, client_secret=secret))
+    return sp
+
+class RestrictedView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        sp = setup_spotify()
 		
         tracks = []
 		
@@ -487,7 +503,7 @@ class RestrictedView(View):
 
     @method_decorator(login_required)
     def post(self, request):
-        sp = self.setup()
+        sp = setup_spotify()
         results_list = []
 
         query = request.POST.get('query')
@@ -507,7 +523,7 @@ class RestrictedView(View):
         context_dict = {}
         context_dict['results'] = results_list
         context_dict['query'] = query
-        
+
         return render(request, 'choonz/restricted.html', context_dict)
 
 

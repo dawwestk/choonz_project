@@ -1,6 +1,6 @@
 from django.urls import path
 from choonz import views
-from choonz.views import AboutView, AddPlaylistView, IndexView, PlaylistRatingView, ShowPlaylistView, RestrictedView, RegisterProfileView, ProfileView, ListPlaylistView,  ListProfileView, TagSuggestionView, PlaylistEditorView
+from choonz.views import AboutView, AddPlaylistView, IndexView, PlaylistRatingView, ShowPlaylistView, RestrictedView, RegisterProfileView, ProfileView, ListPlaylistView,  ListProfileView, TagSuggestionView, PlaylistEditorView, TestView
 # AddPageView,GoToView, SearchAddPage LikePlaylistView, 
 
 
@@ -24,4 +24,5 @@ urlpatterns = [
     path('suggest/', views.TagSuggestionView.as_view(), name='suggest'),
     path('drafts/', views.DraftView.as_view(), name='drafts'),
     #path('search_add_page/', views.SearchAddPage.as_view(), name='search_add_page'),
+    path('test/', views.TestView.as_view(), name='test'),
 ]
