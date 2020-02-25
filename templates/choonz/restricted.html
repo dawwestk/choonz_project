@@ -9,6 +9,16 @@
 	<div class="jumbotron p-4">
 		<div class="container">
 			<h1 class="jumbotron-heading">Since you are logged in, you can see this text!</h1>
+			
+			{% if tracks %}
+				<div class="card">
+					<ul>
+					{% for track in tracks %}
+						<li class="list-group-item">{{ track }}</li>
+					{% endfor %}
+					</ul>
+				</div>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

@@ -454,11 +454,15 @@ class RestrictedView(View):
         cid = SPOTIPY_CLIENT_ID
         secret = SPOTIPY_CLIENT_SECRET
         sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=cid, client_secret=secret))
-
-        results = sp.search(q='weezer', limit=20)
+		
+        tracks = []
+		
+        results = sp.search(q='dolly parton', limit=20)
         for idx, track in enumerate(results['tracks']['items']):
-            print(idx, track['name'])
-        return render(request, 'choonz/restricted.html')
+            tracks.append(track['name'])
+        context_dict = {}
+        context_dict['tracks'] = tracks
+        return render(request, 'choonz/restricted.html', context_dict)
 
 
 def visitor_cookie_handler(request):
