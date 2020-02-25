@@ -19,7 +19,7 @@
 						<h1 class="jumbotron-heading">{{ playlist.name }}</h1>
 					</div>
 					<div class="col">
-						<h4 class="jumbotron-heading">Average Rating: {{ playlist.averageRating|floatformat}}/5.0</h4>
+						<h4 class="jumbotron-heading">Average Rating: {{ playlist.getAverageRating|floatformat}}/5.0</h4>
 					</div>
 				</div>
 				<div class="row">
