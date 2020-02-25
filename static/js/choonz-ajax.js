@@ -55,14 +55,11 @@ $(document).on("click", ".tag-suggestion", function(e) {
 	// Check if tag already on the list
 	if (currentTags.includes(clickedTag)) {
 		// Already featured
-		alert("Cannot add tags more than one");
+		//alert("Cannot add tags more than one");
+		output = currentTags.replace(clickedTag + ', ', '');
+		$('#tags').val(output);
 	} else {
-		var output = currentTags;
-		if(currentTags.slice(currentTags.length - 1) == ','){
-			output = output + ' ' + clickedTag + ',';
-		} else {
-			output = output + clickedTag + ',';
-		}
+		var output = currentTags + clickedTag + ', ';
 		$('#tags').val(output);
 	}
 })

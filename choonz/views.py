@@ -150,8 +150,10 @@ class AddPlaylistView(View):
                 tag_string = tag_string.replace(',', '')
                 tag_list = tag_string.split(' ')
                 for t in tag_list:
-                    found_tag = Tag.objects.get(description=t)
-                    playlist.tags.add(found_tag)
+                    if t:
+                        print(t + " not blank")
+                        found_tag = Tag.objects.get(description=t)
+                        playlist.tags.add(found_tag)
                 playlist.save()
             # redirect back to index
             return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
