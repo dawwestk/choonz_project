@@ -19,21 +19,12 @@
 						<h1 class="jumbotron-heading">{{ playlist.name }}</h1>
 					</div>
 					<div class="col">
-						<h4 class="jumbotron-heading">Average Rating: {{ playlist.averageRating|floatformat}}/5.0</h4>
+						<h4 class="jumbotron-heading">Average Rating: {{ playlist.getAverageRating|floatformat}}/5.0</h4>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col m-0">
 						created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a>
-					</div>
-					<div class="col m-0">
-						<strong id="like_count">{{ playlist.likes }}</strong> likes
-						{% if user.is_authenticated and user != playlist.creator %}
-							<button id="like_btn" data-playlistid="{{ playlist.id }}" class="btn btn-primary btn-sm" type="button">
-								<span data-feather="thumbs-up"></span>
-								Like Playlist
-							</button>
-						{% endif %}
 					</div>
 					<div class="col m-1">
 						{% if user.is_authenticated %}

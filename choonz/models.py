@@ -10,6 +10,11 @@ max_char_length = 128
 class Tag(models.Model):
     description = models.CharField(max_length=30)
     numberOfPlaylists = models.IntegerField(default=0)
+	
+    @property
+    def getNumberOfPlaylists(self):
+        playlist_tags = Tag.objects.annotate(num_playlists=Count('tag'))  # annotate the queryset
+        return playlist_tags.get(id=self.id).num_playlists
 
     def __str__(self):
         return self.description
