@@ -1,3 +1,24 @@
+Skip to content
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@StuartArmit 
+dawwestk
+/
+choonz_project
+2
+00
+ Code Issues 0 Pull requests 1 Actions Projects 0 Wiki Security Insights
+choonz_project/static/css/base.css
+@dawwestk dawwestk Tweaks to profile page
+d44916b 4 days ago
+@dawwestk@mgdarroch@Caimpson
+205 lines (177 sloc)  3.69 KB
+  
 @import url('https://fonts.googleapis.com/css?family=Varela+Round');
 
 html, body {
@@ -32,13 +53,15 @@ body {
     padding: 20px;
     margin: auto;
 }
+	/*baseMain is setting max width for entire website, sidebarmenu seems to retain it required margin regadless.
+	also I dont think transition or padding is doing anything here?*/
+
 /*
 JavaScript for transition for later: 
 function openNav() {
     document.getElementById("mySidebar").style.width = "250px";
     document.getElementById("main").style.marginLeft = "250px";
 }
-
 function closeNav() {
     document.getElementById("mySidebar").style.width = "0";
     document.getElementById("main").style.marginLeft = "0";
@@ -86,6 +109,7 @@ function closeNav() {
     position: relative;
     top: -75px;
     padding-right: 2%;
+	max-height: 1.5em;
 }
 
 #sidebarMenu {
@@ -203,3 +227,15 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     transform: rotate(-135deg);
     margin-top: -9px;
 }
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About

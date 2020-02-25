@@ -3,10 +3,20 @@
 	background-image: url(/static/images/Jumbotron.jpg);
     width: 100%;
     background-size: cover;  
+	margin-bottom: 0px; 
 	}
+	
+.page-greeting{
+	position: relative;
+	background-color: #246095;
+	padding: 0.01em;
+	margin-top:1em;
+	margin-bottom: 1em;
+	}
+
 .card-text{
 	background-color: #2c455d;
-}
+	}
 
 .card-body1{
 	position: relative;
