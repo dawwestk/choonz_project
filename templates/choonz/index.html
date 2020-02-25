@@ -9,7 +9,7 @@
 	<div class="jumbotron jumbotron-fluid" id="indexJumbotron">
 	<link rel="stylesheet" href="{% static 'css/index.css' %}">
 	</div>	
-		<div class="page-greeting">
+		<div id="page-greeting">
 			<h2 class="h2">
 			{% if user.is_authenticated %}
 				Hi {{user.username }}, ready to get your playlist on?
@@ -20,11 +20,11 @@
 		</div>
 	</div>
 
-	<div class="container" id="indexContainer">
+	<div class="container container-fluid" id="indexContainer">
 		<div class="row">
-			<div class="col-sm-4">
+			<div class="col-sm-3">
 			<h2><center>Most Liked Playlists</center></h2>
-			<div class="card mb-6">
+			<div class="card md-4">
 					<div class="card-body1">
 						<p class="card-text">
 							{% if playlists %}
@@ -41,9 +41,9 @@
 				</div>
 			</div>
 			
-			<div class="col-sm-4">
+			<div class="col-sm-3 offset-1">
 			<h2><center>Most Viewed Pages</center></h2>
-				<div class="card mb-6">
+				<div class="card md-4">
 					<div class="card-body2">
 						<p class="card-text">
 							{% if pages %}
@@ -59,9 +59,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-4">
+			<div class="col-sm-3 offset-1">
 			<h2><center>Songs</center></h2>
-				<div class="card mb-6">
+				<div class="card md-4">
 					<div class="card-body3">
 						<p class="card-text">
 							{% if songs %}

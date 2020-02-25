@@ -1,17 +1,49 @@
 .jumbotron {
+	border: 1px solid #919191;
+	border-radius: 25px;
 	position: relative;
 	background-image: url(/static/images/Jumbotron.jpg);
     width: 100%;
     background-size: cover;  
 	margin-bottom: 0px; 
+	margin-top: 0px; 
 	}
-	
-.page-greeting{
-	position: relative;
-	background-color: #246095;
+
+.row{
+	padding: -50px;
+}
+.col-sm-3{
+	color: #19c2c8;
+	border: 1px solid #919191;
+	border-radius: 25px;
+	background-color: #153a5e;
+	padding-bottom: 1em;
+}
+
+.container{
+	position: static;
+	margin-left: 5em;
+	margin-bottom: 5em;
+	min-width: 99.1%
+}
+
+.list-group{
+	margin: 0.5em;
+	padding: 0.5em;
+	/*background: rgb(204, 204, 204);
+    background: rgba(204, 204, 204, 0.5);*/
+}
+
+#page-greeting{
+	color: white;
+	border: 1px solid #919191;
+	border-radius: 25px;
 	padding: 0.01em;
+	padding-left: 0.5em;
 	margin-top:1em;
 	margin-bottom: 1em;
+	margin-left: 5em;
+	margin-right: 5em;
 	}
 
 .card-text{
