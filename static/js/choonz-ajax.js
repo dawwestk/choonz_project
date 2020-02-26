@@ -17,6 +17,52 @@ $(document).ready(function(){
 		})
 	})
 
+	$('#add_song_btn').click(function(){
+		var playlistSlug
+		playlistSlug = $(this).attr('data-playlistSlug');
+
+		var song_title
+		var song_artist
+		var link_to_spotify
+		var link_other
+		// song title and artist name cannot be blank
+		if($('#add_song_title').val() == ''){
+			alert("Song title cannot be blank...");
+			return -1;
+		} else {
+			song_title = $('#add_song_title').val();
+		}
+		if($('#add_song_artist').val() == ''){
+			alert("Artist cannot be blank...");
+			return -1;
+		} else {
+			song_artist = $('#add_song_artist').val();
+		}
+
+		// links to spotify/elsewhere can be left blank
+		if($('#add_song_spotify_link').val() != ''){
+			link_to_spotify = $('#add_song_spotify_link').val();
+		}
+		if($('#add_song_other_link').val() != ''){
+			link_other = $('#add_song_other_link').val();
+		}
+
+		// url of get request
+		// then parameters
+		// then anonymous function to handle returned data
+		$.post('add_song/', {'playlist_slug': playlistSlug, 'song_title': song_title, 'song_artist': song_artist, 'link_to_spotify': link_to_spotify, 'link_other': link_other}, function(data){
+			if(data >= 0){
+				$('#add_song_title').val("");
+				$('#add_song_artist').val("");
+				$('#add_song_spotify_link').val("");
+				$('#add_song_other_link').val("")
+				alert("Song added successfully");
+			} else {
+				alert("Could not add song. Please check the information you have provided and try again.");
+			}
+		})
+	})
+
 	$('#tag-search-input').keyup(function() {
 		var query;
 		query = $(this).val();
@@ -25,10 +71,7 @@ $(document).ready(function(){
 			$.get('/choonz/suggest/', {'suggestion': query}, function(data){
 				$('#tag-listing').html(data);
 			})
-		}//else {
-		//	$('#tag-suggestion-list').empty();
-		//}
-		// ^ Else only needed if we move from vertical list layout of tag suggestions
+		}
 		
 	})
 
@@ -63,4 +106,33 @@ $(document).on("click", ".tag-suggestion", function(e) {
 		$('#tags').val(output);
 	}
 })
+
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
 

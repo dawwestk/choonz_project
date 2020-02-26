@@ -65,31 +65,41 @@
                 <div class="col">
                     <div class="card" style="width: 25rem;">
                         <div class="card-body">
+                            <form role="form" id="add_song_form" method="post" action="{% url 'choonz:add_song' playlist.slug %}">
+                            {% csrf_token %}
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Song Name:</span>
+                                    <span class="input-group-text" id="song_title_label">Song Title:</span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="Song Name" aria-label="SongName"
+                                <input type="text" class="form-control" placeholder="Title" id="add_song_title" aria-label="SongTitle"
                                        aria-describedby="basic-addon1">
                             </div>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Artist:</span>
+                                    <span class="input-group-text" id="song_artist_label">Artist:</span>
                                 </div>
-                                <input type="text" class="form-control" placeholder="Artist" aria-label="Artist "
+                                <input type="text" class="form-control" placeholder="Artist" id="add_song_artist" aria-label="Artist "
                                        aria-describedby="basic-addon1">
                             </div>
 
+                            <label for="basic-url">Spotify Link?</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="song_spotify_url">https://open.spotify.com/</span>
+                                </div>
+                                <input type="text" class="form-control" id="add_song_spotify_link" aria-describedby="basic-addon3">
+                            </div>
 
                             <label for="basic-url">Youtube Link?</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon3">https://youtube.com/</span>
+                                    <span class="input-group-text" id="song_spotify_url">https://youtube.com/</span>
                                 </div>
-                                <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                                <input type="text" class="form-control" id="add_song_other_link" aria-describedby="basic-addon3">
                             </div>
-                            <button type="button" class="btn btn-info">Add Song</button>
+                            <button class="btn btn-info" id="add_song_btn" data-playlistSlug="{{ playlist.slug }}" type="button">Add Song</button>
+                            </form>
                         </div>
                     </div>
                 </div>

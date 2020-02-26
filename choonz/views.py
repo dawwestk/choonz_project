@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
-from choonz.models import Playlist, UserProfile, Song, Rating, Tag
+from choonz.models import Playlist, UserProfile, Song, Rating, Tag, Artist
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -177,7 +177,10 @@ class PlaylistEditorView(View):
     @method_decorator(login_required)
     def get(self, request, playlist_name_slug):
         user_profile = UserProfile.objects.get(user=request.user)
+        playlist = Playlist.objects.get(slug=playlist_name_slug)
         context_dict = {}
+        context_dict['user_profile'] = user_profile
+        context_dict['playlist'] = playlist
         context_dict['playlist_name_slug'] = playlist_name_slug
 
         return render(request, 'choonz/playlist_editor.html', context_dict)
@@ -257,6 +260,41 @@ class LikePlaylistView(View):
 
         return HttpResponse(playlist.likes) # redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 '''
+
+class AddSongView(View):
+    @method_decorator(login_required)
+    def post(self, request, playlist_name_slug):
+        playlist_slug = request.POST.get('playlist_slug')
+
+        try:
+            playlist = Playlist.objects.get(slug=playlist_slug)  # remember to cast int
+        except Playlist.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+
+        song_title = request.POST.get('song_title')
+        song_artist = request.POST.get('song_artist')
+
+        artist = Artist.objects.get_or_create(name=song_artist)[0]
+
+        link_to_spotify = ''
+        link_other = ''
+        if request.POST.get('link_to_spotify'):
+            spotify_url = 'https://open.spotify.com/'
+            link_to_spotify = spotify_url +  request.POST.get('link_to_spotify')
+        if request.POST.get('link_other'):
+            link_other = request.POST.get('link_other')
+        try:
+            song = Song.objects.get_or_create(artist=artist, title=song_title, linkToSpotify=link_to_spotify, linkOther=link_other)[0]
+        except ValueError:
+            return HttpResponse(-1)
+        song.save()
+
+        playlist.songs.add(song)
+        playlist.save()
+
+        return HttpResponse(1) # redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
 class PublishPlaylistView(View):
     @method_decorator(login_required)
