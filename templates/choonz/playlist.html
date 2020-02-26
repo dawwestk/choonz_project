@@ -54,12 +54,17 @@
 										</form>
 									</div>
 								{% else %}
-									<div>
-										<form class="form-inline" id="user-form" method="post" action="{% url 'choonz:publish_playlist' %}">
-											{% csrf_token %}
-											<input id="playlist_id" name="playlist_id" type="hidden" value="{{ playlist.id }}">
-											<button class="btn btn-warning" type="submit" data-playlist_id="{{ playlist.id }}" name="submit">Publish this Playlist!</button>
-										</form>
+									<div class="row">
+										<div class="col p-0">
+											<form class="form-inline" id="user-form" method="post" action="{% url 'choonz:publish_playlist' %}">
+												{% csrf_token %}
+												<input id="playlist_id" name="playlist_id" type="hidden" value="{{ playlist.id }}">
+												<button class="btn btn-warning" type="submit" data-playlist_id="{{ playlist.id }}" name="submit">Publish this Playlist!</button>
+											</form>
+										</div>
+										<div class="col p-0">
+											<a class="btn btn-info" href="{% url 'choonz:playlist_editor' playlist.slug %}">Edit Playlist</a>
+										</div>
 									</div>
 								{% endif %}
 							{% endif %}
@@ -76,9 +81,9 @@
             {% endblock %}
         </div> 
 		
+		<h3 class="card">Track List</h3>
 		{% if songs %}
 		<div id="songs-listing">
-			<h3 class="card">Track List</h3>
 			<ul>
 				{% for song in songs %}
 				<li class="list-group-item">{{ song.title }} by 
@@ -99,9 +104,10 @@
 			</ul>
 		</div>
 
+		<h3 class="card">Ratings for {{ playlist.name }}</h3>
+		<div class="container">
 			{% if ratings %}
 			<div id="rating-listing">
-			<h3 class="card">Ratings for {{ playlist.name }}</h3>
 				<ul>
 					{% for rating in ratings %}
 					<li class="list-group-item">{{ rating.stars }} - {{ rating.comment }} by 
@@ -111,10 +117,33 @@
 				</ul>
 			</div>
 			{% else %}
-				<strong>No ratings for current playlist.</strong>
+					<div class="card">
+						<strong>No ratings for current playlist.</strong>
+					</div>
 			{% endif %}
+		</div>
 		{% else %}
-			<strong>No songs currently in playlist.</strong>
+		<div class="container">
+			{% if user.is_authenticated %}
+				{% if user != playlist.creator %}
+					<div class="card">
+						<strong>No songs currently in playlist.</strong>
+					</div>
+				{% else %}
+					<div class="card">
+						<p><strong>Your playlist is looking a little bare! People can't rate it when it's empty!</strong></p>
+						<ul>
+							<li>Why not <a href="{% url 'choonz:playlist_editor' playlist.slug %}">add some songs</a>?</li>
+							<li>Or you could <a href="{% url 'choonz:import_playlist' playlist.slug %}">import a playlist from Spotify</a>?</li>
+						</ul>
+					</div>
+				{% endif %}
+			{% else %}
+				<div class="card">
+					<strong>No songs currently in playlist.</strong>
+				</div>
+			{% endif %}
+		</div>
 		{% endif %}
 
 	{% else %}

@@ -31,6 +31,7 @@
         <div class="container-fluid" id="cardBox">
             <div class="row">
                 <div class="col">
+                    <h4>Edit Playlist details</h4>
                     <div class="card" style="width: 25rem;">
                         <div class="card-body">
                             <div class="input-group mb-3">
@@ -63,6 +64,7 @@
                 </div>
 
                 <div class="col">
+                    <h4>Add songs here or <a href="{% url 'choonz:import_playlist' playlist.slug %}">import from Spotify</a></h4>
                     <div class="card" style="width: 25rem;">
                         <div class="card-body">
                             <form role="form" id="add_song_form" method="post" action="{% url 'choonz:add_song' playlist.slug %}">

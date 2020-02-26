@@ -1,0 +1,64 @@
+{% extends 'choonz/base.html' %}
+{% load staticfiles %}
+{% load choonz_template_tags %}
+
+{% block title_block %}
+    Import a Playlist
+{% endblock %}
+
+{% block body_block %}
+    <div class="container-fluid" id="headerContainer">
+        <h1 class="display-4" id="titleHeader">Choonbuilder - Import Choonz</h1>
+        <p class="lead"></p>
+    </div>
+
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'choonz:add_playlist' %}">Add a Playlist</a>
+                </li>
+                {% if playlist %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'choonz:playlist_editor' playlist.slug %}">Edit a Playlist</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'choonz:drafts' %}">Draft Playlists</a>
+                </li>
+            </ul>
+        </div>
+        <div class="container">
+            <h3 class="card"> Import a playlist from Spotify</h3>
+            <div class="row">
+                <form role="form" id="import_playlist_form" method="post" action="{% url 'choonz:import_playlist' playlist.slug %}">
+                    {% csrf_token %}
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="playlist-name-prompt">Spotify username:</span>
+                                </div>
+                                <input type="text" name="spotify_username" id="spotify_username" class="form-control" placeholder="Spotify username" required autofocus size="50">
+                            </p>
+                        </div>
+                        <div class="input-group mb-3">
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="playlist-description-prompt">Spotify playlist name:</span>
+                                </div>
+                                <input type="text" name="spotify_playlist_name" id="spotify_playlist_name" class="form-control" placeholder="Spotify playlist name" size="100">
+                            </p>
+                        </div>
+                    <button class="btn btn-primary" type="submit" data-playlistSlug="{{ playlist.slug }}" name="submit">Import Playlist</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

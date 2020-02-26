@@ -10,6 +10,7 @@ $(document).ready(function(){
 	})
 })
 
+/*
 $('p').hover(
 	function() {
 		$(this).css('color', 'blue');
@@ -17,6 +18,7 @@ $('p').hover(
 	function() {
 		$(this).css('color', 'black');
 });
+*/
 
 // Profile Views
 function showPlaylistView() {

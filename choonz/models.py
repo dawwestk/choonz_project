@@ -93,7 +93,7 @@ class Song(models.Model):
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
-    stars = models.IntegerField(default=0)
+    stars = models.FloatField(default=0)
     comment = models.CharField(max_length=max_char_length*2)
     date = models.DateTimeField(blank=True, null=True)
 

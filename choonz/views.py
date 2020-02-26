@@ -500,6 +500,37 @@ class ListProfileView(View):
     Misc Views/Methods
 
 '''
+class ImportPlaylistView(View):
+    @method_decorator(login_required)
+    def get(self, request, playlist_name_slug):
+        playlist = Playlist.objects.get(slug=playlist_name_slug)
+        context_dict = {}
+        context_dict['playlist'] = playlist
+
+        return render(request, 'choonz/import_playlist.html', context_dict)
+
+    @method_decorator(login_required)
+    def post(self, request, playlist_name_slug):
+        sp = setup_spotify()
+        choonz_playlist = Playlist.objects.get(slug=playlist_name_slug)
+        username = request.POST.get('spotify_username')
+        playlist_name = request.POST.get('spotify_playlist_name')
+
+        playlists = sp.user_playlists(username)
+        while playlists:
+            for i, playlist in enumerate(playlists['items']):
+                if playlist['name'] == playlist_name:
+                    print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'], playlist['name']))
+                    results = sp.playlist(playlist['id'], fields="tracks")
+                    tracks = results['tracks']
+                    add_tracks(tracks, choonz_playlist)
+                if playlists['next']:
+                    playlists = sp.next(playlists)
+                else:
+                    playlists = None
+
+        return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': choonz_playlist.slug}))
+
 class TestView(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -519,6 +550,18 @@ class TestView(View):
                 playlists = None
 
         return HttpResponse("Printed playlists")
+
+def add_tracks(tracks, playlist):
+    choonz_playlist = playlist
+    for i, item in enumerate(tracks['items']):
+        track = item['track']
+        artist = Artist.objects.get_or_create(name=track['artists'][0]['name'])[0]
+        song = Song.objects.get_or_create(title=track['name'], artist=artist, linkToSpotify=track['external_urls']['spotify'])[0]
+        song.save()
+
+        choonz_playlist.songs.add(song)
+        choonz_playlist.save()
+        print("Added " + track['artists'][0]['name'] + " - " + track['name'] + " to " + choonz_playlist.name)
 
 def spotify_show_tracks(tracks):
     for i, item in enumerate(tracks['items']):
