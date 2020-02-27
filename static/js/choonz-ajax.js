@@ -129,6 +129,8 @@ $(document).on("click", ".tag-suggestion", function(e) {
 })
 
 $(document).on("click", '#remove-song-btn', function(e){
+	var parentLI = $(this).parent();
+	var buttonToHide = $(this);
 	var playlistSlug
 	playlistSlug = $(this).attr('data-playlistSlug');
 	var songSlug
@@ -138,13 +140,14 @@ $(document).on("click", '#remove-song-btn', function(e){
 	if (confirm("Are you sure you want to remove this song?")) {
 		confirmation = true;
 		$.post('remove_song/', {'playlist_slug': playlistSlug, 'song_slug': songSlug, 'confirmed': confirmation}, function(data){
-		if(data.status){
-			$(this).attr('disabled', true);
-			showAddSongPopUp(data.message);
-		} else {
-			alert(data.message);
-		}
-	})
+			if(data.status){
+				showAddSongPopUp(data.message);
+				parentLI.css('text-decoration', 'line-through');
+				buttonToHide.hide();
+			} else {
+				alert(data.message);
+			}
+		})
 	} else {
 		confirmation = false;
 	    return 0;
