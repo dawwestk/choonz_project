@@ -99,13 +99,17 @@ class ShowPlaylistView(View):
             context_dict['ratings'] = all_ratings
 
             # All Ratings the profile owner has given
-            ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
-            if playlist.id in ratings_by_user:
-                context_dict['user_has_rated'] = True
-                rating = Rating.objects.get(playlist=playlist, user=user)
-                context_dict['rating'] = rating
-            else:
-                context_dict['user_has_rated'] = False
+            try:
+                ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
+                if playlist.id in ratings_by_user:
+                    context_dict['user_has_rated'] = True
+                    rating = Rating.objects.get(playlist=playlist, user=user)
+                    context_dict['rating'] = rating
+                else:
+                    context_dict['user_has_rated'] = False
+            except:
+                context_dict['user_has_rated'] = None
+                context_dict['rating'] = None
         except Playlist.DoesNotExist:
             context_dict['playlist'] = None
             context_dict['songs'] = None
