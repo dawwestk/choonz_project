@@ -280,3 +280,15 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     display: none;
     z-index: 1;
 }
+
+.see-through{
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: rgba(255,255,255,0.6);
+}
+
+.see-through a{
+    color: #153a5e
+}
+

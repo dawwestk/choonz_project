@@ -12,12 +12,13 @@
 .row{
 	padding: -50px;
 }
-.col-sm-3{
+.index-card{
 	color: #19c2c8;
 	border: 1px solid #919191;
 	border-radius: 25px;
 	background-color: #153a5e;
 	padding-bottom: 1em;
+	margin: 10px;
 }
 
 .container{
