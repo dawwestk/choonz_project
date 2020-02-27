@@ -30,8 +30,20 @@
         </div>
         <div class="jumbotron m-2 p-1">
             <h3 class="jumbotron-header">You are currently editing "<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}"</a></h3>
+            <div class="btn-group dropright">
+                        
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Edit Another Playlist
+                </button>
+                
+                <div class="dropdown-menu">
+                {% for p in playlist_list %}
+                    <a class="dropdown-item" href="{% url 'choonz:edit_playlist' p.slug %}">{{ p.name }}</a>
+                {% endfor %}
+                </div>
+            </div>
         </div>
-
+        <hr>
     {% if user == playlist.creator %}
         <div class="container">
             <div class="container">
@@ -119,33 +131,6 @@
                 </div>
                 <button class="btn btn-info" id="add_song_btn" data-playlistSlug="{{ playlist.slug }}" type="button">Add Song</button>
                 </form>
-            </div>
-        </div>
-        <hr>
-        <div class="container">
-            <div class="card-body">
-                <div class="card-body" id="playlist-header">
-                    <h4>Playlist Title</h4>
-                    <h4> by Author</h4>
-                    <img>
-                </div>
-                <ul>
-
-                </ul>
-				<div class="btn-group dropright">
-					
-					<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Load Playlist
-					</button>
-					
-					<div class="dropdown-menu">
-					
-						<a class="dropdown-item" href="#">Playlist</a>
-						<a class="dropdown-item" href="#">Playlist</a>
-						<a class="dropdown-item" href="#">Playlist</a>
-						
-                    </div>
-                </div>
             </div>
         </div>
         <hr>

@@ -183,10 +183,10 @@ class PlaylistEditorView(View):
         except:
             user_profile = None
         playlist = Playlist.objects.get(slug=playlist_name_slug)
-        context_dict = {}
-        context_dict['user_profile'] = user_profile
-        context_dict['playlist'] = playlist
-        context_dict['playlist_name_slug'] = playlist_name_slug
+
+        playlist_list = Playlist.objects.filter(creator=request.user)
+
+        context_dict = {'user_profile': user_profile, 'playlist': playlist, 'playlist_name_slug': playlist_name_slug, 'playlist_list': playlist_list}
 
         return render(request, 'choonz/edit_playlist.html', context_dict)
 
