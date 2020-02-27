@@ -48,7 +48,6 @@ class IndexView(View):
         context_dict['boldmessage'] = 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!'
         context_dict['playlists'] = playlist_list
         context_dict['users'] = user_list
-        context_dict['songs'] = song_list
         context_dict['user_profile'] = user_profile
 
         # keep this call to increment the counter

@@ -271,7 +271,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 
 #all-playlist-listing{
-    z-index: -1;
+
 }
 
 #playlist-listing{
