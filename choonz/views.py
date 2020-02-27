@@ -158,7 +158,7 @@ class AddPlaylistView(View):
                         playlist.tags.add(found_tag)
                 playlist.save()
             # redirect back to index
-            return redirect(reverse('choonz:playlist_editor', kwargs={'playlist_name_slug': playlist.slug}))
+            return redirect(reverse('choonz:edit_playlist', kwargs={'playlist_name_slug': playlist.slug}))
         else:
             # form contained errors
             # print them to the terminal
@@ -185,7 +185,49 @@ class PlaylistEditorView(View):
         context_dict['playlist'] = playlist
         context_dict['playlist_name_slug'] = playlist_name_slug
 
-        return render(request, 'choonz/playlist_editor.html', context_dict)
+        return render(request, 'choonz/edit_playlist.html', context_dict)
+
+    @method_decorator(login_required)
+    def post(self, request, playlist_name_slug):
+        playlist = Playlist.objects.get(slug=playlist_name_slug)
+
+        response_dict = {}
+        response_dict['status'] = False
+
+        if request.POST.get('playlist_name'):
+            new_name = request.POST.get('playlist_name')
+            playlist.name = new_name
+            try:
+                playlist.save()
+            except:
+                response_dict['message'] = "Playlist name already exists!"
+                return HttpResponse(json.dumps(response_dict), content_type="application/json")
+        if request.POST.get('playlist_description'):
+            new_description = request.POST.get('playlist_description')
+            playlist.description = new_description
+            try:
+                playlist.save()
+            except:
+                # description doesn't need to be unique - error?
+                print("description error")
+        if request.POST.get('playlist_tags'):
+            playlist.tags.clear()
+            new_tags = request.POST.get('playlist_tags')
+            tag_string = new_tags.replace(', ', ',')
+            tag_list = tag_string.split(',')
+            for t in tag_list:
+                if t:
+                    found_tag = Tag.objects.get(description=t)
+                    playlist.tags.add(found_tag)
+            try:
+                playlist.save()
+            except:
+                response_dict['message'] = "Invalid tags!"
+                return HttpResponse(json.dumps(response_dict), content_type="application/json")
+
+        response_dict['status'] = True
+        response_dict['message'] = "Playlist details updated"
+        return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
 
 class PlaylistRatingView(View):
@@ -269,15 +311,14 @@ class AddSongView(View):
         playlist_slug = request.POST.get('playlist_slug')
 
         response_dict = {}
+        response_dict['status'] = False
 
         try:
             playlist = Playlist.objects.get(slug=playlist_slug)  # remember to cast int
         except Playlist.DoesNotExist:
-            response_dict['status'] = False
             response_dict['message'] = "Playlist does not exist!"
             return HttpResponse(json.dumps(response_dict), content_type="application/json")
         except ValueError:
-            response_dict['status'] = False
             response_dict['message'] = "Value error, please check song details"
             return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
@@ -293,13 +334,11 @@ class AddSongView(View):
         try:
             song = Song.objects.get_or_create(artist=artist, title=song_title)[0]
         except ValueError:
-            response_dict['status'] = False
             response_dict['message'] = "Value error, please check song details"
             return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
         link_to_spotify = ''
         link_other = ''
-        updated_song_details = False
         if request.POST.get('link_to_spotify'):
             form_input_spotify_url = request.POST.get('link_to_spotify')
             spotify_url = 'https://open.spotify.com/'

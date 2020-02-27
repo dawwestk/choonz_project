@@ -63,7 +63,7 @@
 											</form>
 										</div>
 										<div class="col p-0">
-											<a class="btn btn-info" href="{% url 'choonz:playlist_editor' playlist.slug %}">Edit Playlist</a>
+											<a class="btn btn-info" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit Playlist</a>
 										</div>
 									</div>
 								{% endif %}
@@ -133,7 +133,7 @@
 					<div class="card">
 						<p><strong>Your playlist is looking a little bare! People can't rate it when it's empty!</strong></p>
 						<ul>
-							<li>Why not <a href="{% url 'choonz:playlist_editor' playlist.slug %}">add some songs</a>?</li>
+							<li>Why not <a href="{% url 'choonz:edit_playlist' playlist.slug %}">add some songs</a>?</li>
 							<li>Or you could <a href="{% url 'choonz:import_playlist' playlist.slug %}">import a playlist from Spotify</a>?</li>
 						</ul>
 					</div>

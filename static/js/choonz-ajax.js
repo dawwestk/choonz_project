@@ -63,6 +63,26 @@ $(document).ready(function(){
 		})
 	})
 
+	$('#edit_playlist_save_changes').click(function(){
+		var playlistSlug
+		playlistSlug = $(this).attr('data-playlistSlug');
+		var playlist_name
+		playlist_name = $('#edit_name').val();
+		var playlist_description
+		playlist_description = $('#edit_description').val();
+		var playlist_tags
+		playlist_tags = $('#tags').val();
+
+		$.post('', {'playlist_slug': playlistSlug, 'playlist_name': playlist_name, 'playlist_description': playlist_description, 'playlist_tags': playlist_tags}, function(data){
+			if(data.status){
+				showAddSongPopUp(data.message);
+			} else {
+				alert(data.message);
+			}
+		})
+
+	})
+
 	$('#tag-search-input').keyup(function() {
 		var query;
 		query = $(this).val();
@@ -92,7 +112,8 @@ $(document).ready(function(){
 
 // separated from document.ready as the tag-suggestions are added/updated AFTER the DOM model is created
 $(document).on("click", ".tag-suggestion", function(e) {
-	var currentTags = $('#tags').val();
+	var tagInput = $('#tags');
+	var currentTags = tagInput.val();
 	var clickedTag = $(this).text();
 
 	// Check if tag already on the list
@@ -100,10 +121,10 @@ $(document).on("click", ".tag-suggestion", function(e) {
 		// Already featured
 		//alert("Cannot add tags more than one");
 		output = currentTags.replace(clickedTag + ', ', '');
-		$('#tags').val(output);
+		tagInput.val(output);
 	} else {
 		var output = currentTags + clickedTag + ', ';
-		$('#tags').val(output);
+		tagInput.val(output);
 	}
 })
 

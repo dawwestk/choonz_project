@@ -52,26 +52,26 @@
                         </p>
                     </div>
                     <div class="input-group mb-3">
-                        <p class="required">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="playlist-tags-prompt">Tags:</span>
-                            </div>
-                            <input type="text" name="tags" id="tags" class="form-control" value="{{ playlist.get_playlist_tag_descriptions_as_string }}, " readonly></input>
-                        </p>
-                    </div>
-                    <div class="input-group mb-3">
-                        <p class="required">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="playlist-search-tags-prompt">Add Tags:</span>
-                            </div>
-                            <textarea id="tag-search-input" class="form-control" placeholder="Search all tags..." rows="1"></textarea>
-                        </p>
-                        <div class="container m-4" id="tag-listing">
-                            {% block sidebar_block %}
-                                {% get_tag_list tag %}
-                            {% endblock %}
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="playlist-tags-prompt">Tags:</span>
+                                </div>
+                                <input type="text" name="tags" id="tags" class="form-control" value="{{ playlist.get_playlist_tag_descriptions_as_string }}, " readonly></input>
+                            </p>
                         </div>
-                    </div>
+                        <div class="input-group mb-3">
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="playlist-search-tags-prompt">Add Tags:</span>
+                                </div>
+                                <textarea id="tag-search-input" class="form-control" placeholder="Search all tags..." rows="1"></textarea>
+                            </p>
+                            <div class="container m-4" id="tag-listing">
+                                {% block sidebar_block %}
+                                    {% get_tag_list tag %}
+                                {% endblock %}
+                            </div>
+                        </div>
 
                     <button type="button" class="btn btn-info" id="edit_playlist_save_changes" data-playlistSlug="{{ playlist.slug }}">Save Changes</button>
                 </div>
