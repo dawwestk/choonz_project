@@ -94,17 +94,25 @@ $(document).ready(function(){
 		}
 	})
 
+	/*
+	$('#playlist-search-input').focusout(function() {
+		//$('#playlist-listing').css('display', 'none');
+		$('#playlist-listing').hide();
+	})
+	*/
+
 	$('#playlist-search-input').keyup(function() {
 		var query;
 		query = $(this).val();
-		$('#playlist-listing').css('display', 'inline-block');
-
+		//$('#playlist-listing').css('visibility', 'visible');
+		$('#playlist-listing').show();
 		if(query){
 			$.get('/choonz/suggest_playlist/', {'suggestion': query}, function(data){
 				$('#playlist-listing').html(data);
 			})
 		} else {
-			$('#playlist-listing').css('display', 'none');
+			//$('#playlist-listing').css('visibility', 'hidden');
+			$('#playlist-listing').hide();
 		}
 	})
 

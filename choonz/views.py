@@ -448,21 +448,22 @@ class PublishPlaylistView(View):
 
 class PlaylistSuggestionView(View):
     def get(self, request):
+        playlist_list = None
         if 'suggestion' in request.GET:
             suggestion = request.GET['suggestion']
-            playlist_list = get_playlist_list(max_results=8, contains_this=suggestion).order_by('name')
         else:
             suggestion = ''
-            playlist_list = None
+
+        playlist_list = get_playlist_list(max_results=8, starts_with=suggestion)
 
         return render(request, 'choonz/playlist_suggestion.html', {'playlist_suggestions': playlist_list})
 
 
-def get_playlist_list(max_results=0, contains_this=''):
+def get_playlist_list(max_results=0, starts_with=''):
     playlist_list = []
 
-    if contains_this:
-        playlist_list = Playlist.objects.filter(name__contains=contains_this)
+    if starts_with:
+        playlist_list = Playlist.objects.filter(name__istartswith=starts_with)
 
     if max_results > 0:
         if len(playlist_list) > max_results:
