@@ -53,7 +53,6 @@ function closeNav() {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-left: 7%;
     padding: 5em;
 }
 
