@@ -34,22 +34,14 @@ class IndexView(View):
         # boldmessage matches template variable in index.html
         # query database for all playlists, order by number of likes
         # retrieve only top 5, place in context_dict
+        user_profile = get_user_profile(request)
 
         most_rated_playlists = Playlist.objects.annotate(num_ratings=Count('rating')).order_by('-num_ratings')[:10]
         highest_rated_playlists = Playlist.objects.values('slug', 'name').annotate(average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
 
-        try:
-            user = request.user
-            user_profile = UserProfile.objects.get(user=user)
-        except:
-            user = None
-            user_profile = None
-
-        context_dict = {}
-        context_dict['boldmessage'] = 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!'
-        context_dict['most_rated_playlists'] = most_rated_playlists
-        context_dict['highest_rated_playlists'] = highest_rated_playlists
-        context_dict['user_profile'] = user_profile
+        context_dict = {'boldmessage': 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!',
+                        'most_rated_playlists': most_rated_playlists,
+                        'highest_rated_playlists': highest_rated_playlists, 'user_profile': user_profile}
 
         # keep this call to increment the counter
         visitor_cookie_handler(request)
@@ -68,8 +60,8 @@ class IndexView(View):
 
 class AboutView(View):
     def get(self, request):
-        context_dict = {}
-
+        user_profile = get_user_profile(request)
+        context_dict = {'user_profile': user_profile}
         visitor_cookie_handler(request)
         context_dict['visits'] = request.session['visits']
 
@@ -86,7 +78,8 @@ class AboutView(View):
 class ShowPlaylistView(View):
 
     def create_context_dict(self, playlist_name_slug, request):
-        context_dict = {}
+        user_profile = get_user_profile(request)
+        context_dict = {'user_profile': user_profile}
         user = request.user
         context_dict['user'] = user
         try:
@@ -136,13 +129,17 @@ class ShowPlaylistView(View):
 class AddPlaylistView(View):
     @method_decorator(login_required)
     def get(self, request):
+        user_profile = get_user_profile(request)
+        context_dict = {'user_profile': user_profile}
         form = PlaylistForm()
-        return render(request, 'choonz/add_playlist.html', {'form': form})
+        context_dict['form'] = form
+        return render(request, 'choonz/add_playlist.html', context_dict)
 
     @method_decorator(login_required)
     def post(self, request):
         form = PlaylistForm(request.POST)
-
+        user_profile = get_user_profile(request)
+        context_dict = {'user_profile': user_profile}
         # if the form valid?
         if form.is_valid():
             playlist = form.save(commit=False)
@@ -163,27 +160,27 @@ class AddPlaylistView(View):
             # form contained errors
             # print them to the terminal
             print(form.errors)
+        context_dict['form'] = form
 
-        return render(request, 'choonz/add_playlist.html', {'form': form})
+        return render(request, 'choonz/add_playlist.html', context_dict)
 
 
 class ListPlaylistView(View):
     @method_decorator(login_required)
     def get(self, request):
+        user_profile = get_user_profile(request)
+        context_dict = {'user_profile': user_profile}
         playlists = Playlist.objects.filter(public=True)
+        context_dict['playlist_list'] = playlists
 
-        return render(request, 'choonz/list_playlists.html', {'playlist_list': playlists})
+        return render(request, 'choonz/list_playlists.html', context_dict)
 
 
 class PlaylistEditorView(View):
     @method_decorator(login_required)
     def get(self, request, playlist_name_slug):
-        try:
-            user_profile = UserProfile.objects.get(user=request.user)
-        except:
-            user_profile = None
+        user_profile = get_user_profile(request)
         playlist = Playlist.objects.get(slug=playlist_name_slug)
-
         playlist_list = Playlist.objects.filter(creator=request.user)
 
         context_dict = {'user_profile': user_profile, 'playlist': playlist, 'playlist_name_slug': playlist_name_slug, 'playlist_list': playlist_list}
@@ -194,8 +191,7 @@ class PlaylistEditorView(View):
     def post(self, request, playlist_name_slug):
         playlist = Playlist.objects.get(slug=playlist_name_slug)
 
-        response_dict = {}
-        response_dict['status'] = False
+        response_dict = {'status': False}
 
         if request.POST.get('playlist_name'):
             new_name = request.POST.get('playlist_name')
@@ -236,18 +232,20 @@ class PlaylistEditorView(View):
 class PlaylistRatingView(View):
     @method_decorator(login_required)
     def get(self, request, playlist_name_slug):
+        user_profile = get_user_profile(request)
         playlist = Playlist.objects.get(slug=playlist_name_slug)
         form = RatingForm()
-        context_dict = {'form': form, 'playlist': playlist}
+        context_dict = {'user_profile': user_profile, 'form': form, 'playlist': playlist}
         return render(request, 'choonz/rate_playlist.html', context_dict)
 
     @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
         playlist = Playlist.objects.get(slug=playlist_name_slug)
+        user_profile = get_user_profile(request)
         if request.POST.get('rating'):
             rating = Rating.objects.get(id=request.POST.get('rating'))
             form = RatingForm()
-            context_dict = {'form': form, 'playlist': playlist, 'rating': rating}
+            context_dict = {'user_profile': user_profile, 'form': form, 'playlist': playlist, 'rating': rating}
             return render(request, 'choonz/rate_playlist.html', context_dict)
         else:
             form = RatingForm(request.POST)
@@ -268,45 +266,25 @@ class PlaylistRatingView(View):
                     rating.date = datetime.today()
                     form.save(commit=True)
 
-                context_dict = {}
-                context_dict["playlist"] = playlist
-                context_dict["songs"] = playlist.get_song_list
+                context_dict = {'user_profile': user_profile, "playlist": playlist, "songs": playlist.get_song_list}
                 return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist_name_slug}))
             else:
                 # form contained errors
                 # print them to the terminal
                 print(form.errors)
 
-            context_dict = {'form': form, 'playlist': playlist}
+            context_dict = {'user_profile': user_profile, 'form': form, 'playlist': playlist}
             return render(request, 'choonz/rate_playlist.html', context=context_dict)
 
 
 class DraftView(View):
     @method_decorator(login_required)
     def get(self, request):
+        user_profile = get_user_profile(request)
         profiles = UserProfile.objects.all()
+        context_dict = {'user_profile': user_profile, 'profiles': profiles}
 
-        return render(request, 'choonz/drafts.html')
-
-
-'''
-class LikePlaylistView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        playlist_id = request.GET.get('playlist_id')
-
-        try:
-            playlist = Playlist.objects.get(id=int(playlist_id))  # remember to cast int
-        except Playlist.DoesNotExist:
-            return HttpResponse(-1)
-        except ValueError:
-            return HttpResponse(-1)
-
-        playlist.likes = playlist.likes + 1
-        playlist.save()
-
-        return HttpResponse(playlist.likes) # redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
-'''
+        return render(request, 'choonz/drafts.html', context_dict)
 
 class AddSongView(View):
     @method_decorator(login_required)
@@ -448,6 +426,7 @@ class PublishPlaylistView(View):
 
 class PlaylistSuggestionView(View):
     def get(self, request):
+        user_profile = get_user_profile(request)
         playlist_list = None
         if 'suggestion' in request.GET:
             suggestion = request.GET['suggestion']
@@ -455,8 +434,9 @@ class PlaylistSuggestionView(View):
             suggestion = ''
 
         playlist_list = get_playlist_list(max_results=8, starts_with=suggestion)
+        context_dict = {'user_profile': user_profile, 'playlist_suggestions': playlist_list}
 
-        return render(request, 'choonz/playlist_suggestion.html', {'playlist_suggestions': playlist_list})
+        return render(request, 'choonz/playlist_suggestion.html', context_dict)
 
 
 def get_playlist_list(max_results=0, starts_with=''):
@@ -473,6 +453,7 @@ def get_playlist_list(max_results=0, starts_with=''):
 
 class TagSuggestionView(View):
     def get(self, request):
+        user_profile = get_user_profile(request)
         if 'suggestion' in request.GET:
             suggestion = request.GET['suggestion']
         else:
@@ -485,7 +466,9 @@ class TagSuggestionView(View):
         if len(tag_list) == 0:
             tag_list = Tag.objects.order_by('description')
 
-        return render(request, 'choonz/tags.html', {'tags': tag_list})
+        context_dict = {'user_profile': user_profile, 'tags': tag_list}
+
+        return render(request, 'choonz/tags.html', context_dict)
 
 
 def get_tag_list(max_results=0, starts_with=''):
@@ -629,9 +612,12 @@ class ProfileView(View):
 class ListProfileView(View):
     @method_decorator(login_required)
     def get(self, request):
+        user_profile = get_user_profile(request)
         profiles = UserProfile.objects.all()
 
-        return render(request, 'choonz/list_profiles.html', {'user_profile_list': profiles})
+        context_dict = {'user_profile': user_profile, 'user_profile_list': profiles}
+
+        return render(request, 'choonz/list_profiles.html', context_dict)
 
 
 '''
@@ -642,9 +628,9 @@ class ListProfileView(View):
 class ImportPlaylistView(View):
     @method_decorator(login_required)
     def get(self, request, playlist_name_slug):
+        user_profile = get_user_profile(request)
         playlist = Playlist.objects.get(slug=playlist_name_slug)
-        context_dict = {}
-        context_dict['playlist'] = playlist
+        context_dict = {'user_profile': user_profile, 'playlist': playlist}
 
         return render(request, 'choonz/import_playlist.html', context_dict)
 
@@ -782,6 +768,14 @@ def get_server_side_cookie(request, cookie, default_val=None):
         val = default_val
     return val
 
+def get_user_profile(request):
+    user = request.user
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+    except UserProfile.DoesNotExist:
+        user_profile = None
+
+    return user_profile
 
 
 '''
