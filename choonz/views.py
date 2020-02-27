@@ -339,6 +339,7 @@ class AddSongView(View):
 
         link_to_spotify = ''
         link_other = ''
+        updated_song_details = False
         if request.POST.get('link_to_spotify'):
             form_input_spotify_url = request.POST.get('link_to_spotify')
             spotify_url = 'https://open.spotify.com/'
