@@ -301,8 +301,16 @@ class AddSongView(View):
         link_other = ''
         updated_song_details = False
         if request.POST.get('link_to_spotify'):
+            form_input_spotify_url = request.POST.get('link_to_spotify')
             spotify_url = 'https://open.spotify.com/'
-            link_to_spotify = spotify_url + request.POST.get('link_to_spotify')
+
+            # Check whether the user has copied the open.spotify.com section
+            if spotify_url in form_input_spotify_url:
+                link_to_spotify = form_input_spotify_url
+            elif spotify_url[8:] in form_input_spotify_url:
+                link_to_spotify = 'https://' + form_input_spotify_url
+            else:
+                link_to_spotify = spotify_url + request.POST.get('link_to_spotify')
             song.linkToSpotify = link_to_spotify
             updated_song_details = True
         if request.POST.get('link_other'):

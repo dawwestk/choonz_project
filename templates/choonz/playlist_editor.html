@@ -1,5 +1,6 @@
 {% extends 'choonz/base.html' %}
 {% load staticfiles %}
+{% load choonz_template_tags %}
 
 {% block title_block %}
     Playlist Creator
@@ -39,16 +40,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Playlist Name:</span>
                         </div>
-                        <input type="text" class="form-control" placeholder="{{ playlist.name }}"
+                        <input type="text" class="form-control" value="{{ playlist.name }}"
                                aria-label="PlaylistName"
-                               aria-describedby="basic-addon1">
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Playlist Tags:</span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="{{ playlist.get_playlist_tag_list }}" aria-label="TagBox"
                                aria-describedby="basic-addon1">
                     </div>
 
@@ -56,9 +49,31 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Playlist Description:</span>
                         </div>
-                        <textarea class="form-control" aria-label="With textarea" placeholder="{{ playlist.description }}"></textarea>
+                        <textarea class="form-control" aria-label="With textarea" value="{{ playlist.description }}"></textarea>
                     </div>
-                    <br />
+                    <br>
+                    <div class="input-group mb-3">
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="playlist-tags-prompt">Tags:</span>
+                                </div>
+                                <input type="text" name="tags" id="tags" class="form-control" value="{{ playlist.get_playlist_tag_descriptions_as_string }}," readonly></input>
+                            </p>
+                        </div>
+                        <div class="input-group mb-3">
+                            <p class="required">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="playlist-search-tags-prompt">Add Tags:</span>
+                                </div>
+                                <textarea id="tag-search-input" class="form-control" placeholder="Search all tags..." rows="1"></textarea>
+                            </p>
+                            <div class="container m-4" id="tag-listing">
+                                {% block sidebar_block %}
+                                    {% get_tag_list tag %}
+                                {% endblock %}
+                            </div>
+                        </div>
+
                     <button type="button" class="btn btn-info">Save Changes</button>
                 </div>
             </div>

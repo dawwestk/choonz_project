@@ -53,6 +53,15 @@ class Playlist(models.Model):
     def get_playlist_tag_list(self):
         return list(self.tags.all())
 
+    @property
+    def get_playlist_tag_descriptions(self):
+        return [tag.description for tag in self.tags.all()]
+
+    @property
+    def get_playlist_tag_descriptions_as_string(self):
+        list_of_tags = self.get_playlist_tag_descriptions
+        return ", ".join(list_of_tags)
+
     def __str__(self):
         return self.name
 
