@@ -163,7 +163,7 @@
                         {% else %}
                             {{ song.artist }}
                         {% endif %}
-                        <button class="btn btn-danger" type="button" id="remove-song-btn" data-songSlug="{{ song.title }}{{ song.artist }}" data-playlistSlug="{{ playlist.slug }}">Remove</button>
+                        <button class="btn btn-danger" type="button" id="remove-song-btn" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Remove</button>
                     </li>
                     {% endfor %}
                 </ul>

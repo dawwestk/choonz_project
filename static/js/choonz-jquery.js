@@ -43,4 +43,3 @@ function createNewPlaylistView() {
 	window.location.href = "choonz/add_playlist/";
 }
 
-

@@ -178,7 +178,10 @@ class ListPlaylistView(View):
 class PlaylistEditorView(View):
     @method_decorator(login_required)
     def get(self, request, playlist_name_slug):
-        user_profile = UserProfile.objects.get(user=request.user)
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+        except:
+            user_profile = None
         playlist = Playlist.objects.get(slug=playlist_name_slug)
         context_dict = {}
         context_dict['user_profile'] = user_profile
