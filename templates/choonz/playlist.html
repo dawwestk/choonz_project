@@ -24,7 +24,8 @@
 				</div>
 				<div class="row">
 					<div class="col m-0">
-						created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a>
+						<p>created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a></p>
+						<p><strong>Description: </strong>{{ playlist.description }}</p> 
 					</div>
 					<div class="col m-1">
 						{% if user.is_authenticated %}
