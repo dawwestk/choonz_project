@@ -482,8 +482,8 @@ class TagSuggestionView(View):
         tag_list = get_tag_list(max_results=8, starts_with=suggestion).order_by('description')
 
         # if nothing is written in the field so we want to show all or nothing?
-        # if len(tag_list) == 0:
-        #    tag_list = [] #Tag.objects.order_by('description')
+        if len(tag_list) == 0:
+            tag_list = Tag.objects.order_by('description')
 
         return render(request, 'choonz/tags.html', {'tags': tag_list})
 

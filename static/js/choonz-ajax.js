@@ -87,19 +87,13 @@ $(document).ready(function(){
 		var query;
 		query = $(this).val();
 
-		if(query){
-			$.get('/choonz/suggest_tag/', {'suggestion': query}, function(data){
-				$('#tag-listing').html(data);
-			})
+		if(!query){
+			query = '*';	// display all tags again
 		}
+		$.get('/choonz/suggest_tag/', {'suggestion': query}, function(data){
+			$('#tag-listing').html(data);
+		})
 	})
-
-	/*
-	$('#playlist-search-input').focusout(function() {
-		//$('#playlist-listing').css('display', 'none');
-		$('#playlist-listing').hide();
-	})
-	*/
 
 	$('#playlist-search-input').keyup(function() {
 		var query;
