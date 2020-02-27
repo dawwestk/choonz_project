@@ -59,8 +59,8 @@ class UserProfileForm(forms.ModelForm):
         fields = ('picture',)
 
 class RatingForm(forms.ModelForm):
-    stars = forms.FloatField(max_value=5.0, min_value=0.0)
-    comment = forms.CharField(max_length=Playlist.max_length_char*2, help_text="What did you think of this playlist...", required=True)
+    stars = forms.FloatField(max_value=5.0, min_value=0.0, required=True, error_messages={'required': 'Star value must be between 0.0 and 5.0!'})
+    comment = forms.CharField(max_length=Playlist.max_length_char*2, help_text="What did you think of this playlist...", required=True, error_messages={'required': 'A blank comment gives no feedback to the creator!'})
 
     class Meta:
         model = Rating

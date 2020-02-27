@@ -23,13 +23,13 @@
 	<div class="container container-fluid" id="indexContainer">
 		<div class="row">
 			<div class="col-sm-3">
-			<h2><center>Most Liked Playlists</center></h2>
+			<h2><center>Most Rated Playlists</center></h2>
 			<div class="card md-4">
 					<div class="card-body1">
 						<p class="card-text">
-							{% if playlists %}
+							{% if most_rated_playlists %}
 								<ul class="list-group">
-									{% for playlist in playlists %}
+									{% for playlist in most_rated_playlists %}
 										<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
 									{% endfor %}
 								</ul>
@@ -42,14 +42,14 @@
 			</div>
 			
 			<div class="col-sm-3 offset-1">
-			<h2><center>Most Viewed Pages</center></h2>
+			<h2><center>Highest Rated Playlists</center></h2>
 				<div class="card md-4">
 					<div class="card-body2">
 						<p class="card-text">
-							{% if pages %}
+							{% if highest_rated_playlists %}
 								<ul class="list-group">
-									{% for page in pages %}
-										<li class="list-group-item"><a href="{{ page.url }}">{{ page.title }}</a></li>
+									{% for playlist in highest_rated_playlists %}
+										<li class="list-group-item"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
 									{% endfor %}
 								</ul>
 							{% else %}

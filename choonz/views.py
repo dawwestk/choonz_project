@@ -18,6 +18,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyClientCredentials
 from django.conf import settings
+from django.db.models import Avg, Count
 
 
 '''
@@ -33,8 +34,9 @@ class IndexView(View):
         # boldmessage matches template variable in index.html
         # query database for all playlists, order by number of likes
         # retrieve only top 5, place in context_dict
-        playlist_list = Playlist.objects.order_by('-averageRating')[:5]
 
+        most_rated_playlists = Playlist.objects.annotate(num_ratings=Count('rating')).order_by('-num_ratings')[:5]
+        highest_rated_playlists = Playlist.objects.values('slug', 'name').annotate(average_rating=Avg('rating__stars')).order_by('-average_rating')[:5]
 
         try:
             user = request.user
@@ -45,7 +47,8 @@ class IndexView(View):
 
         context_dict = {}
         context_dict['boldmessage'] = 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!'
-        context_dict['playlists'] = playlist_list
+        context_dict['most_rated_playlists'] = most_rated_playlists
+        context_dict['highest_rated_playlists'] = highest_rated_playlists
         context_dict['user_profile'] = user_profile
 
         # keep this call to increment the counter

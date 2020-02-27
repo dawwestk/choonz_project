@@ -20,6 +20,9 @@
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
+                        {% for field in form.visible_fields %}
+                            {{ field.errors }}
+                        {% endfor %}
                         <div class="card-body">
                             <div class="input-group mb-3">
                                 <p class="required">
@@ -41,7 +44,7 @@
                                     {% if rating %}
                                         <input type="text" name="comment" id="comment" class="form-control" value="{{ rating.comment }}" size="100">
                                     {% else %}    
-                                        <input type="text" name="comment" id="comment" class="form-control" value="" size="100">
+                                        <input type="text" name="comment" id="comment" class="form-control" placeholder="{{ form.comment.help_text }}" size="100">
                                     {% endif %}
                                 </p>
                             </div>

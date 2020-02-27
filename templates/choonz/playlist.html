@@ -46,9 +46,7 @@
 									</div>
 								{% else %}
 									<div>
-										<form class="form-inline" id="user-form" method="get" action="{% url 'choonz:rate_playlist' playlist.slug %}">
-											<button class="btn btn-warning" type="submit" name="submit">Rate this Playlist!</button>
-										</form>
+										<a class="btn btn-warning" href="{% url 'choonz:rate_playlist' playlist.slug %}">Rate this Playlist!</a>
 									</div>
 								{% endif %}
 							{% else %}
