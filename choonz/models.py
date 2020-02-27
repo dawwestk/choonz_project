@@ -98,7 +98,7 @@ class Song(models.Model):
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title + self.artist.name)
+        self.slug = slugify(self.title + '-' + self.artist.name)
         super(Song, self).save(*args, **kwargs)
 
     @property

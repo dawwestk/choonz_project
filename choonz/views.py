@@ -310,8 +310,7 @@ class AddSongView(View):
     def post(self, request, playlist_name_slug):
         playlist_slug = request.POST.get('playlist_slug')
 
-        response_dict = {}
-        response_dict['status'] = False
+        response_dict = {'status': False}
 
         try:
             playlist = Playlist.objects.get(slug=playlist_slug)  # remember to cast int
@@ -376,6 +375,38 @@ class AddSongView(View):
         response_dict['status'] = True
         response_dict['message'] = "Song successfully added to playlist"
         return HttpResponse(json.dumps(response_dict), content_type="application/json")
+
+class RemoveSongView(View):
+    @method_decorator(login_required)
+    def post(self, request, playlist_name_slug):
+        playlist_slug = request.POST.get('playlist_slug')
+
+        if not request.POST.get('confirmed'):
+            return HttpResponse(-1)
+
+        response_dict = {'status': False}
+
+        try:
+            playlist = Playlist.objects.get(slug=playlist_slug)  # remember to cast int
+        except Playlist.DoesNotExist:
+            response_dict['message'] = "Playlist does not exist!"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
+        except ValueError:
+            response_dict['message'] = "Value error, please check song details"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
+
+        song_slug = request.POST.get('song_slug')
+        song = Song.objects.get(slug=song_slug)
+
+        # Song already features on this playlist
+        if song in playlist.get_song_list:
+            playlist.songs.remove(song)
+            response_dict['status'] = True
+            response_dict['message'] = "Song removed from playlist"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
+        else:
+            response_dict['message'] = "Song not on playlist"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
 class PublishPlaylistView(View):
     @method_decorator(login_required)

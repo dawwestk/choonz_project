@@ -83,6 +83,29 @@ $(document).ready(function(){
 
 	})
 
+	$('#remove-song-btn').click(function(){
+		var playlistSlug
+		playlistSlug = $(this).attr('data-playlistSlug');
+		var songSlug
+		songSlug = $(this).attr('data-songSlug');
+
+		var confirmation = false;
+		if (confirm("Are you sure you want to remove this song?")) {
+			confirmation = true;
+			$.post('remove_song/', {'playlist_slug': playlistSlug, 'song_slug': songSlug, 'confirmed': confirmation}, function(data){
+			if(data.status){
+				showAddSongPopUp(data.message);
+			} else {
+				alert(data.message);
+			}
+		})
+		} else {
+			confirmation = false;
+		    return 0;
+		}
+
+	})
+
 	$('#tag-search-input').keyup(function() {
 		var query;
 		query = $(this).val();

@@ -31,121 +31,151 @@
         <div class="jumbotron m-2 p-1">
             <h3 class="jumbotron-header">You are currently editing "<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}"</a></h3>
         </div>
-            <div class="container">
-                <div class="container">
-                    <h4>Edit Playlist details</h4>
-                </div>
-                <div class="card-body">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Playlist Name:</span>
-                        </div>
-                        <input type="text" class="form-control" name="edit_name" id="edit_name" value="{{ playlist.name }}">
-                    </div>
 
-                    <div class="input-group mb-3">
+    {% if user == playlist.creator %}
+        <div class="container">
+            <div class="container">
+                <h4>Edit Playlist details</h4>
+            </div>
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Playlist Name:</span>
+                    </div>
+                    <input type="text" class="form-control" name="edit_name" id="edit_name" value="{{ playlist.name }}">
+                </div>
+
+                <div class="input-group mb-3">
+                    <p class="required">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="playlist-description-prompt">Description:</span>
+                        </div>
+                        <input type="text" name="edit_description" id="edit_description" class="form-control" value="{{ playlist.description }}" size="100">
+                    </p>
+                </div>
+                <div class="input-group mb-3">
                         <p class="required">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="playlist-description-prompt">Description:</span>
+                                <span class="input-group-text" id="playlist-tags-prompt">Tags:</span>
                             </div>
-                            <input type="text" name="edit_description" id="edit_description" class="form-control" value="{{ playlist.description }}" size="100">
+                            <input type="text" name="tags" id="tags" class="form-control" value="{{ playlist.get_playlist_tag_descriptions_as_string }}, " readonly></input>
                         </p>
                     </div>
                     <div class="input-group mb-3">
-                            <p class="required">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="playlist-tags-prompt">Tags:</span>
-                                </div>
-                                <input type="text" name="tags" id="tags" class="form-control" value="{{ playlist.get_playlist_tag_descriptions_as_string }}, " readonly></input>
-                            </p>
-                        </div>
-                        <div class="input-group mb-3">
-                            <p class="required">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="playlist-search-tags-prompt">Add Tags:</span>
-                                </div>
-                                <textarea id="tag-search-input" class="form-control" placeholder="Search all tags..." rows="1"></textarea>
-                            </p>
-                            <div class="container m-4" id="tag-listing">
-                                {% block sidebar_block %}
-                                    {% get_tag_list tag %}
-                                {% endblock %}
+                        <p class="required">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="playlist-search-tags-prompt">Add Tags:</span>
                             </div>
+                            <textarea id="tag-search-input" class="form-control" placeholder="Search all tags..." rows="1"></textarea>
+                        </p>
+                        <div class="container m-4" id="tag-listing">
+                            {% block sidebar_block %}
+                                {% get_tag_list tag %}
+                            {% endblock %}
                         </div>
+                    </div>
 
-                    <button type="button" class="btn btn-info" id="edit_playlist_save_changes" data-playlistSlug="{{ playlist.slug }}">Save Changes</button>
-                </div>
+                <button type="button" class="btn btn-info" id="edit_playlist_save_changes" data-playlistSlug="{{ playlist.slug }}">Save Changes</button>
             </div>
-            <hr>
-            <div class="container">
-                <div class="container">
-                    <h4>Add songs here or <a href="{% url 'choonz:import_playlist' playlist.slug %}">import from Spotify</a></h4>
-                </div>
-                <div class="card-body">
-                    <form role="form" id="add_song_form" method="post" action="{% url 'choonz:add_song' playlist.slug %}">
-                    {% csrf_token %}
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="song_title_label">Song Title:</span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Title" id="add_song_title" aria-label="SongTitle"
-                               aria-describedby="basic-addon1">
-                    </div>
-
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="song_artist_label">Artist:</span>
-                        </div>
-                        <input type="text" class="form-control" placeholder="Artist" id="add_song_artist" aria-label="Artist "
-                               aria-describedby="basic-addon1">
-                    </div>
-
-                    <label for="basic-url">Spotify Link?</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="song_spotify_url">https://open.spotify.com/</span>
-                        </div>
-                        <input type="text" class="form-control" id="add_song_spotify_link" aria-describedby="basic-addon3">
-                    </div>
-
-                    <label for="basic-url">Youtube Link?</label>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="song_spotify_url">https://youtube.com/</span>
-                        </div>
-                        <input type="text" class="form-control" id="add_song_other_link" aria-describedby="basic-addon3">
-                    </div>
-                    <button class="btn btn-info" id="add_song_btn" data-playlistSlug="{{ playlist.slug }}" type="button">Add Song</button>
-                    </form>
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="card-body">
-                    <div class="card-body" id="playlist-header">
-                        <h4>Playlist Title</h4>
-                        <h4> by Author</h4>
-                        <img>
-                    </div>
-                    <ul>
-
-                    </ul>
-					<div class="btn-group dropright">
-						
-						<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Load Playlist
-						</button>
-						
-						<div class="dropdown-menu">
-						
-							<a class="dropdown-item" href="#">Playlist</a>
-							<a class="dropdown-item" href="#">Playlist</a>
-							<a class="dropdown-item" href="#">Playlist</a>
-							
-                        </div>
-                    </div>
-                </div>
         </div>
+        <hr>
+        <div class="container">
+            <div class="container">
+                <h4>Add songs here or <a href="{% url 'choonz:import_playlist' playlist.slug %}">import from Spotify</a></h4>
+            </div>
+            <div class="card-body">
+                <form role="form" id="add_song_form" method="post" action="{% url 'choonz:add_song' playlist.slug %}">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="song_title_label">Song Title:</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Title" id="add_song_title" aria-label="SongTitle"
+                           aria-describedby="basic-addon1">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="song_artist_label">Artist:</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Artist" id="add_song_artist" aria-label="Artist "
+                           aria-describedby="basic-addon1">
+                </div>
+
+                <label for="basic-url">Spotify Link?</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="song_spotify_url">https://open.spotify.com/</span>
+                    </div>
+                    <input type="text" class="form-control" id="add_song_spotify_link" aria-describedby="basic-addon3">
+                </div>
+
+                <label for="basic-url">Youtube Link?</label>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="song_spotify_url">https://youtube.com/</span>
+                    </div>
+                    <input type="text" class="form-control" id="add_song_other_link" aria-describedby="basic-addon3">
+                </div>
+                <button class="btn btn-info" id="add_song_btn" data-playlistSlug="{{ playlist.slug }}" type="button">Add Song</button>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div class="container">
+            <div class="card-body">
+                <div class="card-body" id="playlist-header">
+                    <h4>Playlist Title</h4>
+                    <h4> by Author</h4>
+                    <img>
+                </div>
+                <ul>
+
+                </ul>
+				<div class="btn-group dropright">
+					
+					<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Load Playlist
+					</button>
+					
+					<div class="dropdown-menu">
+					
+						<a class="dropdown-item" href="#">Playlist</a>
+						<a class="dropdown-item" href="#">Playlist</a>
+						<a class="dropdown-item" href="#">Playlist</a>
+						
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        {% if playlist.get_song_list %}
+        <div class="container">
+            <div class="card-body">
+                <div class="card-body" id="playlist-header">
+                    <h4>All songs on {{ playlist.name }}</h4>
+                </div>
+                <ul>
+                    {% for song in playlist.get_song_list %}
+                    <li class="list-group-item">{{ song.title }} by 
+                        {% if song.artist.webpage %}
+                            <a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
+                        {% else %}
+                            {{ song.artist }}
+                        {% endif %}
+                        <button class="btn btn-danger" type="button" id="remove-song-btn" data-songSlug="{{ song.title }}{{ song.artist }}" data-playlistSlug="{{ playlist.slug }}">Remove</button>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+    {% else %}
+            <div class="card">
+                <h4>You cannot edit this playlist as you are not the owner.</h4>
+            </div>
+    {% endif %}
+
     <div id="addSongPopUp">PopUp message</div>
 
 {% endblock %}
