@@ -52,10 +52,7 @@ $(document).ready(function(){
 		// then anonymous function to handle returned data
 		$.post('add_song/', {'playlist_slug': playlistSlug, 'song_title': song_title, 'song_artist': song_artist, 'link_to_spotify': link_to_spotify, 'link_other': link_other}, function(data){
 			if(data >= 0){
-				$('#add_song_title').val("");
-				$('#add_song_artist').val("");
-				$('#add_song_spotify_link').val("");
-				$('#add_song_other_link').val("")
+				clearAddSongInputs();
 				alert("Song added successfully");
 			} else {
 				alert("Could not add song. Please check the information you have provided and try again.");
@@ -106,6 +103,13 @@ $(document).on("click", ".tag-suggestion", function(e) {
 		$('#tags').val(output);
 	}
 })
+
+function clearAddSongInputs(){
+	$('#add_song_title').val("");
+	$('#add_song_artist').val("");
+	$('#add_song_spotify_link').val("");
+	$('#add_song_other_link').val("")
+}
 
 
 function getCookie(name) {
