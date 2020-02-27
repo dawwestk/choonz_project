@@ -71,6 +71,11 @@ class Artist(models.Model):
     webpage = models.URLField(blank=True)
     linkToSpotify = models.URLField(blank=True)
     numberOfPlaylists = models.IntegerField(default=0)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Artist, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -81,6 +86,11 @@ class Song(models.Model):
     linkToSpotify = models.URLField(blank=True)
     numberOfPlaylists = models.IntegerField(default=0)
     linkOther = models.URLField(blank=True)
+    slug = models.SlugField(unique=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title + self.artist.name)
+        super(Song, self).save(*args, **kwargs)
 
     @property
     def numberOfPlaylists(self):

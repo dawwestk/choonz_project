@@ -13,7 +13,9 @@ from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeFor
 from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from social_django.models import UserSocialAuth
+from django.template.defaultfilters import slugify
 import spotipy
+import json
 from spotipy.oauth2 import SpotifyClientCredentials
 from django.conf import settings
 
@@ -266,35 +268,66 @@ class AddSongView(View):
     def post(self, request, playlist_name_slug):
         playlist_slug = request.POST.get('playlist_slug')
 
+        response_dict = {}
+
         try:
             playlist = Playlist.objects.get(slug=playlist_slug)  # remember to cast int
         except Playlist.DoesNotExist:
-            return HttpResponse(-1)
+            response_dict['status'] = False
+            response_dict['message'] = "Playlist does not exist!"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
         except ValueError:
-            return HttpResponse(-1)
+            response_dict['status'] = False
+            response_dict['message'] = "Value error, please check song details"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
         song_title = request.POST.get('song_title')
         song_artist = request.POST.get('song_artist')
+        artist_slug = slugify(song_artist)
+        artist = None
+        try:
+            artist = Artist.objects.get(slug=artist_slug)
+        except Artist.DoesNotExist:
+            artist = Artist.objects.create(name=song_artist)
 
-        artist = Artist.objects.get_or_create(name=song_artist)[0]
+        try:
+            song = Song.objects.get_or_create(artist=artist, title=song_title)[0]
+        except ValueError:
+            response_dict['status'] = False
+            response_dict['message'] = "Value error, please check song details"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
         link_to_spotify = ''
         link_other = ''
+        updated_song_details = False
         if request.POST.get('link_to_spotify'):
             spotify_url = 'https://open.spotify.com/'
-            link_to_spotify = spotify_url +  request.POST.get('link_to_spotify')
+            link_to_spotify = spotify_url + request.POST.get('link_to_spotify')
+            song.linkToSpotify = link_to_spotify
+            updated_song_details = True
         if request.POST.get('link_other'):
             link_other = request.POST.get('link_other')
-        try:
-            song = Song.objects.get_or_create(artist=artist, title=song_title, linkToSpotify=link_to_spotify, linkOther=link_other)[0]
-        except ValueError:
-            return HttpResponse(-1)
+            song.linkOther = link_other
+            updated_song_details = True
+
         song.save()
+        if updated_song_details:
+            response_dict['status'] = True
+            response_dict['message'] = "Song data updated"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
-        playlist.songs.add(song)
-        playlist.save()
+        # Song already features on this playlist
+        if song in playlist.get_song_list:
+            response_dict['status'] = True
+            response_dict['message'] = "Song already on playlist"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
+        else:
+            playlist.songs.add(song)
+            playlist.save()
 
-        return HttpResponse(1) # redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
+        response_dict['status'] = True
+        response_dict['message'] = "Song successfully added to playlist"
+        return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
 class PublishPlaylistView(View):
     @method_decorator(login_required)

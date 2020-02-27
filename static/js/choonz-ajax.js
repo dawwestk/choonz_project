@@ -51,11 +51,14 @@ $(document).ready(function(){
 		// then parameters
 		// then anonymous function to handle returned data
 		$.post('add_song/', {'playlist_slug': playlistSlug, 'song_title': song_title, 'song_artist': song_artist, 'link_to_spotify': link_to_spotify, 'link_other': link_other}, function(data){
-			if(data >= 0){
-				clearAddSongInputs();
-				alert("Song added successfully");
+			if(data.status){
+				$('#add_song_title').val("");
+				$('#add_song_artist').val("");
+				$('#add_song_spotify_link').val("");
+				$('#add_song_other_link').val("");
+				showAddSongPopUp(data.message);
 			} else {
-				alert("Could not add song. Please check the information you have provided and try again.");
+				alert(data.message);
 			}
 		})
 	})
@@ -104,13 +107,17 @@ $(document).on("click", ".tag-suggestion", function(e) {
 	}
 })
 
-function clearAddSongInputs(){
-	$('#add_song_title').val("");
-	$('#add_song_artist').val("");
-	$('#add_song_spotify_link').val("");
-	$('#add_song_other_link').val("")
-}
+function showAddSongPopUp(text) {
+  // Get the snackbar DIV
+  var x = document.getElementById("addSongPopUp");
+  x.innerHTML = text;
 
+  // Add the "show" class to DIV
+  x.className = "show";
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
 
 function getCookie(name) {
     var cookieValue = null;
