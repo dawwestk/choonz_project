@@ -16,6 +16,7 @@ body {
 
 .choonz-container{
     padding:20px;
+    border-radius: 25px;
 }
 
 #indexJumbotron {
@@ -151,9 +152,10 @@ function closeNav() {
     background-color: #153a5e;
 }
 
-#profileImage{
+.profile-image{
     border-radius: 50%;
 }
+
 
 #loginButtons{
     float: right;

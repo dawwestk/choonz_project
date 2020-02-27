@@ -13,9 +13,9 @@
 			<div class="row">
 				<div class="col mb-3">
 					{% if user_profile.picture %}
-						<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="70" height="70" alt="{{ selected_user.username }}'s profile image" />
+						<img class="profile-image" src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="70" height="70" alt="{{ selected_user.username }}'s profile image" />
 					{% else %}
-						<img id="profileImage" src="{% static 'images/default_profile_img.png' %}" width="70" height="70" alt="No profile image" />
+						<img class="profile-image" id="profileImage" src="{% static 'images/default_profile_img.png' %}" width="70" height="70" alt="No profile image" />
 					{% endif %}
 					</br>
 					<h1 class="jumbotron-heading">
