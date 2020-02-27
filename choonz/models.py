@@ -38,7 +38,8 @@ class Playlist(models.Model):
 
     @property
     def getAverageRating(self):
-        return self.rating_set.aggregate(Avg('stars'))['stars__avg']
+        self.averageRating = self.rating_set.aggregate(Avg('stars'))['stars__avg']
+        return self.averageRating
 
     @property
     def getNumberOfRatings(self):

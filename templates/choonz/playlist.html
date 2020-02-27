@@ -19,7 +19,13 @@
 						<h1 class="jumbotron-heading">{{ playlist.name }}</h1>
 					</div>
 					<div class="col">
-						<h4 class="jumbotron-heading">Average Rating: {{ playlist.getAverageRating|floatformat}}/5.0</h4>
+						<h4 class="jumbotron-heading">Average Rating: 
+						{% if playlist.getAverageRating %}
+							{{ playlist.getAverageRating|floatformat}}
+						{% else %}
+							0
+						{% endif %}
+						/5.0</h4>
 					</div>
 				</div>
 				<div class="row">
@@ -78,7 +84,7 @@
 		<h3 class="card">Tags:</h3>
 		<div class="card m-4" id="tag-listing">
             {% block sidebar_block %}
-                {% get_tag_list tag %}
+                {% get_tag_list playlist %}
             {% endblock %}
         </div> 
 		

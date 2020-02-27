@@ -33,9 +33,8 @@ class IndexView(View):
         # boldmessage matches template variable in index.html
         # query database for all playlists, order by number of likes
         # retrieve only top 5, place in context_dict
-        playlist_list = Playlist.objects.order_by('-likes')[:5]
-        user_list = User.objects.order_by('-views')[:5]
-        song_list = Song.objects.order_by('artist')
+        playlist_list = Playlist.objects.order_by('-averageRating')[:5]
+
 
         try:
             user = request.user
@@ -47,7 +46,6 @@ class IndexView(View):
         context_dict = {}
         context_dict['boldmessage'] = 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!'
         context_dict['playlists'] = playlist_list
-        context_dict['users'] = user_list
         context_dict['user_profile'] = user_profile
 
         # keep this call to increment the counter
