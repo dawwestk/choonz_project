@@ -6,8 +6,7 @@
 {% endblock %}
 
 {% block body_block %}
-	<div class="jumbotron jumbotron-fluid" id="indexJumbotron">
-	<link rel="stylesheet" href="{% static 'css/index.css' %}">
+	<div class="container-fluid" id="indexJumbotron">
 	</div>	
 		<div id="page-greeting">
 			<h2 class="h2">
@@ -25,7 +24,7 @@
 			<div class="col index-card">
 			<h2><center>Most Rated Playlists</center></h2>
 			<div class="card md-4">
-					<div class="card-body1">
+					<div class="card-body" id="card-body1">
 						<p class="card-text">
 							{% if most_rated_playlists %}
 								<ul class="list-group">
@@ -44,7 +43,7 @@
 			<div class="col index-card">
 			<h2><center>Highest Rated Playlists</center></h2>
 				<div class="card md-4">
-					<div class="card-body2">
+					<div class="card-body2" id="card-body2">
 						<p class="card-text">
 							{% if highest_rated_playlists %}
 								<ul class="list-group">
@@ -62,7 +61,7 @@
 			<div class="col index-card">
 			<h2><center>Songs</center></h2>
 				<div class="card md-4">
-					<div class="card-body3">
+					<div class="card-body3" id="card-body3">
 						<p class="card-text">
 							{% if songs %}
 								<ul class="list-group">

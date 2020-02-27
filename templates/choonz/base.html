@@ -48,7 +48,6 @@
     </div>
 </header>
 
-<div class="header"></div>
 <input type="checkbox" class="openSidebarMenu" id="openSidebarMenu">
 <label for="openSidebarMenu" class="sidebarIconToggle">
     <div class="spinner diagonal part-1"></div>
@@ -82,44 +81,8 @@
 </div>
 
 
-<!-- This here is the navbar -->
-
-{#<div>#}
-{#    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark p-0">#}
-{#        <a class="navbar-brand p-2" href="{% url 'choonz:index' %}">choonz</a>#}
-{#        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"#}
-{#                aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">#}
-{#            <span class="navbar-toggler-icon"></span>#}
-{#        </button>#}
-{##}
-{#        <div class="collapse navbar-collapse" id="navbarCollapse">#}
-{#            <ul class="navbar-nav mr-auto">#}
-
-{##}
-
-{#            </ul>#}
-{#        </div>#}
-{#    </nav>#}
-{#</div>#}
-
-{#<div class="container-fluid">#}
-{#    <div class="row">#}
-{#        <nav class="col-md-2 d-none d-md-block bg-light sidebar">#}
-{#            <div class="w-75 ml-3">#}
-{#                <input type="search" id="search-input" class="form-control ds-input" placeholder="Search..."/>#}
-{#            </div>#}
-{##}
-{#            <div class="sidebar-sticky" id="playlists-listing">#}
-{#                {% block sidebar_block %}#}
-{#                    {% get_playlist_list playlist %}#}
-{#                {% endblock %}#}
-{#            </div>#}
-{#        </nav>#}
-{##}
-
-
 <!-- Body Block -->
-<main role="main" class="col-md-9  ml-sm-auto col-lg-10 px-4" id="baseMain">
+<main role="main" class="m-0 p-0" id="baseMain">
 
 {% endblock %}
     {% block body_block %}
