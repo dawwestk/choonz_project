@@ -446,6 +446,29 @@ class PublishPlaylistView(View):
 
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
+class PlaylistSuggestionView(View):
+    def get(self, request):
+        if 'suggestion' in request.GET:
+            suggestion = request.GET['suggestion']
+            playlist_list = get_playlist_list(max_results=8, contains_this=suggestion).order_by('name')
+        else:
+            suggestion = ''
+            playlist_list = None
+
+        return render(request, 'choonz/playlist_suggestion.html', {'playlist_suggestions': playlist_list})
+
+
+def get_playlist_list(max_results=0, contains_this=''):
+    playlist_list = []
+
+    if contains_this:
+        playlist_list = Playlist.objects.filter(name__contains=contains_this)
+
+    if max_results > 0:
+        if len(playlist_list) > max_results:
+            playlist_list = playlist_list[:max_results]
+
+    return playlist_list
 
 class TagSuggestionView(View):
     def get(self, request):

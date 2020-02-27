@@ -88,11 +88,24 @@ $(document).ready(function(){
 		query = $(this).val();
 
 		if(query){
-			$.get('/choonz/suggest/', {'suggestion': query}, function(data){
+			$.get('/choonz/suggest_tag/', {'suggestion': query}, function(data){
 				$('#tag-listing').html(data);
 			})
 		}
-		
+	})
+
+	$('#playlist-search-input').keyup(function() {
+		var query;
+		query = $(this).val();
+		$('#playlist-listing').css('display', 'inline-block');
+
+		if(query){
+			$.get('/choonz/suggest_playlist/', {'suggestion': query}, function(data){
+				$('#playlist-listing').html(data);
+			})
+		} else {
+			$('#playlist-listing').css('display', 'none');
+		}
 	})
 
 	$('.choonz-page-add').click(function() {

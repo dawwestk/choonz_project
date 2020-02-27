@@ -1,5 +1,6 @@
 {% extends 'choonz/base.html' %}
 {% load staticfiles %}
+{% load choonz_template_tags %}
 
 {% block title_block %}
 	All Playlists
@@ -13,10 +14,23 @@
 		</div>
 	</div>
 
-	<div class="container">
+	<div class="container" id="all-playlist-listing-page">
 		<div class="row">
 			{% if playlist_list %}
-			<div class="panel-body">
+			<div class="input-group mb-3" id="playlist-search-bar">
+                <p class="required">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="playlist-search-prompt">Find a playlist:</span>
+                    </div>
+                    <textarea id="playlist-search-input" class="form-control" placeholder="Search all playlists..." rows="1"></textarea>
+                </p>
+                <div class="container" id="playlist-listing">
+                    {% block sidebar_block %}
+                        {% get_playlist_list %}
+                    {% endblock %}
+                </div>
+            </div>
+			<div class="panel-body" id="all-playlist-listing">
 				<div class="list-group">
 					{% for playlist in playlist_list %}
 						<div class="list-group-item">
@@ -40,6 +54,11 @@
 					</h4>
 				</div>
 			{% endif %}
+		</div>
+	</div>
+	<div class="container">
+		<div class="card">
+			<p>Can't see a playlist that you like? Then why not <a href="{% url 'choonz:add_playlist' %}">make your own</a>?</p>
 		</div>
 	</div>
 

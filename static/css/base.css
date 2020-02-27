@@ -33,8 +33,8 @@ body {
     padding: 20px;
     margin: auto;
 }
-	/*baseMain is setting max width for entire website, sidebarmenu seems to retain it required margin regadless.
-	also I dont think transition or padding is doing anything here?*/
+    /*baseMain is setting max width for entire website, sidebarmenu seems to retain it required margin regadless.
+    also I dont think transition or padding is doing anything here?*/
 
 /*
 JavaScript for transition for later: 
@@ -88,7 +88,7 @@ function closeNav() {
     position: relative;
     top: -75px;
     padding-right: 2%;
-	max-height: 1.5em;
+    max-height: 1.5em;
 }
 
 #sidebarMenu {
@@ -256,4 +256,27 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 @keyframes fadeout {
   from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
+}
+
+
+#all-playlist-listing-page{
+    position: relative;
+    margin-bottom: 50px;
+}
+
+#playlist-search-bar{
+    position: -webkit-sticky; // Safari
+    position: sticky;
+    top: 0;
+}
+
+#all-playlist-listing{
+    z-index: -1;
+}
+
+#playlist-listing{
+    position: absolute;
+    top: 40px;
+    display: none;
+    z-index: 1;
 }

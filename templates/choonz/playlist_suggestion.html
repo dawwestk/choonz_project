@@ -1,0 +1,9 @@
+<div class="container" id="playlist-suggestion-list">
+    {% if playlist_suggestions %}
+        {% for p in playlist_suggestions %}
+            <div>
+            	<a class="list-group-item" href="{% url 'choonz:show_playlist' p.slug %}">{{ p.name }}</a>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
