@@ -6,17 +6,15 @@
 {% endblock %}
 
 {% block body_block %}
-	<div class="container-fluid" id="indexJumbotron">
-	</div>	
-		<div id="page-greeting">
-			<h2 class="h2">
-			{% if user.is_authenticated %}
-				Hi {{user.username }}, ready to get your playlist on?
-			{% else %}
-				hey there partner!
-			{% endif %}
-			</h2>
-		</div>
+
+	<div id="page-greeting">
+		<h2 class="h2">
+		{% if user.is_authenticated %}
+			Hi {{user.username }}, ready to get your playlist on?
+		{% else %}
+			hey there partner!
+		{% endif %}
+		</h2>
 	</div>
 
 	<div class="container-fluid" id="indexContainer">

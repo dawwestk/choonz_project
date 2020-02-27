@@ -80,13 +80,16 @@
     </ul>
 </div>
 
+{% endblock %}
 
 <!-- Body Block -->
-<main role="main" class="m-0 p-0" id="baseMain">
-
-{% endblock %}
-    {% block body_block %}
-    {% endblock %}
+<main role="main" class="m-0 p-0" id="baseMain">    
+    <div class="container-fluid" id="indexJumbotron">
+    </div>  
+    <div class="choonz-container">
+        {% block body_block %}
+        {% endblock %}
+    </div>
 </main>
 
 

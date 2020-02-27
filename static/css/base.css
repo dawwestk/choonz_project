@@ -14,12 +14,16 @@ body {
     overflow-y: scroll;
 }
 
+.choonz-container{
+    padding:20px;
+}
+
 #indexJumbotron {
     border-bottom: 1px solid #919191;
     position: relative;
     background-image: url(/static/images/Jumbotron.jpg);
     width: 100%;
-    height:100px;
+    height:80px;
     background-size: cover;  
     margin-bottom: 0px; 
     margin-top: 0px; 
