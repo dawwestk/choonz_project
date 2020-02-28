@@ -2,7 +2,7 @@ import os
 import sys
 
 path = '/home/choonz/choonz_project/'
-if path not in sys.path;
+if path not in sys.path:
     sys.path.append(path)
 
 os.chdir(path)
