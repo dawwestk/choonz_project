@@ -22,8 +22,6 @@ class Tag(models.Model):
 class Playlist(models.Model):
     max_length_char = max_char_length   # including here because other pieces of code reference Playlist.max_length_char
     name = models.CharField(max_length=max_char_length, unique=True)
-    views = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
     songs = models.ManyToManyField("Song")
     tags = models.ManyToManyField("Tag")

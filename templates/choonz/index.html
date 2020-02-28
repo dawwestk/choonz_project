@@ -41,7 +41,7 @@
 			<div class="col index-card">
 			<h2><center>Highest Rated Playlists</center></h2>
 				<div class="card md-4">
-					<div class="card-body2" id="card-body2">
+					<div class="card-body" id="card-body2">
 						<p class="card-text">
 							{% if highest_rated_playlists %}
 								<ul class="list-group">
@@ -57,14 +57,14 @@
 				</div>
 			</div>
 			<div class="col index-card">
-			<h2><center>Songs</center></h2>
+			<h2><center>Recent playlists</center></h2>
 				<div class="card md-4">
-					<div class="card-body3" id="card-body3">
+					<div class="card-body" id="card-body3">
 						<p class="card-text">
-							{% if songs %}
+							{% if recent_playlists %}
 								<ul class="list-group">
-									{% for song in songs %}
-										<li class="list-group-item see-through">{{ song.title }}</li>
+									{% for playlist in recent_playlists %}
+										<li class="list-group-item see-through"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
 									{% endfor %}
 								</ul>
 							{% else %}

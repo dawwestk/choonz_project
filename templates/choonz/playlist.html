@@ -32,6 +32,9 @@
 					<div class="col m-0">
 						<p>created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a></p>
 						<p><strong>Description: </strong>{{ playlist.description }}</p> 
+						<p>Created on: {{ playlist.createdDate }}</p> 
+						<p>Last updated: {{ playlist.lastUpdatedDate }}</p> 
+						
 					</div>
 					<div class="col m-1">
 						{% if user.is_authenticated %}
@@ -115,7 +118,7 @@
 			<div id="rating-listing">
 				<ul>
 					{% for rating in ratings %}
-					<li class="list-group-item">{{ rating.stars }} - {{ rating.comment }} by 
+					<li class="list-group-item">{{ rating.stars }} &#x2606; - "{{ rating.comment }}" ~ 
 						<a href="{% url 'choonz:profile' rating.user.username %}">{{ rating.user.username }}</a>
 					</li>
 					{% endfor %}

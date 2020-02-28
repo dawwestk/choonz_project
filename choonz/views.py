@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from choonz.forms import PlaylistForm, UserForm, UserProfileForm, RatingForm
 from datetime import datetime
+import pytz
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
@@ -38,10 +39,12 @@ class IndexView(View):
 
         most_rated_playlists = Playlist.objects.annotate(num_ratings=Count('rating')).order_by('-num_ratings')[:10]
         highest_rated_playlists = Playlist.objects.values('slug', 'name').annotate(average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
+        recently_created_playlists = Playlist.objects.all().order_by('-createdDate')[:10]
 
         context_dict = {'boldmessage': 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!',
                         'most_rated_playlists': most_rated_playlists,
-                        'highest_rated_playlists': highest_rated_playlists, 'user_profile': user_profile}
+                        'highest_rated_playlists': highest_rated_playlists,
+                        'recent_playlists': recently_created_playlists, 'user_profile': user_profile}
 
         # keep this call to increment the counter
         visitor_cookie_handler(request)
@@ -260,14 +263,14 @@ class PlaylistRatingView(View):
                     rating = Rating.objects.get(user=request.user, playlist=playlist)
                     rating.stars = request.POST.get('stars')
                     rating.comment = request.POST.get('comment')
-                    rating.date = datetime.today()
+                    rating.date = datetime.now(pytz.utc)
                     rating.save()
 
                 except Rating.DoesNotExist:
                     rating = form.save(commit=False)
                     rating.user = request.user
                     rating.playlist = playlist
-                    rating.date = datetime.today()
+                    rating.date = datetime.now(pytz.utc)
                     form.save(commit=True)
 
                 context_dict = {'user_profile': user_profile, "playlist": playlist, "songs": playlist.get_song_list}
