@@ -45,7 +45,7 @@ SECRET_KEY = 'dqpx*1zgzi6=q$ng$9&u!tzay(c0s15d07caq&s^67iefwo+9o'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['choonz.pythonanywhere.com']
 
 
 # Application definition
