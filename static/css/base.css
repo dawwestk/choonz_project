@@ -64,7 +64,7 @@ body {
     background-image: url(/static/images/Panel1.jpg);
     text-align: center;
     width: 100%;
-    min-height: 500px;
+    height: 690px;
     background-size: cover;  
     }
 
@@ -73,7 +73,7 @@ body {
     background-image: url(/static/images/Panel2.jpg);
     text-align: center;
     width: 100%;
-    min-height: 500px;
+    height: 690px;
     background-size: cover;  
     }
 
@@ -82,7 +82,7 @@ body {
     background-image: url(/static/images/Panel3.jpg);
     text-align: center;
     width: 100%;
-    min-height: 500px;
+    height: 690px;
     background-size: cover;  
 }
 
