@@ -48,14 +48,11 @@ body {
 
 #page-greeting{
     color: white;
+    text-align: center;
     border: 1px solid #919191;
     border-radius: 25px;
-    padding: 0.01em;
-    padding-left: 0.5em;
-    margin-top:1em;
-    margin-bottom: 1em;
-    margin-left: 5em;
-    margin-right: 5em;
+    padding: auto;
+    margin: auto;
     }
 
 .card-text{
