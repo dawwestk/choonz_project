@@ -35,6 +35,9 @@
                     {% for hidden in form.hidden_fields %}
                         {{ hidden }}
                     {% endfor %}
+                    {% for field in form.visible_fields %}
+                        {{ field.errors }}
+                    {% endfor %}
                     <div class="card-body">
                         <div class="input-group mb-3">
                             <p class="required">

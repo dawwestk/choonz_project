@@ -98,6 +98,9 @@
             <div class="card-body">
                 <form role="form" id="add_song_form" method="post" action="{% url 'choonz:add_song' playlist.slug %}">
                 {% csrf_token %}
+                {% for field in form.visible_fields %}
+                    {{ field.errors }}
+                {% endfor %}
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="song_title_label">Song Title:</span>

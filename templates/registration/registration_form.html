@@ -7,7 +7,7 @@
 {% block body_block %}
 	<div class="jumbotron p-4">
 		<div class="container">
-			<h1 class="jumbotron-heading">Register Here</h1>
+			<h1 class="jumbotron-heading">Register Here for a Choonz account!</h1>
 		</div>
 	</div>
 
@@ -16,6 +16,9 @@
 			<div class="card p-4">
 				<form role="form" method="post" action=".">
 					{% csrf_token %}
+					{% for field in form.visible_fields %}
+	                    {{ field.errors }}
+	                {% endfor %}
 					<div class="card-body">
 						<div class="input-group mb-3">
 							<p class="required">
@@ -27,7 +30,7 @@
                         </div>
                         <p>
 	                    	<span class="helptext">
-								Required. 30 characters or fewer.
+								A Username is required. 30 characters or fewer.
 								Letters, digits and @/./+/-/_ only.
 							</span>
 						</p>
@@ -57,11 +60,11 @@
                         </div>
                         <p>
                         	<span class="helptext">
-								Enter the same password as before, for verification.
+								Now, enter the same password as before, for verification.
 							</span>
 						</p>
 					</div>
-					<button type="submit" class="btn btn-primary" id="registration-button">Submit</button>
+					<button type="submit" class="btn btn-primary btn-block" id="registration-button">Submit</button>
 				</form>
 			</div>
 		</div>

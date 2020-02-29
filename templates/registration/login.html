@@ -7,10 +7,13 @@
 {% block body_block %}
 	<div class="jumbotron p-4">
 		<div class="container">
-			<h1 class="jumbotron-heading">Login to choonz</h1>
+			<h1 class="jumbotron-heading">Login to Choonz</h1>
 			<form class="form-signin" role="form" method="post" action=".">
 				{% csrf_token %}
 				<div class="card-body">
+					{% for field in form.visible_fields %}
+	                    {{ field.errors }}
+	                {% endfor %}
 					<div class="input-group mb-3">
 						<p class="required">
 	                        <div class="input-group-prepend">
@@ -30,17 +33,22 @@
 				<button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Sign in</button>
 				</div>
 			</form>
-			<p><strong>-- OR --</strong></p>
-            <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
-            <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a><br>
-            <a href="{% url 'social:begin' 'spotify' %}">Login with Spotify</a>
+			<div class="alt-logins">
+				<p><strong>-- OR --</strong></p>
+	            <a href="{% url 'social:begin' 'github' %}">Login with GitHub <i style="font-size:24px" class="fa">&#xf09b;</i></a><br>
+	            <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter <i style="font-size:24px" class="fa">&#xf099;</i></a><br>
+	            <a href="{% url 'social:begin' 'spotify' %}">Login with Spotify <i style="font-size:24px" class="fa">&#xf1bc;</i></a>
+	        </div>
+		</div>
+		<div>
+			<div class="alt-logins">
+				<p>
+					Not Registered?
+					<a href="{% url 'registration_register' %}">Register here!</a>
+				</p>
+			</div>
 		</div>
 	</div>
 
-	<div>
-		<p>
-			Not Registered?
-			<a href="{% url 'registration_register' %}">Register here!</a>
-		</p>
-	</div>
+	
 {% endblock %}
