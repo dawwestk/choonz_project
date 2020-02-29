@@ -156,6 +156,12 @@ function closeNav() {
     border-radius: 50%;
 }
 
+.index-card-header{
+    margin: auto;
+    align-content: center;
+    text-align: center;
+    max-width: 280px;
+}
 
 #loginButtons{
     float: right;
