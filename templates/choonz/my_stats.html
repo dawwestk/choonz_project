@@ -1,0 +1,46 @@
+{% extends 'choonz/base.html' %}
+{% load staticfiles %}
+{% load choonz_template_tags %}
+
+{% block title_block %}
+    My Stats
+{% endblock %}
+
+{% block body_block %}
+    
+    <link rel="stylesheet" href="{% static 'chart/Chart.css' %}">
+
+    <div class="container-fluid" id="headerContainer">
+        <h1 class="display-4" id="titleHeader">My Stats</h1>
+        <p class="lead"></p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+        <div class="container">
+            <h4>Playlist stats</h4>
+        </div>
+            <div class="card-body">
+
+                <canvas id="playlist-rating-bar-chart" width="300" height="300"></canvas>
+
+                {% if playlist_stats %}
+                    <p>User's average playlist rating: 
+                    {{ playlist_stats.user_playlist_average_rating }}</p>
+                    <p>User's most_rated_playlist: {{ playlist_stats.most_rated_playlist }}</p>
+                    <p>User's highest_rated_playlist: {{ playlist_stats.highest_rated_playlist }}</p>
+                    {% for p in playlist_stats.playlist_names %}
+                        <p>{{ p }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+            <img src="{% static 'images/strip.jpg' %}" onload="loadChart({{ playlist_stats.playlist_names }}, {{ playlist_stats.playlist_aves}})" />
+    </div>
+
+    <div id="addSongPopUp">PopUp message</div>
+
+    <script src="{% static 'chart/Chart.js' %}" crossorigin="anonymous"></script>
+
+{% endblock %}

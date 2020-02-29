@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from choonz.forms import PlaylistForm, UserForm, UserProfileForm, RatingForm
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 from django.views import View
 from django.utils.decorators import method_decorator
@@ -20,6 +20,8 @@ import json
 from spotipy.oauth2 import SpotifyClientCredentials
 from django.conf import settings
 from django.db.models import Avg, Count
+from django.views.generic import TemplateView
+from chartjs.views.lines import BaseLineChartView
 
 
 '''
@@ -553,7 +555,13 @@ class ProfileView(View):
 
         public_playlists = Playlist.objects.filter(creator=user, public=True)
         draft_playlists = Playlist.objects.filter(creator=user, public=False)
-        popular_playlists = public_playlists.order_by("-views")[:10]
+        #popular_playlists = public_playlists.order_by('-views')[:10]
+
+        popular_playlists = None
+
+        #highest_rated_playlists = Playlist.objects.values('slug', 'name')
+        # .annotate(average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
+
 
         # All Ratings the profile owner has given
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
@@ -786,6 +794,54 @@ def get_user_profile(request):
 
     return user_profile
 
+class MyStatsView(View):
+    @method_decorator(login_required)
+    def get(self, request, username):
+        user = request.user
+        user_profile = get_user_profile(request)
+        context_dict = {'user_profile': user_profile, 'username': user.username}
+        stats = {}
+        try:
+            playlists = Playlist.objects.filter(creator=user)
+        except:
+            playlists = None
+
+        if playlists:
+            user_playlist_average_rating = round(playlists.aggregate(average_rating=Avg('rating__stars'))['average_rating'],1)
+
+            most_rated_playlist = Playlist.objects.filter(creator=user).annotate(num_ratings=Count('rating')).order_by('-num_ratings')[0]
+            highest_rated_playlist = Playlist.objects.filter(creator=user).values('slug', 'name').annotate(
+                average_rating=Avg('rating__stars')).order_by('-average_rating')[0]['name']
+
+            stats = {'user_playlist_average_rating': user_playlist_average_rating,
+                     'most_rated_playlist': most_rated_playlist,
+                     'highest_rated_playlist': highest_rated_playlist}
+            playlist_names = []
+            playlist_aves = []
+            for playlist in playlists:
+                playlist_names.append(playlist.name)
+                playlist_aves.append(round(playlist.getAverageRating,1))
+            stats['playlist_names'] = playlist_names
+            stats['playlist_aves'] = playlist_aves
+
+        context_dict['playlist_stats'] = stats
+        return render(request, 'choonz/my_stats.html', context_dict)
+
+'''
+class StatsGraphView(View):
+    @method_decorator(login_required)
+    def get(self, request, username):
+        def get_labels():
+            return ["January", "February", "March", "April", "May", "June", "July"]
+
+        def get_data():
+            return [75, 44, 92, 11, 44, 95, 35]
+
+        ratings = get_data()
+        labels = get_labels()
+        output = {'labels': labels, 'ratings': ratings}
+        return HttpResponse(json.dumps(output), content_type="application/json")
+'''
 
 '''
 @login_required

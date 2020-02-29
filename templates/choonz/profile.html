@@ -5,11 +5,10 @@
 	Profile for {{ selected_user.username }}
 {% endblock %}
 
-<body onload="showPlaylistView()">
 {% block body_block %}
-
+	
 	<div class="jumbotron p-3">
-		<div class="container">
+		<div class="container" onload="showPlaylistView()">
 			<div class="row">
 				<div class="col mb-3">
 					{% if user_profile.picture %}
@@ -225,10 +224,10 @@
 						<div class="card p-4">
 						{% if user_profile.picture %}
 							<img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240" 
-								alt="{{ selected_user.username }}'s profile image"/>
+								alt="{{ selected_user.username }}'s profile image" onload="showPlaylistView()"/>
 						{% else %}
 							<img src="{% static 'images/default_profile_img.jpg' %}" width="320" height="240" 
-								alt="No profile image" />
+								alt="No profile image" onload="showPlaylistView()"/>
 						{% endif %}
 						</div>
 					</div>
