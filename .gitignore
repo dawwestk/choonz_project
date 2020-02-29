@@ -89,7 +89,7 @@ profile_images/
 
 *.key
 wsgi.py
-
+choonz_project/settings.py
 
 ### Population files ###
 temp_pop_script_setup/
