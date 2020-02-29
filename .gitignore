@@ -87,6 +87,8 @@ local_settings.py
 db.sqlite3
 profile_images/
 
+*.key
+
 
 ### Population files ###
 temp_pop_script_setup/

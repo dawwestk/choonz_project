@@ -25,25 +25,40 @@ LOGIN_REDIRECT_URL = 'choonz:index'
 LOGIN_URL = 'auth_login'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_GITHUB_KEY = '66ef7a0981b65a005df2'
-SOCIAL_AUTH_GITHUB_SECRET = '599ec699a7f2d21f6e032d638b44b291917aa30d'
+
+git_key = None
+with open('git_secret.key') as f:
+    git_key = f.read().strip()
+SOCIAL_AUTH_GITHUB_SECRET = git_key
+
 SOCIAL_AUTH_TWITTER_KEY = 'RGCiyLHdWHZoMfNl00QTxUNGo'
-SOCIAL_AUTH_TWITTER_SECRET = 'dC84S1sncHI7amRtpY4qjZda4FsmEbbBDj01hBSzhyzuJuwa0t'
+
+twitter_key = None
+with open('twitter_secret.key') as f:
+    twitter_key = f.read().strip()
+SOCIAL_AUTH_TWITTER_SECRET = twitter_key
+
 SOCIAL_AUTH_SPOTIFY_KEY = 'e09593bcb854470184181ebe501205af'
-SOCIAL_AUTH_SPOTIFY_SECRET = '35de71dede0449cd9df50f1f6fabc1d2'
+
+spotify_key = None
+with open('spotify_secret.key') as f:
+    spotify_key = f.read().strip()
+SOCIAL_AUTH_SPOTIFY_SECRET = spotify_key
 SPOTIPY_CLIENT_ID = 'e09593bcb854470184181ebe501205af'
-SPOTIPY_CLIENT_SECRET = '35de71dede0449cd9df50f1f6fabc1d2'
-# SOCIAL_AUTH_LOGIN_ERROR_URL = '/index/'
-# SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/index/'
+SPOTIPY_CLIENT_SECRET = spotify_key
 SOCIAL_AUTH_RAISE_EXCEPTIONS = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'dqpx*1zgzi6=q$ng$9&u!tzay(c0s15d07caq&s^67iefwo+9o'
+key = None
+with open('secret.key') as f:
+    key = f.read().strip()
+
+SECRET_KEY = key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['choonz.pythonanywhere.com', '127.0.0.1']
 
