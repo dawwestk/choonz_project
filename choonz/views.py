@@ -856,8 +856,11 @@ class MyStatsView(View):
             playlists = None
 
         if playlists:
-            user_playlist_average_rating = round(
+            try:
+                user_playlist_average_rating = round(
                 playlists.aggregate(average_rating=Avg('rating__stars'))['average_rating'], 1)
+            except:
+                user_playlist_average_rating = 0
 
             most_rated_playlist = Playlist.objects.filter(creator=user).annotate(num_ratings=Count('rating')).order_by('-num_ratings')[0]
             highest_rated_playlist = Playlist.objects.filter(creator=user).values('slug', 'name').annotate(
