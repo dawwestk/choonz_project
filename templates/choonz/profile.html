@@ -59,8 +59,8 @@
 										{% endif %}
 										<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
 										<div>
-											<span class="badge badge-light p-2">Number of Ratings: {{playlist.numberOfRatings}}</span>
-											<span class="badge badge-light p-2">Avg. Rating: {{playlist.averageRating}}</span>
+											<span class="badge badge-light p-2">Number of Ratings: {{playlist.getNumberOfRatings}}</span>
+											<span class="badge badge-light p-2">Avg. Rating: {{playlist.getAverageRating|floatformat}}</span>
 											{% if selected_user == user %}
 												<button class="btn btn-info btn-sm" type="submit" name="submit" id="edit-playlist-button">Edit</button>	
 											{% endif %}
@@ -94,8 +94,8 @@
 												{% endif %}
 												<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
 												<div>
-													<span class="badge badge-light p-2">Number of Ratings: {{playlist.numberOfRatings}}</span>
-													<span class="badge badge-light p-2">Avg. Rating: {{playlist.getAverageRating}}</span>
+													<span class="badge badge-light p-2">Number of Ratings: {{playlist.getNumberOfRatings}}</span>
+													<span class="badge badge-light p-2">Avg. Rating: {{playlist.getAverageRating|floatformat}}</span>
 													{% if selected_user == user %}
 														<form class="form-inline" id="user-form" method="get" action="{% url 'choonz:edit_playlist' playlist.slug %}">
 															<button class="btn btn-info btn-sm" type="submit" name="submit">Edit</button>
@@ -178,8 +178,8 @@
 												<span class="badge badge-light p-2">The Tags: {{playlist.tags}}</span>
 												<span class="badge badge-light p-2">{{ selected_user.username }}'s Rating: {{playlist.stars}}</span>
 											{% endif %}
-											<span class="badge badge-light p-2">Number of Ratings: {{playlist.numberOfRatings}}</span>
-											<span class="badge badge-light p-2">Avg. Rating: {{playlist.averageRating}}</span>
+											<span class="badge badge-light p-2">Number of Ratings: {{playlist.getNumberOfRatings}}</span>
+											<span class="badge badge-light p-2">Avg. Rating: {{playlist.getAverageRating|floatformat}}</span>
 										</div>
 									</li>
 								{% endfor %}

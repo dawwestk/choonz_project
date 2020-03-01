@@ -86,8 +86,8 @@
 
 <!-- Body Block -->
 <main role="main" class="m-0 p-0" id="baseMain">    
-    <div class="container-fluid" id="indexJumbotron">
-    </div>  
+    <a href="{% url 'index' %}"><div class="container-fluid" id="indexJumbotron">
+    </div></a>
     <div class="choonz-container">
         {% block body_block %}
         {% endblock %}
