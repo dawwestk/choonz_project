@@ -606,7 +606,12 @@ class ProfileView(View):
     @method_decorator(login_required)
     def get(self, request, username):
         try:
-            (user, user_profile, form) = self.get_user_details(username)
+            (user, page_user_profile, form) = self.get_user_details(username)
+            if username != request.user.username:
+                # visiting someone else's profile
+                my_user_profile = get_user_profile(request)
+            else:
+                my_user_profile = page_user_profile
         except TypeError:
             return redirect(reverse('choonz:index'))
 
@@ -655,7 +660,7 @@ class ProfileView(View):
 
             rated_playlists.append(playlist_info)
             # most_common_tags = rated_playlists.values("tags").annotate(count=Count('tags')).order_by("-count")
-        context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form,
+        context_dict = {'page_user_profile': page_user_profile, 'user_profile': my_user_profile, 'selected_user': user, 'form': form,
                         'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
                         'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists,
                         'all_rated_tags': all_rated_tags, 'flat_tags': flat_tags, 'tag_obs': tag_obs}
