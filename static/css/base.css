@@ -41,7 +41,6 @@ body {
 
 .alt-logins{
     text-align: center;
-
 }
 
 .list-group{
@@ -377,3 +376,22 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     color: #153a5e
 }
 
+canvas {
+    border: 1px solid rgb(0,0,0);
+    display: none;
+}
+
+table{
+    border: 1px solid rgb(0,0,0);
+}
+
+th {
+    text-align: center;
+    border: 1px solid rgb(0,0,0);
+    padding: 5px;
+}
+
+td {
+    border: 1px solid rgb(0,0,0);
+    padding: 5px;
+}

@@ -1,8 +1,6 @@
 $(document).ready( function () {
-  	//showPlaylistView();
-});
- 
-$(document).ready(function(){
+  	showPlaylistView();
+
 	$('#about-btn').click(function(){
 		msgStr = $('#msg').html();
 		msgStr = msgStr + " ooo, fancy!";
@@ -10,18 +8,27 @@ $(document).ready(function(){
 	})
 
 
-
 })
 
-function loadChart(label_info, rating_info){
+function loadRatingChart(label_info, rating_info, average_rating){
+	//alert(label_info);
+	//alert(rating_info);
+	//alert(average_rating);
+	
 	var playlist_names = label_info;
 	var playlist_ratings = rating_info;
-
+	var num_ratings = rating_info.length;
+	
+	var ave_line = [];
+	var i;
+	for(i = 0; i < num_ratings; i++){
+		ave_line[i] = average_rating;
+	}
+	
     var ctx = $("#playlist-rating-bar-chart").get(0).getContext("2d");
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-        	labels: playlist_names,
         	datasets: [{
         		label: "Playlist Rating",
             	data: playlist_ratings,
@@ -40,8 +47,17 @@ function loadChart(label_info, rating_info){
 	                'rgba(255, 159, 64, 1)'
 	            ],
 	            borderWidth: 1
+        		},
+        		{
+        			label: "Average Rating",
+        			data: ave_line,
+        			type: 'line',
+        			fill: false,
+        			borderColor: ['rgba(54, 162, 235, 1)'],
+        			borderDash: [20, 5]
         		}
-        	]
+        	],
+        	labels: playlist_names
         },
         options:{
         	responsive: false,
@@ -66,7 +82,9 @@ function loadChart(label_info, rating_info){
 	        }
         }
     });
-};
+    ctx.css('display', 'inline-block');
+    
+}
 	/*
 	var ctx = $('#playlist-rating-bar-chart');
 	var myChart = new Chart(ctx, {

@@ -816,13 +816,23 @@ class MyStatsView(View):
             stats = {'user_playlist_average_rating': user_playlist_average_rating,
                      'most_rated_playlist': most_rated_playlist,
                      'highest_rated_playlist': highest_rated_playlist}
+
+            # arrays here are for graph production
             playlist_names = []
             playlist_aves = []
+            combined_stats = []
             for playlist in playlists:
                 playlist_names.append(playlist.name)
-                playlist_aves.append(round(playlist.getAverageRating,1))
+                try:
+                    ave = round(playlist.getAverageRating,1)
+                except:
+                    ave = 0
+                playlist_aves.append(ave)
+                combined = {'name': playlist.name, 'ave': ave}
+                combined_stats.append(combined)
             stats['playlist_names'] = playlist_names
             stats['playlist_aves'] = playlist_aves
+            stats['combined_stats'] = combined_stats
 
         context_dict['playlist_stats'] = stats
         return render(request, 'choonz/my_stats.html', context_dict)
