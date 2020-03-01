@@ -33,6 +33,7 @@
 				<button class="btn btn-info" type="submit" name="submit" id="new-playlist-button" 
 						onclick='location.href="{% url 'choonz:add_playlist' %}"'>Create Playlist
 				</button>
+				<a class="btn btn-info" href="{% url 'choonz:my_stats' user.username %}">View My Stats</a>
 
 			{% endif %}
 		</div>

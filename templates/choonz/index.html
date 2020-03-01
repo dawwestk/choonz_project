@@ -25,17 +25,15 @@
 				</div>
 			<div class="card md-4">
 					<div class="card-body" id="card-body1">
-						<p class="card-text">
-							{% if most_rated_playlists %}
-								<ul class="list-group">
-									{% for playlist in most_rated_playlists %}
-										<li class="list-group-item see-through"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
-									{% endfor %}
-								</ul>
-							{% else %}
-								<strong>There are no playlists present.</strong>
-							{% endif %}
-						</p>
+						{% if most_rated_playlists %}
+							<ul class="list-group">
+								{% for playlist in most_rated_playlists %}
+									<li class="list-group-item see-through"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							<strong>There are no playlists present.</strong>
+						{% endif %}
 					</div>
 				</div>
 			</div>
@@ -46,17 +44,15 @@
 				</div>
 				<div class="card md-4">
 					<div class="card-body" id="card-body2">
-						<p class="card-text">
-							{% if highest_rated_playlists %}
-								<ul class="list-group">
-									{% for playlist in highest_rated_playlists %}
-										<li class="list-group-item see-through"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
-									{% endfor %}
-								</ul>
-							{% else %}
-								<strong>There are no pages present.</strong>
-							{% endif %}
-						</p>
+						{% if highest_rated_playlists %}
+							<ul class="list-group">
+								{% for playlist in highest_rated_playlists %}
+									<li class="list-group-item see-through"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							<strong>There are no pages present.</strong>
+						{% endif %}
 					</div>
 				</div>
 			</div>
@@ -66,17 +62,15 @@
 				</div>
 				<div class="card md-4">
 					<div class="card-body" id="card-body3">
-						<p class="card-text">
-							{% if recent_playlists %}
-								<ul class="list-group">
-									{% for playlist in recent_playlists %}
-										<li class="list-group-item see-through"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
-									{% endfor %}
-								</ul>
-							{% else %}
-								<strong>There are no pages present.</strong>
-							{% endif %}
-						</p>
+						{% if recent_playlists %}
+							<ul class="list-group">
+								{% for playlist in recent_playlists %}
+									<li class="list-group-item see-through"><a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }}</a></li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							<strong>There are no pages present.</strong>
+						{% endif %}
 					</div>
 				</div>
 			</div>

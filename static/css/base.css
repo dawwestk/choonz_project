@@ -135,8 +135,9 @@ function closeNav() {
 
 #headerContainer {
     background-color: #153a5e;
-    padding-top: 0.5em;
-    padding-bottom: 20px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
     width: 100%;
 }
 
@@ -378,20 +379,31 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 
 canvas {
     border: 1px solid rgb(0,0,0);
+    margin: auto;
+    height: 350px;
     display: none;
 }
 
 table{
     border: 1px solid rgb(0,0,0);
+    margin:auto;
+    padding: auto;
+    width: 100%;
 }
 
 th {
     text-align: center;
     border: 1px solid rgb(0,0,0);
     padding: 5px;
+    background-color: rgb(25,194,200, 0.5)
 }
 
 td {
     border: 1px solid rgb(0,0,0);
     padding: 5px;
+    text-align: center;
+}
+
+.centred{
+    margin: auto;
 }

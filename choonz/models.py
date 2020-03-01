@@ -114,6 +114,10 @@ class Rating(models.Model):
     comment = models.CharField(max_length=max_char_length*2)
     date = models.DateTimeField(blank=True, null=True)
 
+    @property
+    def get_rated_playlist_creator(self):
+        return self.playlist.creator
+
     def __str__(self):
         return self.user.username + " review of " + self.playlist.name
 

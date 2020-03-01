@@ -70,7 +70,7 @@ function loadRatingChart(label_info, rating_info, average_rating){
 	                	},
 	                	scaleLabel: {
 					        display: true,
-					        labelString: 'Stars rating'
+					        labelString: 'Stars Rating'
 					    }
 	           		}],
 	           	xAxes: [{
@@ -82,8 +82,63 @@ function loadRatingChart(label_info, rating_info, average_rating){
 	        }
         }
     });
-    ctx.css('display', 'inline-block');
-    
+    ctx.css('display', 'block');
+}
+
+function loadUserChart(date_info, rating_info, name_info){
+	var rating_dates = date_info;
+	var playlist_ratings = rating_info;
+	var playlist_names = name_info;
+	
+    var ctx = $("#user-line-chart").get(0).getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+        	datasets: [{
+        			label: "User Ratings Over Time",
+        			data: playlist_ratings,
+        			type: 'line',
+        			fill: false,
+        			borderColor: ['rgba(54, 162, 235, 1)'],
+        			borderDash: [20, 5]
+        		}
+        	],
+        	labels: rating_dates
+        },
+        options:{
+        	responsive: false,
+        	scales: {
+	            yAxes: [{
+	                	ticks: {
+	                	min:0.0,
+	                	max:5.0,
+	                    beginAtZero: true,
+	                	},
+	                	scaleLabel: {
+					        display: true,
+					        labelString: 'Stars Rating'
+					    }
+	           		}],
+	           	xAxes: [{
+	           		scaleLabel: {
+				        display: true,
+				        labelString: 'User Activity'
+				    }
+	           	}]
+	        },
+	        tooltips: {
+	        	callbacks: {
+		            title: function(tooltipItem, data) {
+			          return data['labels'][tooltipItem[0]['index']];
+			        },
+			        label: function(tooltipItem, data) {
+			          return playlist_names[tooltipItem['index']] + " - " + data['datasets'][0]['data'][tooltipItem['index']];
+			        },
+	        	}
+	        }
+        }
+    });
+    ctx.css('display', 'block');
 }
 	/*
 	var ctx = $('#playlist-rating-bar-chart');

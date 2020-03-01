@@ -23,7 +23,6 @@ from django.db.models import Avg, Count
 from django.views.generic import TemplateView
 from chartjs.views.lines import BaseLineChartView
 
-
 '''
 
     Index View
@@ -40,7 +39,8 @@ class IndexView(View):
         user_profile = get_user_profile(request)
 
         most_rated_playlists = Playlist.objects.annotate(num_ratings=Count('rating')).order_by('-num_ratings')[:10]
-        highest_rated_playlists = Playlist.objects.values('slug', 'name').annotate(average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
+        highest_rated_playlists = Playlist.objects.values('slug', 'name').annotate(
+            average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
         recently_created_playlists = Playlist.objects.all().order_by('-createdDate')[:10]
 
         context_dict = {'boldmessage': 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!',
@@ -192,7 +192,8 @@ class PlaylistEditorView(View):
         playlist = Playlist.objects.get(slug=playlist_name_slug)
         playlist_list = Playlist.objects.filter(creator=request.user)
 
-        context_dict = {'user_profile': user_profile, 'playlist': playlist, 'playlist_name_slug': playlist_name_slug, 'playlist_list': playlist_list}
+        context_dict = {'user_profile': user_profile, 'playlist': playlist, 'playlist_name_slug': playlist_name_slug,
+                        'playlist_list': playlist_list}
 
         return render(request, 'choonz/edit_playlist.html', context_dict)
 
@@ -295,6 +296,7 @@ class DraftView(View):
 
         return render(request, 'choonz/drafts.html', context_dict)
 
+
 class AddSongView(View):
     @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
@@ -366,6 +368,7 @@ class AddSongView(View):
         response_dict['message'] = "Song successfully added to playlist"
         return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
+
 class RemoveSongView(View):
     @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
@@ -397,6 +400,7 @@ class RemoveSongView(View):
         else:
             response_dict['message'] = "Song not on playlist"
             return HttpResponse(json.dumps(response_dict), content_type="application/json")
+
 
 class PublishPlaylistView(View):
     @method_decorator(login_required)
@@ -433,6 +437,7 @@ class PublishPlaylistView(View):
 
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
+
 class PlaylistSuggestionView(View):
     def get(self, request):
         user_profile = get_user_profile(request)
@@ -459,6 +464,7 @@ def get_playlist_list(max_results=0, starts_with=''):
             playlist_list = playlist_list[:max_results]
 
     return playlist_list
+
 
 class TagSuggestionView(View):
     def get(self, request):
@@ -555,13 +561,12 @@ class ProfileView(View):
 
         public_playlists = Playlist.objects.filter(creator=user, public=True)
         draft_playlists = Playlist.objects.filter(creator=user, public=False)
-        #popular_playlists = public_playlists.order_by('-views')[:10]
+        # popular_playlists = public_playlists.order_by('-views')[:10]
 
         popular_playlists = None
 
-        #highest_rated_playlists = Playlist.objects.values('slug', 'name')
+        # highest_rated_playlists = Playlist.objects.values('slug', 'name')
         # .annotate(average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
-
 
         # All Ratings the profile owner has given
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
@@ -586,8 +591,8 @@ class ProfileView(View):
             try:
                 all_rated_tags.append(playlist_info['tags'])
                 for i in all_rated_tags:
-                  for j in i:
-                    flat_tags.append(j)
+                    for j in i:
+                        flat_tags.append(j)
 
                 tag_obs = Tag.objects.filter(description__in=flat_tags)
             except:
@@ -599,7 +604,7 @@ class ProfileView(View):
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form,
                         'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
                         'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists,
-                        'all_rated_tags':all_rated_tags, 'flat_tags':flat_tags, 'tag_obs':tag_obs}
+                        'all_rated_tags': all_rated_tags, 'flat_tags': flat_tags, 'tag_obs': tag_obs}
         # , "common_tags":most_common_tags}
 
         return render(request, 'choonz/profile.html', context_dict)
@@ -640,6 +645,8 @@ class ListProfileView(View):
     Misc Views/Methods
 
 '''
+
+
 class ImportPlaylistView(View):
     @method_decorator(login_required)
     def get(self, request, playlist_name_slug):
@@ -671,6 +678,7 @@ class ImportPlaylistView(View):
 
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': choonz_playlist.slug}))
 
+
 class TestView(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -691,23 +699,28 @@ class TestView(View):
 
         return HttpResponse("Printed playlists")
 
+
 def add_tracks(tracks, playlist):
     choonz_playlist = playlist
     for i, item in enumerate(tracks['items']):
         track = item['track']
         artist = Artist.objects.get_or_create(name=track['artists'][0]['name'])[0]
-        song = Song.objects.get_or_create(title=track['name'], artist=artist, linkToSpotify=track['external_urls']['spotify'])[0]
+        song = \
+        Song.objects.get_or_create(title=track['name'], artist=artist, linkToSpotify=track['external_urls']['spotify'])[
+            0]
         song.save()
 
         choonz_playlist.songs.add(song)
         choonz_playlist.save()
         print("Added " + track['artists'][0]['name'] + " - " + track['name'] + " to " + choonz_playlist.name)
 
+
 def spotify_show_tracks(tracks):
     for i, item in enumerate(tracks['items']):
         track = item['track']
         print("   %d %32.32s %s" % (i, track['artists'][0]['name'],
-            track['name']))
+                                    track['name']))
+
 
 def setup_spotify():
     # SPOTIPY_CLIENT_ID = 'e09593bcb854470184181ebe501205af'
@@ -717,13 +730,14 @@ def setup_spotify():
     sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=cid, client_secret=secret))
     return sp
 
+
 class RestrictedView(View):
     @method_decorator(login_required)
     def get(self, request):
         sp = setup_spotify()
-		
+
         tracks = []
-		
+
         results = sp.search(q='dolly parton', limit=20)
         for idx, track in enumerate(results['tracks']['items']):
             tracks.append(track['name'])
@@ -783,6 +797,7 @@ def get_server_side_cookie(request, cookie, default_val=None):
         val = default_val
     return val
 
+
 def get_user_profile(request):
     user = request.user
     try:
@@ -794,20 +809,57 @@ def get_user_profile(request):
 
     return user_profile
 
+
 class MyStatsView(View):
     @method_decorator(login_required)
     def get(self, request, username):
         user = request.user
         user_profile = get_user_profile(request)
         context_dict = {'user_profile': user_profile, 'username': user.username}
+
+        try:
+            # if the user has rated anything
+            user_ratings = Rating.objects.filter(user=user)
+        except:
+            user_ratings = None
+
+        if user_ratings:
+            number_of_ratings = user_ratings.count()
+            user_favourite_playlist = user_ratings.order_by('-stars')[0].playlist
+            user_least_favourite_playlist = user_ratings.order_by('stars')[0].playlist
+            user_average_given_rating = user_ratings.aggregate(ave=Avg('stars')).get('ave')
+        else:
+            number_of_ratings = 0
+            user_favourite_playlist = None
+            user_least_favourite_playlist = None
+            user_average_given_rating = 0
+
+        user_stats = {'number_of_ratings': number_of_ratings, 'user_favourite_playlist': user_favourite_playlist,
+                      'user_least_favourite_playlist': user_least_favourite_playlist, 'user_ratings': user_ratings,
+                      'user_average_given_rating': user_average_given_rating}
+
+        rating_dates = []
+        rating_stars = []
+        rating_playlist = []
+        for r in user_ratings:
+            rating_dates.append(r.date.strftime("%d/%m/%Y %H:%M:%S"))
+            rating_stars.append(r.stars)
+            rating_playlist.append(r.playlist.name)
+
+        user_stats['rating_dates'] = rating_dates
+        user_stats['rating_stars'] = rating_stars
+        user_stats['rating_playlist'] = rating_playlist
+
         stats = {}
         try:
+            # if the user has created any playlists
             playlists = Playlist.objects.filter(creator=user)
         except:
             playlists = None
 
         if playlists:
-            user_playlist_average_rating = round(playlists.aggregate(average_rating=Avg('rating__stars'))['average_rating'],1)
+            user_playlist_average_rating = round(
+                playlists.aggregate(average_rating=Avg('rating__stars'))['average_rating'], 1)
 
             most_rated_playlist = Playlist.objects.filter(creator=user).annotate(num_ratings=Count('rating')).order_by('-num_ratings')[0]
             highest_rated_playlist = Playlist.objects.filter(creator=user).values('slug', 'name').annotate(
@@ -820,22 +872,23 @@ class MyStatsView(View):
             # arrays here are for graph production
             playlist_names = []
             playlist_aves = []
-            combined_stats = []
+            all_playlists = []
             for playlist in playlists:
                 playlist_names.append(playlist.name)
                 try:
-                    ave = round(playlist.getAverageRating,1)
+                    ave = round(playlist.getAverageRating, 1)
                 except:
                     ave = 0
                 playlist_aves.append(ave)
-                combined = {'name': playlist.name, 'ave': ave}
-                combined_stats.append(combined)
+                all_playlists.append(playlist)
             stats['playlist_names'] = playlist_names
             stats['playlist_aves'] = playlist_aves
-            stats['combined_stats'] = combined_stats
+            stats['all'] = all_playlists
 
         context_dict['playlist_stats'] = stats
+        context_dict['user_stats'] = user_stats
         return render(request, 'choonz/my_stats.html', context_dict)
+
 
 '''
 class StatsGraphView(View):
