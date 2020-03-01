@@ -726,13 +726,17 @@ class ImportPlaylistView(View):
         while playlists:
             for i, playlist in enumerate(playlists['items']):
                 if playlist['name'] == playlist_name:
-                    print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'], playlist['name']))
+                    #print(playlist)
+                    #print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'], playlist['name']))
                     results = sp.playlist(playlist['id'], fields="tracks")
                     tracks = results['tracks']
                     add_tracks(tracks, choonz_playlist)
-                if playlists['next']:
-                    playlists = sp.next(playlists)
-                else:
+                try:
+                    if playlists['next']:
+                        playlists = sp.next(playlists)
+                    else:
+                        playlists = None
+                except:
                     playlists = None
 
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': choonz_playlist.slug}))
@@ -763,10 +767,21 @@ def add_tracks(tracks, playlist):
     choonz_playlist = playlist
     for i, item in enumerate(tracks['items']):
         track = item['track']
-        artist = Artist.objects.get_or_create(name=track['artists'][0]['name'])[0]
-        song = \
-        Song.objects.get_or_create(title=track['name'], artist=artist, linkToSpotify=track['external_urls']['spotify'])[
-            0]
+        artist_name_slug = slugify(track['artists'][0]['name'])
+        try:
+            artist = Artist.objects.get(slug=artist_name_slug)
+        except Artist.DoesNotExist:
+            artist = Artist.objects.create(name=track['artists'][0]['name'])
+
+        song_slug = slugify(track['name'] + "-" + track['artists'][0]['name'])
+        try:
+            song = Song.objects.get(slug=song_slug)
+        except Song.DoesNotExist:
+            song = Song.objects.create(title=track['name'], artist=artist)
+
+        if track['external_urls']['spotify']:
+            song.linkToSpotify = track['external_urls']['spotify']
+            
         song.save()
 
         choonz_playlist.songs.add(song)
