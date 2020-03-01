@@ -20,8 +20,6 @@ import json
 from spotipy.oauth2 import SpotifyClientCredentials
 from django.conf import settings
 from django.db.models import Avg, Count
-from django.views.generic import TemplateView
-from chartjs.views.lines import BaseLineChartView
 
 '''
 

@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     'choonz',
     'registration',
     'social_django',
-    'chartjs',
 ]
 
 MIDDLEWARE = [
