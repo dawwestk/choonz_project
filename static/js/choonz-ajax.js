@@ -144,28 +144,43 @@ $(document).on("click", ".tag-suggestion", function(e) {
 
 $(document).on("click", '#remove-song-btn', function(e){
 	var parentLI = $(this).parent();
-	var buttonToHide = $(this);
+	var confirmButton = parentLI.children('#confirm-remove-song-btn');
+	confirmButton.css('display', 'inline-block');
+	var cancelButton = parentLI.children('#cancel-remove-song-btn');
+	cancelButton.css('display', 'inline-block');
+	$(this).css('display', 'none');
+	
+})
+
+$(document).on("click", '#cancel-remove-song-btn', function(e){
+	$(this).css('display', 'none');
+	var parentLI = $(this).parent();
+	var removeButton = parentLI.children('#remove-song-btn');
+	removeButton.css('display', 'inline-block');
+	var confirmButton = parentLI.children('#confirm-remove-song-btn');
+	confirmButton.css('display', 'none');
+	
+})
+
+$(document).on("click", '#confirm-remove-song-btn', function(e){
+	var parentLI = $(this).parent();
+	var confirmButton = $(this);
+	var cancelButton = parentLI.children('#cancel-remove-song-btn');
 	var playlistSlug
 	playlistSlug = $(this).attr('data-playlistSlug');
 	var songSlug
 	songSlug = $(this).attr('data-songSlug');
 
-	var confirmation = false;
-	if (confirm("Are you sure you want to remove this song?")) {
-		confirmation = true;
-		$.post('remove_song/', {'playlist_slug': playlistSlug, 'song_slug': songSlug, 'confirmed': confirmation}, function(data){
-			if(data.status){
-				showAddSongPopUp(data.message);
-				parentLI.css('text-decoration', 'line-through');
-				buttonToHide.hide();
-			} else {
-				alert(data.message);
-			}
-		})
-	} else {
-		confirmation = false;
-	    return 0;
-	}
+	$.post('remove_song/', {'playlist_slug': playlistSlug, 'song_slug': songSlug, 'confirmed': true}, function(data){
+		if(data.status){
+			showAddSongPopUp(data.message);
+			parentLI.css('text-decoration', 'line-through');
+			confirmButton.hide();
+			cancelButton.hide();
+		} else {
+			alert(data.message);
+		}
+	})
 
 })
 

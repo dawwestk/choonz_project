@@ -151,7 +151,9 @@
                         {% else %}
                             {{ song.artist }}
                         {% endif %}
-                        <button class="btn btn-danger" type="button" id="remove-song-btn" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Remove</button>
+                        <button class="btn btn-danger" type="button" id="remove-song-btn">Remove</button>
+                        <button class="btn btn-danger" type="button" id="confirm-remove-song-btn" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Confirm</button>
+                        <button class="btn btn-secondary" type="button" id="cancel-remove-song-btn" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Cancel</button>
                     </li>
                     {% endfor %}
                 </ul>

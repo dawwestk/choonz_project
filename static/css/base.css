@@ -401,3 +401,8 @@ td {
 .blue-text{
     color: rgb(25,194,200, 1);
 }
+
+#cancel-remove-song-btn,
+#confirm-remove-song-btn{
+    display: none;
+}
