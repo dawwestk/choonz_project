@@ -435,6 +435,58 @@ class PublishPlaylistView(View):
 
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
+class PlaylistFilterView(View):
+    def get(self, request):
+        user_profile = get_user_profile(request)
+        playlist_list = None
+        if 'tags' in request.GET:
+            tags = request.GET['tags']
+            tags = tags.split(",")
+            tags = [slugify(t) for t in tags]
+        else:
+            tags = ''
+
+        if 'creator' in request.GET:
+            creator = request.GET['creator']
+        else:
+            creator = ''
+
+        if 'createdDate' in request.GET:
+            createdDate = request.GET['createdDate']
+        else:
+            createdDate = ''
+
+        playlist_list = filter_playlists(tags, creator, createdDate)
+
+        if len(playlist_list) == 0:
+            playlist_list = Playlist.objects.order_by('name')
+
+        context_dict = {'user_profile': user_profile, 'playlist_suggestions': playlist_list}
+
+        return render(request, 'choonz/playlist_suggestion.html', context_dict)
+
+def filter_playlists(tags, creator, created_date):
+    playlist_list = Playlist.objects.all()
+
+    if tags:
+        for t in tags:
+            if t:
+                playlist_list = playlist_list.filter(tags__slug__contains=t)
+
+    if creator:
+        try:
+            creator = User.objects.get(username=creator)
+        except User.DoesNotExist:
+            creator = None
+        except:
+            creator = None
+        playlist_list = playlist_list.filter(creator=creator)
+
+    if created_date:
+        playlist_list = playlist_list.filter(createdDate__gte=created_date)
+
+    return playlist_list
+
 
 class PlaylistSuggestionView(View):
     def get(self, request):
@@ -445,7 +497,11 @@ class PlaylistSuggestionView(View):
         else:
             suggestion = ''
 
-        playlist_list = get_playlist_list(max_results=8, starts_with=suggestion)
+        playlist_list = get_playlist_list(max_results=10, starts_with=suggestion)
+
+        if len(playlist_list) == 0:
+            playlist_list = Playlist.objects.order_by('name')
+
         context_dict = {'user_profile': user_profile, 'playlist_suggestions': playlist_list}
 
         return render(request, 'choonz/playlist_suggestion.html', context_dict)
@@ -473,7 +529,7 @@ class TagSuggestionView(View):
             suggestion = ''
 
         # possibly change the ordering to be by number of playlists?
-        tag_list = get_tag_list(max_results=8, starts_with=suggestion).order_by('description')
+        tag_list = get_tag_list(max_results=10, starts_with=suggestion).order_by('description')
 
         # if nothing is written in the field so we want to show all or nothing?
         if len(tag_list) == 0:

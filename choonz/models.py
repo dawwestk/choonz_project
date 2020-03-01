@@ -10,6 +10,7 @@ max_char_length = 128
 class Tag(models.Model):
     description = models.CharField(max_length=30)
     numberOfPlaylists = models.IntegerField(default=0)
+    slug = models.SlugField(unique=True)
 	
     @property
     def getNumberOfPlaylists(self):
@@ -18,6 +19,10 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.description
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.description)
+        super(Tag, self).save(*args, **kwargs)
 
 class Playlist(models.Model):
     max_length_char = max_char_length   # including here because other pieces of code reference Playlist.max_length_char

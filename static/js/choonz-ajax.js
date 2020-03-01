@@ -98,29 +98,28 @@ $(document).ready(function(){
 	$('#playlist-search-input').keyup(function() {
 		var query;
 		query = $(this).val();
-		//$('#playlist-listing').css('visibility', 'visible');
-		$('#playlist-listing').show();
-		if(query){
-			$.get('/choonz/suggest_playlist/', {'suggestion': query}, function(data){
-				$('#playlist-listing').html(data);
-			})
-		} else {
-			//$('#playlist-listing').css('visibility', 'hidden');
-			$('#playlist-listing').hide();
-		}
+		$.get('/choonz/suggest_playlist/', {'suggestion': query}, function(data){
+			$('#playlist-listing').html(data);
+		})
 	})
 
-	$('.choonz-page-add').click(function() {
-		var playlistid = $(this).attr('data-playlistid');
-		var title = $(this).attr('data-title');
-		var url = $(this).attr('data-url');
-		var clickedButton = $(this);
-
-		$.get('/choonz/search_add_page/', {'playlist_id': playlistid, 'title': title, 'url': url}, function(data){
-			$('#page-listing').html(data);
-			clickedButton.hide();
+	$('#filter-button').click(function() {
+		var tags = $('#tags').val();
+		var creator = $('#creator').val();
+		var createdDate = $('#created-date').val();
+		//alert("tags: " + tags + ", creator: " + creator + ", date: " + createdDate);
+		$.get('/choonz/filter_playlists/', {'tags': tags, 'creator': creator, 'createdDate': createdDate}, function(data){
+			$('#playlist-listing').html(data);
 		})
+	})
 
+	$('#remove-filter-button').click(function() {
+		$('#tags').val('');
+		$('#creator').val('');
+		$('#created-date').val('');
+		$.get('/choonz/filter_playlists/', {'tags': '', 'creator': '', 'createdDate': ''}, function(data){
+			$('#playlist-listing').html(data);
+		})
 	})
 	
 })

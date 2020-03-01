@@ -17,35 +17,82 @@
 	<div class="container" id="all-playlist-listing-page">
 		<div class="row">
 			{% if playlist_list %}
-			<div class="input-group mb-3" id="playlist-search-bar">
-                <p class="required">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="playlist-search-prompt">Find a playlist:</span>
-                    </div>
-                    <textarea id="playlist-search-input" class="form-control" placeholder="Search all playlists..." rows="1"></textarea>
-                </p>
-                <div class="container" id="playlist-listing">
-                    {% block sidebar_block %}
-                        {% get_playlist_list %}
-                    {% endblock %}
-                </div>
-            </div>
+			<div class="container m-2">
+				<a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapseFilters" role="button">
+			    	Filter Playlists
+			  	</a>
+			</div>
+			<div class="collapse container m-2" id="collapseFilters">
+				<div class="row">
+					<div class="col">
+						<div class="input-group mb-3">
+			                <p class="required">
+			                    <div class="input-group-prepend">
+			                        <span class="input-group-text" id="playlist-filter-creator-prompt">Filter by Creator:</span>
+			                    </div>
+			                    <input type="text" name="creator" id="creator" class="form-control" placeholder=""></input>
+			                </p>
+			            </div>
+			            <div class="input-group mb-3">
+			                <p class="required">
+			                    <div class="input-group-prepend">
+			                        <span class="input-group-text" id="playlist-filter-created-date-prompt">Filter by Created Date:</span>
+			                    </div>
+			                    <input type="date" name="created-date" id="created-date" class="form-control" placeholder=""></input>
+			                </p>
+			            </div>
+			            
+			        </div>
+			        <div class="col">
+						<div class="input-group mb-3">
+			                <p class="required">
+			                    <div class="input-group-prepend">
+			                        <span class="input-group-text" id="playlist-filter-tags-prompt">Filter by Tags:</span>
+			                    </div>
+			                    <input type="text" name="tags" id="tags" class="form-control" placeholder=""></input>
+			                </p>
+			            </div>
+			            <div class="card m-4" id="tag-listing">
+			                {% block tag_list_block %}
+			                    {% get_tag_list tag %}
+			                {% endblock %}
+			            </div>
+			        </div>
+			    </div>
+			    <div class="row">
+			    	<div class="col">
+			    		<button class="btn btn-info btn-block" type="button" id="filter-button">Filter Playlists</button>
+			    	</div>
+			    	<div class="col">
+			    		<button class="btn btn-danger btn-block" type="button" id="remove-filter-button">Remove Filters</button>
+			    	</div>
+			    </div>
+
+	        </div>
+	        <div class="centred blue-text"> ~ or ~ </div>
+	        <div class="container m-2">
+				<a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapseSearch" role="button">
+			    	Search by Name
+			  	</a>
+			</div>
+			<div class="collapse container m-2" id="collapseSearch">
+				<div class="input-group mb-3" id="playlist-search-bar">
+	                <p class="required">
+	                    <div class="input-group-prepend">
+	                        <span class="input-group-text" id="playlist-search-prompt">Find a playlist:</span>
+	                    </div>
+	                    <textarea id="playlist-search-input" class="form-control" placeholder="Search playlists by name..." rows="1"></textarea>
+	                </p>
+	            </div>
+	        </div>
 			<div class="panel-body" id="all-playlist-listing">
-				<div class="list-group">
-					{% for playlist in playlist_list %}
-						<div class="list-group-item">
-							<h4 class="list-group-item-heading">
-								<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }} 
-								</a>
-								<small>by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a></small>
-								{% if playlist.picture %}
-									<img src="{{ MEDIA_URL }}{{ playlist.picture }}" width="30" height="30" alt="{{ playlist.name }}'s playlist image" />
-								{% endif %}
-							</h4>
-							<h5>{{ playlist.get_playlist_tag_descriptions_as_string }}</h5>
-						</div>
-					{% endfor %}
-				</div>
+				<div class="container-fluid" id="playlist-listing">
+					<ul>
+	                    {% block autocomplete_block %}
+	                        {% get_playlist_list %}
+	                    {% endblock %}
+	                </ul>
+                </div>
 			</div>
 			{% else %}
 				<div class="list-group-item">

@@ -27,6 +27,7 @@ urlpatterns = [
     path('publish_playlist/', views.PublishPlaylistView.as_view(), name='publish_playlist'),
     path('suggest_tag/', views.TagSuggestionView.as_view(), name='suggest_tag'),
     path('suggest_playlist/', views.PlaylistSuggestionView.as_view(), name='suggest_playlist'),
+    path('filter_playlists/', views.PlaylistFilterView.as_view(), name='filter_playlists'),
     path('drafts/', views.DraftView.as_view(), name='drafts'),
     #path('search_add_page/', views.SearchAddPage.as_view(), name='search_add_page'),
     path('test/', views.TestView.as_view(), name='test'),

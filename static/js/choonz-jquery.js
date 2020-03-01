@@ -8,6 +8,7 @@ $(document).ready( function () {
 	})
 
 
+
 })
 
 function loadRatingChart(label_info, rating_info, average_rating){

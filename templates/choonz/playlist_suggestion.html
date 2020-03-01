@@ -1,9 +1,19 @@
 <div class="container" id="playlist-suggestion-list">
     {% if playlist_suggestions %}
-        {% for p in playlist_suggestions %}
-            <div>
-            	<a class="list-group-item" href="{% url 'choonz:show_playlist' p.slug %}">{{ p.name }}</a>
-            </div>
+        {% for playlist in playlist_suggestions %}
+        	<li class="list-group-item">
+				<div class="list-group-item-heading">
+					<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }} 
+					</a>
+					by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a>
+					{% if playlist.picture %}
+						<img src="{{ MEDIA_URL }}{{ playlist.picture }}" width="30" height="30" alt="{{ playlist.name }}'s playlist image" />
+					{% endif %}
+					<strong>created on {{ playlist.createdDate }}</strong>
+
+				</div>
+				<div class="tag-list">Tags: {{ playlist.get_playlist_tag_descriptions_as_string }}</div>
+			</li>
         {% endfor %}
     {% endif %}
 </div>

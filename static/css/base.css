@@ -349,21 +349,11 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     margin-bottom: 50px;
 }
 
-#playlist-search-bar{
-    position: -webkit-sticky; // Safari
-    position: sticky;
-    top: 0;
-}
-
 #all-playlist-listing{
-
+    margin-top: 10px;
 }
 
 #playlist-listing{
-    position: absolute;
-    top: 40px;
-    display: none;
-    z-index: 1;
 }
 
 .see-through{
@@ -406,4 +396,8 @@ td {
 
 .centred{
     margin: auto;
+}
+
+.blue-text{
+    color: rgb(25,194,200, 1);
 }

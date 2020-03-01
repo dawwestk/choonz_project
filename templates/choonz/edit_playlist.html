@@ -81,7 +81,7 @@
                             <textarea id="tag-search-input" class="form-control" placeholder="Search all tags..." rows="1"></textarea>
                         </p>
                         <div class="container m-4" id="tag-listing">
-                            {% block sidebar_block %}
+                            {% block tag_list_block %}
                                 {% get_tag_list tag %}
                             {% endblock %}
                         </div>
