@@ -17,22 +17,14 @@
 				</h2>
 			</div>
 		</div>
-	</div>
-
+			<p>
+			<br />
+			Choonz is a django based web application, created by four music loving students as part of their Glasgow University Masters Degree in Software Development.
+			<br />
+			Alot of love went in to this project. We hope you enjoy it as much as we enjoyed making it. 
+			</p>
+		</div>
 	<div>
-		<p>Visits: {{ visits}}</p>
+	<p>Visits: {{ visits}}</p>
 	</div>
-
-	<div>
-		<a href="{% url 'choonz:index' %}">Index</a><br />
-		<img src="{% static 'images/choonz.jpg' %}" alt="Picture of choonz" />
-		<img src="{{ MEDIA_URL }}cat.jpg" alt="Picture of a Cat" />
-	</div>
-
-	<br />
-	<button class="btn btn-primary" id="about-btn">
-		Click me - I'm using JQuery!
-	</button>
-	<p>This is some text for the JQuery hover example</p>
-	<div id="msg">Hello! I'm a further example for JQuery testing!</div>
 {% endblock %}

@@ -9,6 +9,7 @@ app_name = 'choonz'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('about/', views.AboutView.as_view(), name='about'),
+    path('contact/', views.ContactView.as_view(), name='contact'),
     path('playlist/<slug:playlist_name_slug>/', views.ShowPlaylistView.as_view(), name='show_playlist'),
     path('add_playlist/', views.AddPlaylistView.as_view(), name='add_playlist'),
     path('list_playlists/', views.ListPlaylistView.as_view(), name='list_playlists'),

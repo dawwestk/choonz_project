@@ -70,6 +70,15 @@ class AboutView(View):
 
         return render(request, 'choonz/about.html', context_dict)
 
+class ContactView(View):
+    def get(self, request):
+        user_profile = get_user_profile(request)
+        context_dict = {'user_profile': user_profile}
+        visitor_cookie_handler(request)
+        context_dict['visits'] = request.session['visits']
+
+        return render(request, 'choonz/contact.html', context_dict)
+
 
 '''
 
