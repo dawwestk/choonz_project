@@ -7,23 +7,28 @@
 {% endblock %}
 
 {% block body_block %}
-
-    <div class="container-fluid" id="headerContainer">
-        <h1 class="display-4" id="titleHeader">My Stats</h1>
-        <p class="lead"></p>
-    </div>
-
     <div class="container">
-        <div class="card">
+    {% if selected_user == user %}
+
+        <div class="jumbotron p-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col mb-3">
+                        <h1 class="jumbotron-heading">
+                            My Stats
+                        </h1> 
+                    </div>
+                </div>
+                <button class="btn btn-info" type="submit" name="submit" id="view-tables-button">Tables</button>
+                <button class="btn btn-info" type="submit" name="submit" id="view-charts-button" onclick="loadCharts({{ playlist_stats.playlist_names }}, {{playlist_stats.playlist_aves }}, {{ playlist_stats.user_playlist_average_rating }},{{ user_stats.rating_dates }}, {{ user_stats.rating_stars }},{{ user_stats.rating_playlist }})">Charts</button>
+            </div>
+        </div>
+
+        <div id="table-view" class="card">
             <div class="row p-4">
                 <div class="col">
                     <div class="container">
-                        <h3>My Playlist Stats</h3>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="container">
-                        <button class="btn btn-warning" type="button" onclick="loadRatingChart({{ playlist_stats.playlist_names }}, {{playlist_stats.playlist_aves }}, {{ playlist_stats.user_playlist_average_rating }})">Display Playlist Graph</button>
+                        <h3>{{ user.username }}'s Playlist Stats</h3>
                     </div>
                 </div>
             </div>
@@ -50,8 +55,8 @@
                             </tr>
                         </table>
                     </div>
-                    <br />
-                    <br />
+                </div>
+                <div class="col">
                     <div class="row centred">
                         <table id="playlist-info-table">
                             <tr>
@@ -78,20 +83,12 @@
                     </div>
                     {% endif %}
                 </div>
-                <div class="col">
-                    <canvas id="playlist-rating-bar-chart" height="350" width="500"></canvas>
-                </div>
             </div>
             <hr>
             <div class="row p-4">
                 <div class="col">
                     <div class="container">
                         <h3>Ratings By {{ user.username }}</h3>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="container">
-                        <button class="btn btn-warning" type="button" onclick="loadUserChart({{ user_stats.rating_dates }}, {{ user_stats.rating_stars }},{{ user_stats.rating_playlist }})">Display User Rating Graph</button>
                     </div>
                 </div>
             </div>
@@ -118,8 +115,8 @@
                             </tr>
                         </table>
                     </div>
-                    <br />
-                    <br />
+                </div>
+                <div class="col">
                     <div class="row centred">
                         <table id="playlist-info-table">
                             <tr>
@@ -138,15 +135,52 @@
                             {% endfor %}
                         </table>
                     </div>
-                    {% endif %}
-                </div>
-                <div class="col">
-                    <canvas id="user-line-chart" height="350" width="500"></canvas>
+                {% endif %}
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="addSongPopUp">PopUp message</div>
+        <div id="chart-view" class="card">
+            <div class="row p-4">
+                <div class="col">
+                    <div class="container">
+                        <h3>{{ user.username }}'s Playlist Graph</h3>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="container">
+                        <h3>Rating Activity</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-4">
+                <div class="col">
+                    {% if playlist_stats %}
+                    <div class="row centred">
+                        <canvas id="playlist-rating-bar-chart" height="350" width="500"></canvas>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row centred">
+                        <canvas id="user-line-chart" height="350" width="500"></canvas>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="jumbotron p-3">
+            <div class="container">
+                <div class="row">
+                    <div class="col mb-3">
+                        <h1 class="jumbotron-heading">
+                                Sorry - you can only view your own stats page!
+                        </h1> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    </div>
 
 {% endblock %}

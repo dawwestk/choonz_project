@@ -1,5 +1,11 @@
 $(document).ready( function () {
-  	showPlaylistView();
+	var url = 'choonz/';
+	if (window.location.href.indexOf(url + "profile/") > -1) {
+    	showPlaylistView();
+    }
+    if(window.location.href.indexOf("my") > -1){
+    	loadMyStatsPage();
+    }
 
 	$('#about-btn').click(function(){
 		msgStr = $('#msg').html();
@@ -8,8 +14,29 @@ $(document).ready( function () {
 	})
 
 
+	// Profile View Buttons
+	$('#view-playlists-button').click(function(){
+		showPlaylistView();
+	})
+	$('#view-rated-playlists-button').click(function(){
+		showRatedPlaylistsView();
+	})
+	$('#edit-profile-button').click(function(){
+		showEditProfileView();
+	})
 
+	// My Stats Buttons
+	$('#view-tables-button').click(function(){
+		loadMyStatsPage();
+	})
+		
 })
+
+function loadCharts(bar_label_info, bar_data, bar_average, line_date_info, line_data, line_names){
+	loadRatingChart(bar_label_info, bar_data, bar_average);
+	loadUserChart(line_date_info, line_data, line_names);
+	showChartsView();
+}
 
 function loadRatingChart(label_info, rating_info, average_rating){
 	//alert(label_info);
@@ -83,7 +110,6 @@ function loadRatingChart(label_info, rating_info, average_rating){
 	        }
         }
     });
-    ctx.css('display', 'block');
 }
 
 function loadUserChart(date_info, rating_info, name_info){
@@ -139,49 +165,18 @@ function loadUserChart(date_info, rating_info, name_info){
 	        }
         }
     });
-    ctx.css('display', 'block');
 }
-	/*
-	var ctx = $('#playlist-rating-bar-chart');
-	var myChart = new Chart(ctx, {
-	    type: 'bar',
-	    data: {
-	        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-	        datasets: [{
-	            label: '# of Votes',
-	            data: [12, 19, 3, 5, 2, 3],
-	            backgroundColor: [
-	                'rgba(255, 99, 132, 0.2)',
-	                'rgba(54, 162, 235, 0.2)',
-	                'rgba(255, 206, 86, 0.2)',
-	                'rgba(75, 192, 192, 0.2)',
-	                'rgba(153, 102, 255, 0.2)',
-	                'rgba(255, 159, 64, 0.2)'
-	            ],
-	            borderColor: [
-	                'rgba(255, 99, 132, 1)',
-	                'rgba(54, 162, 235, 1)',
-	                'rgba(255, 206, 86, 1)',
-	                'rgba(75, 192, 192, 1)',
-	                'rgba(153, 102, 255, 1)',
-	                'rgba(255, 159, 64, 1)'
-	            ],
-	            borderWidth: 1
-	        }]
-	    },
-	    options: {
-	    	responsive: false,
-	        scales: {
-	            yAxes: [{
-	                ticks: {
-	                    beginAtZero: true
-	                }
-	            }]
-	        }
-	    }
-	});
-	*/
 
+// MyStats Views
+function loadMyStatsPage() {
+	$('#chart-view').hide();
+	$('#table-view').show();
+}
+
+function showChartsView(){
+	$('#chart-view').show();
+	$('#table-view').hide();
+}
 
 // Profile Views
 function showPlaylistView() {

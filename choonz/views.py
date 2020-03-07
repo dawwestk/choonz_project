@@ -898,7 +898,8 @@ class MyStatsView(View):
     def get(self, request, username):
         user = request.user
         user_profile = get_user_profile(request)
-        context_dict = {'user_profile': user_profile, 'username': user.username}
+        selected_user = User.objects.get(username=username)
+        context_dict = {'user_profile': user_profile, 'username': user.username, 'selected_user': selected_user}
 
         try:
             # if the user has rated anything

@@ -8,7 +8,7 @@
 {% block body_block %}
 	
 	<div class="jumbotron p-3">
-		<div class="container" onload="showPlaylistView()">
+		<div class="container">
 			<div class="row">
 				<div class="col mb-3">
 					{% if page_user_profile.picture %}
@@ -26,13 +26,12 @@
 					</h1> 
 				</div>
 			</div>
-			<button class="btn btn-info" type="submit" name="submit" id="view-playlists-button" onclick="showPlaylistView()">Playlists</button>
-			<button class="btn btn-info" type="submit" name="submit" id="see-rated-playlists-button" onclick="showRatedPlaylistsView()">Rated Playlists</button>
+			<button class="btn btn-info" type="submit" name="submit" id="view-playlists-button">Playlists</button>
+			<button class="btn btn-info" type="submit" name="submit" id="view-rated-playlists-button">Rated Playlists</button>
 			{% if selected_user == user %}
-				<button class="btn btn-info" type="submit" name="submit" id="edit-profile-button" onclick="showEditProfileView()">Edit Profile</button>
-				<button class="btn btn-info" type="submit" name="submit" id="new-playlist-button" 
-						onclick='location.href="{% url 'choonz:add_playlist' %}"'>Create Playlist
-				</button>
+				<button class="btn btn-info" type="submit" name="submit" id="edit-profile-button">Edit Profile</button>
+				<a class="btn btn-info" id="new-playlist-button" href="{% url 'choonz:add_playlist' %}">Create Playlist
+				</a>
 				<a class="btn btn-info" href="{% url 'choonz:my_stats' user.username %}">View My Stats</a>
 
 			{% endif %}
@@ -225,10 +224,10 @@
 						<div class="card p-4">
 						{% if my_user_profile.picture %}
 							<img src="{{ MEDIA_URL }}{{ my_user_profile.picture }}" width="320" height="240" 
-								alt="{{ selected_user.username }}'s profile image" onload="showPlaylistView()"/>
+								alt="{{ selected_user.username }}'s profile image"/>
 						{% else %}
 							<img src="{% static 'images/default_profile_img.jpg' %}" width="320" height="240" 
-								alt="No profile image" onload="showPlaylistView()"/>
+								alt="No profile image"/>
 						{% endif %}
 						</div>
 					</div>
