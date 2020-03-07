@@ -68,7 +68,9 @@
 								{% endfor %}
 								</ul>
 							{% else %}
+							<div class="centred card">
 								<strong>No published playlists</strong>
+							</div>
 							{% endif %}
 						</p>
 					</div>
@@ -105,7 +107,9 @@
 									{% endfor %}
 								</ul>
 							{% else %}
+							<div class="centred card">
 								<strong>No published playlists</strong>
+							</div>
 							{% endif %}
 						</p>
 					</div>
@@ -140,7 +144,9 @@
 									{% endfor %}
 								</ul>
 							{% else %}
+							<div class="centred card">
 								<strong>There are no playlists present.</strong>
+							</div>
 							{% endif %}
 						</p>
 					</div>
@@ -152,7 +158,7 @@
 
 	<div id="rated-playlists-view" class="container"> 
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<div class="card mb-6">
 					<div class="card-body">
 						<h2>{{ selected_user.username }}'s Ratings</h2>
@@ -184,29 +190,55 @@
 								{% endfor %}
 								</ul>
 							{% else %}
+							<div class="centred card">
 								<strong>No rated playlists</strong>
+							</div>
 							{% endif %}
 						</p>
 					</div>
 				</div>
 			</div>
 
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<div class="card mb-6">
 					<div class="card-body">
-						<h2>{{ selected_user.username }}'s Favourite Tags</h2>
+						<h2>{{ selected_user.username }}'s Top 10 Tags</h2>
+						<p class="card-text">
+							{% if all_rated_tags %}
+								<ul class="list-group">
+								{% for tag, count in tag_obs.items %}												
+									<li class="list-group-item">
+										<span class="badge badge-light p-2">{{ tag }}</span>: ratings <span class="badge badge-light p-2">{{ count }}</span> times
+									</li>
+								{% endfor %}
+									</ul>
+							{% else %}
+							<div class="centred card">
+								<strong>No rated playlists</strong>
+							</div>
+							{% endif %}
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card mb-6">
+					<div class="card-body">
+						<h2>Recommended Playlists</h2>
 						<p class="card-text">
 							{% if all_rated_tags %}
 								<ul class="list-group">
 								{% for tag in tag_obs %}												
 									<li class="list-group-item">
-										<span class="badge badge-light p-2">The Tags: {{ tag.description }}</span>	
+										<span class="badge badge-light p-2">{{ tag }}</span>	
 										
 									</li>
 								{% endfor %}
 									</ul>
 							{% else %}
-								<strong>No rated playlists</strong>
+							<div class="centred card">
+								<strong>We can't recommend a playlist until you rate some that you like!</strong>
+							</div>
 							{% endif %}
 						</p>
 					</div>

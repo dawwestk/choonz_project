@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from choonz.forms import PlaylistForm, UserForm, UserProfileForm, RatingForm
 from datetime import datetime, timedelta
 import pytz
+import collections
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
@@ -19,7 +20,7 @@ import spotipy
 import json
 from spotipy.oauth2 import SpotifyClientCredentials
 from django.conf import settings
-from django.db.models import Avg, Count
+from django.db.models import Avg, Q, Count
 
 '''
 
@@ -641,8 +642,7 @@ class ProfileView(View):
 
         all_rated_tags = []
         rated_playlists = []
-        flat_tags = []
-        tag_obs = None
+        tag_obs = {}
         for i in range(0, len(ratings_by_user)):
             playlist_info = {}
             playlist = Playlist.objects.get(id=ratings_by_user[i])
@@ -650,29 +650,27 @@ class ProfileView(View):
             playlist_info["slug"] = playlist.slug
             playlist_info["averageRating"] = playlist.averageRating
             playlist_info["numberOfRatings"] = playlist.numberOfRatings
-            playlist_info["tags"] = playlist.get_playlist_tag_list
+            playlist_info["tags"] = playlist.get_playlist_tag_descriptions
+            for j in playlist_info['tags']:
+                try:
+                    tag_obs[j] = tag_obs[j] + 1
+                except:
+                    tag_obs[j] = 1
+                all_rated_tags.append(tag_obs)
             try:
                 rating = Rating.objects.get(user=user, playlist=playlist)
                 playlist_info["stars"] = rating.stars
             except Rating.DoesNotExist:
                 playlist_info["stars"] = 0
-            try:
-                all_rated_tags.append(playlist_info['tags'])
-                for i in all_rated_tags:
-                    for j in i:
-                        flat_tags.append(j)
-
-                tag_obs = Tag.objects.filter(description__in=flat_tags)
-            except:
-                flat_tags = None
-                tag_obs = None
 
             rated_playlists.append(playlist_info)
-            # most_common_tags = rated_playlists.values("tags").annotate(count=Count('tags')).order_by("-count")
+
+        sorted_tag_obs = {k: v for k, v in sorted(tag_obs.items(), reverse=True, key=lambda item: item[1])[:10]}
+        tag_obs = collections.OrderedDict(sorted_tag_obs)
         context_dict = {'page_user_profile': page_user_profile, 'user_profile': my_user_profile, 'selected_user': user, 'form': form,
                         'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
                         'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists,
-                        'all_rated_tags': all_rated_tags, 'flat_tags': flat_tags, 'tag_obs': tag_obs}
+                        'all_rated_tags': all_rated_tags, 'tag_obs': tag_obs}
         # , "common_tags":most_common_tags}
 
         return render(request, 'choonz/profile.html', context_dict)
