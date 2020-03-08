@@ -714,8 +714,8 @@ def suggest_playlist_from_tags(tag_obs, user, already_rated):
                     tag_match_counter = tag_match_counter + 1
                 except:
                     continue
-            tag_match_coverage = round(tag_match_counter/tags_on_playlist)
-            overall_percentage = round(tag_match_percentage * tag_match_coverage)
+            tag_match_coverage = round(tag_match_counter/tags_on_playlist, 2)
+            overall_percentage = round(tag_match_percentage * tag_match_coverage, 2)
             if overall_percentage > 0:
                 recommendations[playlist] = overall_percentage
 
