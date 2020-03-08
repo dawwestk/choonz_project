@@ -662,10 +662,9 @@ class ProfileView(View):
 
         sorted_tag_obs = sort_dicts_by_values(tag_obs, True, 10)
         tag_obs = collections.OrderedDict(sorted_tag_obs)
-        playlist_suggestions = suggest_playlist_from_tags(tag_obs, user)
+        playlist_suggestions = suggest_playlist_from_tags(tag_obs, user, ratings_by_user)
         context_dict = {'page_user_profile': page_user_profile, 'user_profile': my_user_profile, 'selected_user': user,
-                        'form': form,
-                        'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
+                        'form': form, 'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
                         'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists,
                         'all_rated_tags': all_rated_tags, 'tag_obs': tag_obs, 'playlist_suggestions': playlist_suggestions}
 
@@ -693,30 +692,32 @@ class ProfileView(View):
 def sort_dicts_by_values(dict, reverse=False, limit=10):
     return {k: v for k, v in sorted(dict.items(), reverse=reverse, key=lambda item: item[1])[:limit]}
 
-def suggest_playlist_from_tags(tag_obs, user):
+def suggest_playlist_from_tags(tag_obs, user, already_rated):
     all_playlists = Playlist.objects.exclude(creator=user)
+
     tag_count = {}
+    recommendations = {}
 
     total_tag_weighting = sum(tag_obs.values())
-    recommendations = {}
 
     for tag in tag_obs:
         tag_count[tag] = round(tag_obs[tag] / total_tag_weighting * 100)
 
     for playlist in all_playlists:
-        tags_on_playlist = len(playlist.get_playlist_tag_descriptions)
-        tag_match_counter = 0
-        tag_match_percentage = 0
-        for tag in playlist.get_playlist_tag_descriptions:
-            try:
-                tag_match_percentage = tag_match_percentage + tag_count[tag]
-                tag_match_counter = tag_match_counter + 1
-            except:
-                continue
-        tag_match_coverage = round(tag_match_counter/tags_on_playlist)
-        overall_percentage = round(tag_match_percentage * tag_match_coverage)
-        if overall_percentage > 0:
-            recommendations[playlist] = overall_percentage
+        if playlist.id not in already_rated:
+            tags_on_playlist = len(playlist.get_playlist_tag_descriptions)
+            tag_match_counter = 0
+            tag_match_percentage = 0
+            for tag in playlist.get_playlist_tag_descriptions:
+                try:
+                    tag_match_percentage = tag_match_percentage + tag_count[tag]
+                    tag_match_counter = tag_match_counter + 1
+                except:
+                    continue
+            tag_match_coverage = round(tag_match_counter/tags_on_playlist)
+            overall_percentage = round(tag_match_percentage * tag_match_coverage)
+            if overall_percentage > 0:
+                recommendations[playlist] = overall_percentage
 
     recommendations = sort_dicts_by_values(recommendations, True, 10)
     return recommendations
