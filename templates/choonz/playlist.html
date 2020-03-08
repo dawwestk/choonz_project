@@ -20,8 +20,8 @@
 					</div>
 					<div class="col">
 						<h4 class="jumbotron-heading">Average Rating: 
-						{% if playlist.getAverageRating %}
-							{{ playlist.getAverageRating|floatformat}}
+						{% if playlist.get_average_rating %}
+							{{ playlist.get_average_rating|floatformat}}
 						{% else %}
 							0.0
 						{% endif %}

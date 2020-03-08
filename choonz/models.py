@@ -40,18 +40,17 @@ class Playlist(models.Model):
     lastUpdatedDate = models.DateTimeField(blank=True, null=True)
     numberOfRatings = models.IntegerField(default=0)
     description = models.CharField(max_length=max_char_length * 2, default='Description...')
-    image = models.FileField(blank=True)
     public = models.BooleanField(default=False)
 
     @property
-    def getAverageRating(self):
+    def get_average_rating(self):
         ave = self.rating_set.aggregate(Avg('stars'))['stars__avg']
         if not ave:
             ave = 0.0
         return ave
 
     @property
-    def getNumberOfRatings(self):
+    def get_number_of_ratings(self):
         playlist_ratings = Playlist.objects.annotate(num_ratings=Count('rating'))  # annotate the queryset
         num = playlist_ratings.get(id=self.id).num_ratings
         if not num:
@@ -93,7 +92,7 @@ class Playlist(models.Model):
 
 class Artist(models.Model):
     name = models.CharField(max_length=max_char_length, blank=False)
-    webpage = models.URLField(blank=True)
+    webpage = models.URLField(blank=True, null=True)
     linkToSpotify = models.URLField(blank=True)
     numberOfPlaylists = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
@@ -109,9 +108,9 @@ class Artist(models.Model):
 class Song(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     title = models.CharField(max_length=max_char_length, blank=False)
-    linkToSpotify = models.URLField(blank=True)
+    linkToSpotify = models.URLField(blank=True, null=True)
     numberOfPlaylists = models.IntegerField(default=0)
-    linkOther = models.URLField(blank=True)
+    linkOther = models.URLField(blank=True, null=True)
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
@@ -119,7 +118,7 @@ class Song(models.Model):
         super(Song, self).save(*args, **kwargs)
 
     @property
-    def numberOfPlaylists(self):
+    def number_of_playlists(self):
         playlist_count = Song.objects.annotate(num_playlists=Count('playlist'))  # annotate the queryset
         return playlist_count.get(id=self.id).num_playlists
 
@@ -140,6 +139,13 @@ class Rating(models.Model):
 
     def __str__(self):
         return self.user.username + " review of " + self.playlist.name
+
+    def save(self, *args, **kwargs):
+        if self.stars < 0:
+            self.stars = 0
+        if self.stars > 5:
+            self.stars = 5
+        super(Rating, self).save(*args, **kwargs)
 
 
 class UserProfile(models.Model):

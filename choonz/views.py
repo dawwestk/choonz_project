@@ -641,8 +641,8 @@ class ProfileView(View):
             playlist = Playlist.objects.get(id=ratings_by_user[i])
             playlist_info["playlist"] = playlist.name
             playlist_info["slug"] = playlist.slug
-            playlist_info["averageRating"] = playlist.getAverageRating
-            playlist_info["numberOfRatings"] = playlist.getNumberOfRatings
+            playlist_info["averageRating"] = playlist.get_average_rating
+            playlist_info["numberOfRatings"] = playlist.get_number_of_ratings
             playlist_info["tags"] = playlist.get_playlist_tag_descriptions
             try:
                 rating = Rating.objects.get(user=user, playlist=playlist)
@@ -991,7 +991,7 @@ class MyStatsView(View):
             for playlist in playlists:
                 playlist_names.append(playlist.name)
                 try:
-                    ave = round(playlist.getAverageRating, 1)
+                    ave = round(playlist.get_average_rating, 1)
                 except:
                     ave = 0
                 playlist_aves.append(ave)

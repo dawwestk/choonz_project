@@ -60,8 +60,8 @@
 										{% endif %}
 										<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
 										<div>
-											<span class="badge badge-light p-2">Number of Ratings: {{playlist.getNumberOfRatings}}</span>
-											<span class="badge badge-light p-2">Avg. Rating: {{playlist.getAverageRating|floatformat}}</span>
+											<span class="badge badge-light p-2">Number of Ratings: {{playlist.get_number_of_ratings}}</span>
+											<span class="badge badge-light p-2">Avg. Rating: {{playlist.get_average_rating|floatformat}}</span>
 											{% if selected_user == user %}
 												<button class="btn btn-info btn-sm" type="submit" name="submit" id="edit-playlist-button">Edit</button>	
 											{% endif %}
@@ -99,8 +99,8 @@
 												{% endif %}
 												<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
 												<div>
-													<span class="badge badge-light p-2">Number of Ratings: {{playlist.getNumberOfRatings}}</span>
-													<span class="badge badge-light p-2">Avg. Rating: {{playlist.getAverageRating|floatformat}}</span>
+													<span class="badge badge-light p-2">Number of Ratings: {{playlist.get_number_of_ratings}}</span>
+													<span class="badge badge-light p-2">Avg. Rating: {{playlist.get_average_rating|floatformat}}</span>
 													{% if selected_user == user %}
 														<form class="form-inline" id="user-form" method="get" action="{% url 'choonz:edit_playlist' playlist.slug %}">
 															<button class="btn btn-info btn-sm" type="submit" name="submit">Edit</button>
