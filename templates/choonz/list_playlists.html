@@ -30,7 +30,7 @@
 			                    <div class="input-group-prepend">
 			                        <span class="input-group-text" id="playlist-filter-creator-prompt">Filter by Creator:</span>
 			                    </div>
-			                    <input type="text" name="creator" id="creator" class="form-control" placeholder=""></input>
+			                    <input type="text" name="creator" id="creator" class="form-control" placeholder="" />
 			                </p>
 			            </div>
 			            <div class="input-group mb-3">
@@ -38,18 +38,15 @@
 			                    <div class="input-group-prepend">
 			                        <span class="input-group-text" id="playlist-filter-created-date-prompt">Filter by Created Date:</span>
 			                    </div>
-			                    <input type="date" name="created-date" id="created-date" class="form-control" placeholder=""></input>
+			                    <input type="date" name="created-date" id="created-date" class="form-control" placeholder="" />
 			                </p>
 			            </div>
-			            
-			        </div>
-			        <div class="col">
 						<div class="input-group mb-3">
 			                <p class="required">
 			                    <div class="input-group-prepend">
 			                        <span class="input-group-text" id="playlist-filter-tags-prompt">Filter by Tags:</span>
 			                    </div>
-			                    <input type="text" name="tags" id="tags" class="form-control" placeholder=""></input>
+			                    <input type="text" name="tags" id="tags" class="form-control" placeholder="" />
 			                </p>
 			            </div>
 			            <div class="card m-4" id="tag-listing">
@@ -103,7 +100,7 @@
 	</div>
 	<div class="container">
 		<div class="card">
-			<p>Can't see a playlist that you like? Then why not <a href="{% url 'choonz:add_playlist' %}">make your own</a>?</p>
+			<p class="centred">Can't see a playlist that you like? Then why not <a href="{% url 'choonz:add_playlist' %}">make your own</a>?</p>
 		</div>
 	</div>
 

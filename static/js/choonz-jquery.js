@@ -122,7 +122,7 @@ function loadUserChart(date_info, rating_info, name_info){
         type: 'line',
         data: {
         	datasets: [{
-        			label: "User Ratings Over Time",
+        			label: "Given Ratings Over Time",
         			data: playlist_ratings,
         			type: 'line',
         			fill: false,

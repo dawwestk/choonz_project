@@ -43,6 +43,23 @@
                 </div>
             </div>
         </div>
+        <div class="jumbotron m-2 p-1">
+        {% if playlist.public %}
+            <h4>Want to pull this playlist back from your adoring public so you can make some changes?</h4>
+                <form class="form-inline" id="user-form" method="get" action="{% url 'choonz:publish_playlist' %}">
+                    {% csrf_token %}
+                    <input id="playlist_id" name="playlist_id" type="hidden" value="{{ playlist.id }}">
+                    <button class="btn btn-warning btn-block" type="submit" data-playlist_id="{{ playlist.id }}" name="submit">Send to Drafts</button>
+                </form>
+        {% else %}
+            <h4>Nobody can see your masterpiece yet! Make it public so they can appreciate your genius!</h4>
+                <form class="form-inline" id="user-form" method="post" action="{% url 'choonz:publish_playlist' %}">
+                    {% csrf_token %}
+                    <input id="playlist_id" name="playlist_id" type="hidden" value="{{ playlist.id }}">
+                    <button class="btn btn-warning btn-block" type="submit" data-playlist_id="{{ playlist.id }}" name="submit">Publish this Playlist!</button>
+                </form>
+        {% endif %}
+        </div>
         <hr>
     {% if user == playlist.creator %}
         <div class="container">
