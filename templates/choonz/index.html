@@ -8,7 +8,7 @@
 {% block body_block %}
 
 	<div id="page-greeting">
-		<h2 class="h2">
+		<h2 class="h2" id="greetingText">
 		{% if user.is_authenticated %}
 			Hi {{user.username }}, ready to get your playlist on?
 		{% else %}
