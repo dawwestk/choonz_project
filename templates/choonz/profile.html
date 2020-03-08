@@ -43,7 +43,7 @@
 			<div class="col-md-4">
 				<div class="card mb-3">
 					<div class="card-body">
-						<h2>{{ selected_user.username }}'s Playlists</h2>
+						<h2>Public Playlists</h2>
 						<p class="card-text">
 							{% if public_playlists %}
 								<ul class="list-group">
@@ -166,7 +166,7 @@
 							{% if rated_playlists %}
 								<ul class="list-group">
 								{% for playlist in rated_playlists %}												
-									<li class="list-group-item">
+									<li class="list-group-item no-overflow">
 										{% if playlist.image %}
 											<img src="{{ MEDIA_URL }}{{ playlist.image }}" width="50" height="50" 
 												alt="Playlist image"/>
@@ -183,8 +183,8 @@
 												<span class="badge badge-light p-2">The Tags: {{playlist.tags}}</span>
 												<span class="badge badge-light p-2">{{ selected_user.username }}'s Rating: {{playlist.stars}}</span>
 											{% endif %}
-											<span class="badge badge-light p-2">Number of Ratings: {{playlist.getNumberOfRatings}}</span>
-											<span class="badge badge-light p-2">Avg. Rating: {{playlist.getAverageRating|floatformat}}</span>
+											<span class="badge badge-light p-2">Number of Ratings: {{playlist.numberOfRatings}}</span>
+											<span class="badge badge-light p-2">Avg. Rating: {{playlist.averageRating|floatformat}}</span>
 										</div>
 									</li>
 								{% endfor %}
@@ -224,7 +224,7 @@
 			<div class="col-md-4">
 				<div class="card mb-6">
 					<div class="card-body">
-						<h2>Recommended Playlists</h2>
+						<h2>Playlists For You</h2>
 						<p class="card-text">
 							{% if all_rated_tags %}
 								<ul class="list-group">

@@ -33,8 +33,8 @@
                 </div>
             </div>
             <div class="row p-4">
+                {% if playlist_stats %}
                 <div class="col">
-                    {% if playlist_stats %}
                     <div class="row centred">
                         <table id="user-info-table">
                             <tr>
@@ -81,8 +81,14 @@
                             {% endfor %}
                         </table>
                     </div>
-                    {% endif %}
                 </div>
+                {% else %}
+                <div class="row centred">
+                    <div class="card">
+                        <h4>You haven't created any playlists yet! Why not <a href="{% url 'choonz:add_playlist' %}">make one now?</a></h4>
+                    </div>
+                </div>
+                {% endif %}
             </div>
             <hr>
             <div class="row p-4">

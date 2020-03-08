@@ -398,6 +398,12 @@ td {
     margin: auto;
 }
 
+.no-overflow{
+    overflow: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
 .blue-text{
     color: rgb(25,194,200, 1);
 }

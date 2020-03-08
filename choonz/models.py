@@ -41,12 +41,18 @@ class Playlist(models.Model):
 
     @property
     def getAverageRating(self):
-        return self.rating_set.aggregate(Avg('stars'))['stars__avg']
+        ave = self.rating_set.aggregate(Avg('stars'))['stars__avg']
+        if not ave:
+            ave = 0.0
+        return ave
 
     @property
     def getNumberOfRatings(self):
         playlist_ratings = Playlist.objects.annotate(num_ratings=Count('rating'))  # annotate the queryset
-        return playlist_ratings.get(id=self.id).num_ratings
+        num = playlist_ratings.get(id=self.id).num_ratings
+        if not num:
+            num = 0
+        return num
 
     @property
     def get_song_list(self):

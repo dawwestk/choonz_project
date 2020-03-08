@@ -71,6 +71,7 @@ class AboutView(View):
 
         return render(request, 'choonz/about.html', context_dict)
 
+
 class ContactView(View):
     def get(self, request):
         user_profile = get_user_profile(request)
@@ -180,17 +181,6 @@ class AddPlaylistView(View):
         context_dict['form'] = form
 
         return render(request, 'choonz/add_playlist.html', context_dict)
-
-
-class ListPlaylistView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        user_profile = get_user_profile(request)
-        context_dict = {'user_profile': user_profile}
-        playlists = Playlist.objects.filter(public=True)
-        context_dict['playlist_list'] = playlists
-
-        return render(request, 'choonz/list_playlists.html', context_dict)
 
 
 class PlaylistEditorView(View):
@@ -445,6 +435,7 @@ class PublishPlaylistView(View):
 
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
+
 class PlaylistFilterView(View):
     def get(self, request):
         user_profile = get_user_profile(request)
@@ -462,11 +453,11 @@ class PlaylistFilterView(View):
             creator = ''
 
         if 'createdDate' in request.GET:
-            createdDate = request.GET['createdDate']
+            created_date = request.GET['createdDate']
         else:
-            createdDate = ''
+            created_date = ''
 
-        playlist_list = filter_playlists(tags, creator, createdDate)
+        playlist_list = filter_playlists(tags, creator, created_date)
 
         if len(playlist_list) == 0:
             playlist_list = Playlist.objects.order_by('name')
@@ -474,6 +465,7 @@ class PlaylistFilterView(View):
         context_dict = {'user_profile': user_profile, 'playlist_suggestions': playlist_list}
 
         return render(request, 'choonz/playlist_suggestion.html', context_dict)
+
 
 def filter_playlists(tags, creator, created_date):
     playlist_list = Playlist.objects.all()
@@ -498,10 +490,19 @@ def filter_playlists(tags, creator, created_date):
     return playlist_list
 
 
+class ListPlaylistView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        user_profile = get_user_profile(request)
+        playlists = Playlist.objects.filter(public=True)
+        context_dict = {'user_profile': user_profile, 'playlist_list': playlists}
+
+        return render(request, 'choonz/list_playlists.html', context_dict)
+
+
 class PlaylistSuggestionView(View):
     def get(self, request):
         user_profile = get_user_profile(request)
-        playlist_list = None
         if 'suggestion' in request.GET:
             suggestion = request.GET['suggestion']
         else:
@@ -632,13 +633,10 @@ class ProfileView(View):
         draft_playlists = Playlist.objects.filter(creator=user, public=False)
         # popular_playlists = public_playlists.order_by('-views')[:10]
 
-        popular_playlists = None
-
-        # highest_rated_playlists = Playlist.objects.values('slug', 'name')
-        # .annotate(average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
-
+        popular_playlists = Playlist.objects.filter(creator=user).annotate(
+            average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
         # All Ratings the profile owner has given
-        ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True))
+        ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True).order_by('-stars'))
 
         all_rated_tags = []
         rated_playlists = []
@@ -648,26 +646,29 @@ class ProfileView(View):
             playlist = Playlist.objects.get(id=ratings_by_user[i])
             playlist_info["playlist"] = playlist.name
             playlist_info["slug"] = playlist.slug
-            playlist_info["averageRating"] = playlist.averageRating
-            playlist_info["numberOfRatings"] = playlist.numberOfRatings
+            playlist_info["averageRating"] = playlist.getAverageRating
+            playlist_info["numberOfRatings"] = playlist.getNumberOfRatings
             playlist_info["tags"] = playlist.get_playlist_tag_descriptions
-            for j in playlist_info['tags']:
-                try:
-                    tag_obs[j] = tag_obs[j] + 1
-                except:
-                    tag_obs[j] = 1
-                all_rated_tags.append(tag_obs)
             try:
                 rating = Rating.objects.get(user=user, playlist=playlist)
                 playlist_info["stars"] = rating.stars
             except Rating.DoesNotExist:
                 playlist_info["stars"] = 0
 
+            if playlist_info["stars"] > 2.5:
+                for j in playlist_info['tags']:
+                    try:
+                        tag_obs[j] = tag_obs[j] + 1
+                    except:
+                        tag_obs[j] = 1
+                    all_rated_tags.append(tag_obs)
+
             rated_playlists.append(playlist_info)
 
         sorted_tag_obs = {k: v for k, v in sorted(tag_obs.items(), reverse=True, key=lambda item: item[1])[:10]}
         tag_obs = collections.OrderedDict(sorted_tag_obs)
-        context_dict = {'page_user_profile': page_user_profile, 'user_profile': my_user_profile, 'selected_user': user, 'form': form,
+        context_dict = {'page_user_profile': page_user_profile, 'user_profile': my_user_profile, 'selected_user': user,
+                        'form': form,
                         'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
                         'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists,
                         'all_rated_tags': all_rated_tags, 'tag_obs': tag_obs}
@@ -733,8 +734,8 @@ class ImportPlaylistView(View):
         while playlists:
             for i, playlist in enumerate(playlists['items']):
                 if playlist['name'] == playlist_name:
-                    #print(playlist)
-                    #print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'], playlist['name']))
+                    # print(playlist)
+                    # print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'], playlist['name']))
                     results = sp.playlist(playlist['id'], fields="tracks")
                     tracks = results['tracks']
                     add_tracks(tracks, choonz_playlist)
@@ -788,7 +789,7 @@ def add_tracks(tracks, playlist):
 
         if track['external_urls']['spotify']:
             song.linkToSpotify = track['external_urls']['spotify']
-            
+
         song.save()
 
         choonz_playlist.songs.add(song)
@@ -942,11 +943,12 @@ class MyStatsView(View):
         if playlists:
             try:
                 user_playlist_average_rating = round(
-                playlists.aggregate(average_rating=Avg('rating__stars'))['average_rating'], 1)
+                    playlists.aggregate(average_rating=Avg('rating__stars'))['average_rating'], 1)
             except:
                 user_playlist_average_rating = 0
 
-            most_rated_playlist = Playlist.objects.filter(creator=user).annotate(num_ratings=Count('rating')).order_by('-num_ratings')[0]
+            most_rated_playlist = \
+            Playlist.objects.filter(creator=user).annotate(num_ratings=Count('rating')).order_by('-num_ratings')[0]
             highest_rated_playlist = Playlist.objects.filter(creator=user).values('slug', 'name').annotate(
                 average_rating=Avg('rating__stars')).order_by('-average_rating')[0]['name']
 

@@ -85,13 +85,11 @@
 	                </p>
 	            </div>
 	        </div>
-			<div class="panel-body" id="all-playlist-listing">
+			<div class="panel-body container-fluid" id="all-playlist-listing">
 				<div class="container-fluid" id="playlist-listing">
-					<ul>
-	                    {% block autocomplete_block %}
-	                        {% get_playlist_list %}
-	                    {% endblock %}
-	                </ul>
+                    {% block autocomplete_block %}
+                        {% get_playlist_list %}
+                    {% endblock %}
                 </div>
 			</div>
 			{% else %}
