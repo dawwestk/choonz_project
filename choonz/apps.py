@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class RangoConfig(AppConfig):
+class ChoonzConfig(AppConfig):
     name = 'choonz'

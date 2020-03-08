@@ -4,14 +4,15 @@ from django.template.defaultfilters import slugify
 from django.db.models import Avg, Count
 
 max_char_length = 128
-# Create your models here.
 
+
+# Create your models here.
 
 class Tag(models.Model):
     description = models.CharField(max_length=30)
     numberOfPlaylists = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
-	
+
     @property
     def getNumberOfPlaylists(self):
         playlist_tags = Tag.objects.annotate(num_playlists=Count('playlist'))  # annotate the queryset
@@ -22,10 +23,13 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.description)
+        if self.numberOfPlaylists < 0:
+            self.numberOfPlaylists = 0
         super(Tag, self).save(*args, **kwargs)
 
+
 class Playlist(models.Model):
-    max_length_char = max_char_length   # including here because other pieces of code reference Playlist.max_length_char
+    max_length_char = max_char_length  # including here because other pieces of code reference Playlist.max_length_char
     name = models.CharField(max_length=max_char_length, unique=True)
     slug = models.SlugField(unique=True)
     songs = models.ManyToManyField("Song")
@@ -35,7 +39,7 @@ class Playlist(models.Model):
     createdDate = models.DateTimeField(blank=True, null=True)
     lastUpdatedDate = models.DateTimeField(blank=True, null=True)
     numberOfRatings = models.IntegerField(default=0)
-    description = models.CharField(max_length=max_char_length*2, default='Description...')
+    description = models.CharField(max_length=max_char_length * 2, default='Description...')
     image = models.FileField(blank=True)
     public = models.BooleanField(default=False)
 
@@ -76,6 +80,8 @@ class Playlist(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
+        if self.averageRating < 0:
+            self.averageRating = 0
         super(Playlist, self).save(*args, **kwargs)
 
     class Meta:
@@ -83,6 +89,7 @@ class Playlist(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Artist(models.Model):
     name = models.CharField(max_length=max_char_length, blank=False)
@@ -97,6 +104,7 @@ class Artist(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Song(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
@@ -118,11 +126,12 @@ class Song(models.Model):
     def __str__(self):
         return self.title + " by " + self.artist.name
 
+
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
     stars = models.FloatField(default=0)
-    comment = models.CharField(max_length=max_char_length*2)
+    comment = models.CharField(max_length=max_char_length * 2)
     date = models.DateTimeField(blank=True, null=True)
 
     @property
@@ -132,6 +141,7 @@ class Rating(models.Model):
     def __str__(self):
         return self.user.username + " review of " + self.playlist.name
 
+
 class UserProfile(models.Model):
     # link UserProfile to User model instance
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -139,5 +149,3 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
-
-

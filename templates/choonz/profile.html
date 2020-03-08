@@ -43,7 +43,9 @@
 			<div class="col-md-4">
 				<div class="card mb-3">
 					<div class="card-body">
-						<h2>Public Playlists</h2>
+						<div class="index-card-header">
+							<h2>Public Playlists</h2>
+						</div>
 						<p class="card-text">
 							{% if public_playlists %}
 								<ul class="list-group">
@@ -80,7 +82,9 @@
 			<div class="col-md-4">
 				<div class="card mb-3">
 					<div class="card-body">
-						<h2>Popular Playlists</h2>
+						<div class="index-card-header">
+							<h2>Popular Playlists</h2>
+						</div>
 						<p class="card-text">
 							{% if public_playlists %}
 								<ul class="list-group">
@@ -120,7 +124,9 @@
 			<div class="col-md-4">
 				<div class="card mb-3">
 					<div class="card-body">
-						<h2>Draft Playlists</h2>
+						<div class="index-card-header">
+							<h2>Draft Playlists</h2>
+						</div>
 						<p class="card-text">
 							{% if draft_playlists %}
 								<ul class="list-group">
@@ -161,7 +167,9 @@
 			<div class="col-md-4">
 				<div class="card mb-6">
 					<div class="card-body">
-						<h2>{{ selected_user.username }}'s Ratings</h2>
+						<div class="index-card-header">
+							<h2>{{ selected_user.username }}'s Ratings</h2>
+						</div>
 						<p class="card-text">
 							{% if rated_playlists %}
 								<ul class="list-group">
@@ -202,13 +210,15 @@
 			<div class="col-md-4">
 				<div class="card mb-6">
 					<div class="card-body">
-						<h2>{{ selected_user.username }}'s Top 10 Tags</h2>
+						<div class="index-card-header">
+							<h2>{{ selected_user.username }}'s Top 10 Tags</h2>
+						</div>
 						<p class="card-text">
 							{% if all_rated_tags %}
 								<ul class="list-group">
 								{% for tag, count in tag_obs.items %}												
 									<li class="list-group-item">
-										<span class="badge badge-light p-2">{{ tag }}</span>: ratings <span class="badge badge-light p-2">{{ count }}</span> times
+										<span class="badge badge-light p-2">{{ tag }}</span>: ratings <span class="badge badge-light p-2">{{ count }}</span>
 									</li>
 								{% endfor %}
 									</ul>
@@ -224,7 +234,9 @@
 			<div class="col-md-4">
 				<div class="card mb-6">
 					<div class="card-body">
-						<h2>Playlists For You</h2>
+						<div class="index-card-header">
+							<h2>Playlists For You</h2>
+						</div>
 						<p class="card-text">
 							{% if playlist_suggestions %}
 								<ul class="list-group">
