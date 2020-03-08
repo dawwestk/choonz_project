@@ -65,8 +65,6 @@
 
             <li class="nav-item"><a class="nav-link" href="{% url 'choonz:index' %}">Home</a></li>
 
-            <li class="nav-item "><a class="nav-link" href="{% url 'choonz:restricted' %}">Restricted</a></li>
-
             <li class="nav-item"><a class="nav-link" href="{% url 'choonz:add_playlist' %}">Add Playlist</a></li>
 
             <li class="nav-item"><a class="nav-link" href="{% url 'auth_password_change' %}">Change Password</a></li>
@@ -86,8 +84,7 @@
 
 <!-- Body Block -->
 <main role="main" class="m-0 p-0" id="baseMain">    
-    <a href="{% url 'index' %}"><div class="container-fluid" id="indexJumbotron">
-    </div></a>
+    <a href="{% url 'index' %}"></a>
     <div class="choonz-container">
         {% block body_block %}
         {% endblock %}
