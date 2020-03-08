@@ -626,15 +626,10 @@ class ProfileView(View):
         except TypeError:
             return redirect(reverse('choonz:index'))
 
-        # All Playlists made by the profile owner
-        playlists = Playlist.objects.filter(creator=user)
-
         public_playlists = Playlist.objects.filter(creator=user, public=True)
         draft_playlists = Playlist.objects.filter(creator=user, public=False)
-        # popular_playlists = public_playlists.order_by('-views')[:10]
+        popular_playlists = Playlist.objects.filter(creator=user).annotate(average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
 
-        popular_playlists = Playlist.objects.filter(creator=user).annotate(
-            average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
         # All Ratings the profile owner has given
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True).order_by('-stars'))
 
@@ -665,14 +660,14 @@ class ProfileView(View):
 
             rated_playlists.append(playlist_info)
 
-        sorted_tag_obs = {k: v for k, v in sorted(tag_obs.items(), reverse=True, key=lambda item: item[1])[:10]}
+        sorted_tag_obs = sort_dicts_by_values(tag_obs, True, 10)
         tag_obs = collections.OrderedDict(sorted_tag_obs)
+        playlist_suggestions = suggest_playlist_from_tags(tag_obs, user)
         context_dict = {'page_user_profile': page_user_profile, 'user_profile': my_user_profile, 'selected_user': user,
                         'form': form,
                         'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
                         'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists,
-                        'all_rated_tags': all_rated_tags, 'tag_obs': tag_obs}
-        # , "common_tags":most_common_tags}
+                        'all_rated_tags': all_rated_tags, 'tag_obs': tag_obs, 'playlist_suggestions': playlist_suggestions}
 
         return render(request, 'choonz/profile.html', context_dict)
 
@@ -694,6 +689,38 @@ class ProfileView(View):
         context_dict = {'user_profile': user_profile, 'selected_user': user, 'form': form}
 
         return render(request, 'choonz/profile.html', context_dict)
+
+def sort_dicts_by_values(dict, reverse=False, limit=10):
+    return {k: v for k, v in sorted(dict.items(), reverse=reverse, key=lambda item: item[1])[:limit]}
+
+def suggest_playlist_from_tags(tag_obs, user):
+    all_playlists = Playlist.objects.exclude(creator=user)
+    tag_count = {}
+
+    total_tag_weighting = sum(tag_obs.values())
+    recommendations = {}
+
+    for tag in tag_obs:
+        tag_count[tag] = round(tag_obs[tag] / total_tag_weighting * 100)
+
+    for playlist in all_playlists:
+        tags_on_playlist = len(playlist.get_playlist_tag_descriptions)
+        tag_match_counter = 0
+        tag_match_percentage = 0
+        for tag in playlist.get_playlist_tag_descriptions:
+            try:
+                tag_match_percentage = tag_match_percentage + tag_count[tag]
+                tag_match_counter = tag_match_counter + 1
+            except:
+                continue
+        tag_match_coverage = round(tag_match_counter/tags_on_playlist)
+        overall_percentage = round(tag_match_percentage * tag_match_coverage)
+        if overall_percentage > 0:
+            recommendations[playlist] = overall_percentage
+
+    recommendations = sort_dicts_by_values(recommendations, True, 10)
+    return recommendations
+
 
 
 class ListProfileView(View):

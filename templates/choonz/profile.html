@@ -226,12 +226,11 @@
 					<div class="card-body">
 						<h2>Playlists For You</h2>
 						<p class="card-text">
-							{% if all_rated_tags %}
+							{% if playlist_suggestions %}
 								<ul class="list-group">
-								{% for tag in tag_obs %}												
+								{% for suggestion, percentage in playlist_suggestions.items %}
 									<li class="list-group-item">
-										<span class="badge badge-light p-2">{{ tag }}</span>	
-										
+										<a class="badge badge-light p-2" href="{% url 'choonz:show_playlist' suggestion.slug %}">{{ suggestion.name }}</a> - <span class="badge badge-light p-2">{{ percentage }}%</span> by {{ suggestion.creator }}
 									</li>
 								{% endfor %}
 									</ul>
