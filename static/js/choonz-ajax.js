@@ -142,30 +142,33 @@ $(document).on("click", ".tag-suggestion", function(e) {
 	}
 })
 
-$(document).on("click", '#remove-song-btn', function(e){
-	var parentLI = $(this).parent();
-	var confirmButton = parentLI.children('#confirm-remove-song-btn');
+$(document).on("click", '.remove-song-button', function(e){
+	var slug = $(this).attr('data-songSlug');
+	var parentLI = $('#' + slug)
+	var confirmButton = $('#confirm-remove-' + slug);
 	confirmButton.css('display', 'inline-block');
-	var cancelButton = parentLI.children('#cancel-remove-song-btn');
+	var cancelButton = $('#cancel-remove-' + slug);
 	cancelButton.css('display', 'inline-block');
 	$(this).css('display', 'none');
 	
 })
 
-$(document).on("click", '#cancel-remove-song-btn', function(e){
+$(document).on("click", '.cancel-song-remove', function(e){
+	var slug = $(this).attr('data-songSlug');
 	$(this).css('display', 'none');
-	var parentLI = $(this).parent();
-	var removeButton = parentLI.children('#remove-song-btn');
+	var parentLI = $('#' + slug)
+	var removeButton = $('#remove-song-' + slug);
 	removeButton.css('display', 'inline-block');
-	var confirmButton = parentLI.children('#confirm-remove-song-btn');
+	var confirmButton = $('#confirm-remove-' + slug);
 	confirmButton.css('display', 'none');
 	
 })
 
-$(document).on("click", '#confirm-remove-song-btn', function(e){
-	var parentLI = $(this).parent();
+$(document).on("click", '.confirm-song-remove', function(e){
+	var slug = $(this).attr('data-songSlug');
+	var parentLI = $('#' + slug)
 	var confirmButton = $(this);
-	var cancelButton = parentLI.children('#cancel-remove-song-btn');
+	var cancelButton = $('#cancel-remove-' + slug);
 	var playlistSlug
 	playlistSlug = $(this).attr('data-playlistSlug');
 	var songSlug
