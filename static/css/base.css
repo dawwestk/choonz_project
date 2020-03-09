@@ -498,6 +498,13 @@ td {
     margin: auto;
 }
 
+.centred-left-indent{
+    margin-left: 5%;
+    margin-bottom: auto;
+    margin-top: auto;
+    margin-right: auto;
+}
+
 .no-overflow{
     overflow: auto;
     overflow-wrap: break-word;
@@ -528,6 +535,11 @@ td {
 }
 
 .choonz-col{
-    
+    margin: 8px;
+
+}
+
+.choonz-right{
+    float:right;
 }
     

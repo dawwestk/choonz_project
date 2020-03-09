@@ -30,10 +30,10 @@
 				</div>
 				<div class="row">
 					<div class="col m-0">
-						<p>created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a></p>
-						<p><strong>Description: </strong>{{ playlist.description }}</p> 
-						<p>Created on: {{ playlist.createdDate }}</p> 
-						<p>Last updated: {{ playlist.lastUpdatedDate }}</p> 
+						created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a><br />
+						<strong>Description: </strong>{{ playlist.description }}<br />
+						Created on: {{ playlist.createdDate }}<br />
+						Last updated: {{ playlist.lastUpdatedDate }}
 						
 					</div>
 					<div class="col m-1">
@@ -95,11 +95,11 @@
 			<ul>
 				{% for song in songs %}
 				<li class="choonz-row">
-					<div class="col-md-8">
-						<div class="row">
-							{{ song.title }}
+					<div class="col-md-9">
+						<div class="centred row">
+							<h5>{{ song.title }}</h5>
 						</div>
-						<div class="row">
+						<div class="centred-left-indent row">
 						by {% if song.artist.webpage %}
 							<a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
 							{% else %}
@@ -107,14 +107,16 @@
 							{% endif %}
 						</div>
 					</div>
-					<div class="col-md-4">
-					{% if song.linkToSpotify %}
-						<a class="btn btn-primary" href="{{ song.linkToSpotify }}" target="_blank" name="submit">Listen with Spotify</a>
-					{% else %}
-						{% if user == playlist.creator %}
-							<button class="btn btn-secondary" name="submit">Add Link to Spotify</button>
+					<div class="col-md-3">
+						<div class="choonz-col">
+						{% if song.linkToSpotify %}
+							<a class="btn btn-primary" href="{{ song.linkToSpotify }}" target="_blank" name="submit">Listen with Spotify</a>
+						{% else %}
+							{% if user == playlist.creator %}
+								<button class="btn btn-secondary" name="submit">Add Link to Spotify</button>
+							{% endif %}
 						{% endif %}
-					{% endif %}
+					</div>
 					</div>
 				</li>
 				{% endfor %}
