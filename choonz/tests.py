@@ -1,7 +1,10 @@
+from datetime import datetime
+
 from django.db import IntegrityError
 from django.test import TestCase
 from django.urls import reverse
 from choonz.models import Playlist, Tag, Song, Artist, Rating
+from choonz.forms import PlaylistForm
 from django.contrib.auth.models import User
 
 '''
@@ -255,25 +258,107 @@ class IndexViewTests(TestCase):
         '''
         Making sure that a logged-in user can logout
         '''
-        user = User.objects.get_or_create(username='test')[0]
-        user.set_password('test_password')
-        user.save()
+        user, owner = create_user_and_log_in('test', 'test_password')
         response = self.client.login(username='test', password='test_password')
-        # should be logged in now
         self.assertTrue(response)
 
+        # User logged in successfully
         if response:
+            # Check the visible/non-visible links on the index page
             index_response = self.client.get(reverse('choonz:index'))
             self.assertContains(index_response, '/accounts/logout')
             self.assertContains(index_response, '/choonz/list_playlists')
 
+class ProfileViewTests(TestCase):
+    def test_profile_view_differentiates_page_owner_and_logged_in_user(self):
+        '''
+        When logged in as USER viewing user USER-X's profile we should see their profile picture, not USER's
+        '''
+        user, owner = create_user_and_log_in('user', 'test_password', 'owner')
 
+        response = self.client.login(username='user', password='test_password')
 
+        # User logged in successfully
+        if response:
+            profile_response = self.client.get('/choonz/profile/owner/')
 
+            # Test the header for the correct username
+            self.assertContains(profile_response, "owner's Profile")
+            self.assertNotContains(profile_response, "My Profile")
+
+            # Test to see if the Edit Profile button is visible
+            self.assertNotContains(profile_response, "Edit Profile")
+        else:
+            self.assertEqual(response, True)
+
+class AddPlaylistViewTests(TestCase):
+    def test_add_playlist_view_tags_visible(self):
+        '''
+        When adding a playlist, check that all tags are available as options
+        '''
+        user, owner = create_user_and_log_in('user', 'test_password')
+        tag1 = add_tag('tag 1')
+        tag2 = add_tag('tag 2')
+
+        response = self.client.login(username='user', password='test_password')
+
+        # User logged in successfully
+        if response:
+            add_playlist_response = self.client.get(reverse('choonz:add_playlist'))
+
+            # Test the header for the correct username
+            self.assertContains(add_playlist_response, "Choonbuilder")
+            self.assertContains(add_playlist_response, 'tag 1')
+            self.assertContains(add_playlist_response, 'tag 2')
+        else:
+            self.assertEqual(response, True)
+
+    def test_add_playlist_post_form(self):
+        '''
+        When adding a playlist, check what is posted is being validated, and playlist created
+        '''
+        user, owner = create_user_and_log_in('user', 'test_password')
+        tag1 = add_tag('tag 1')
+        tag2 = add_tag('tag 2')
+
+        response = self.client.login(username='user', password='test_password')
+
+        # User logged in successfully
+        if response:
+            # Create a playlist by adding form data as required
+            today = "2020-03-09 12:52:17.867600"
+            form_data = {'name': 'test_playlist', 'description': 'test playlist description', 'tags': [tag1, tag2], 'createdDate': today, 'lastUpdatedDate': today, 'averageRating': 0}
+
+            # Check that the form is valid
+            form = PlaylistForm(data=form_data)
+            self.assertTrue(form.is_valid())
+
+            # Check that the post request is valid
+            add_playlist_response = self.client.post(reverse('choonz:add_playlist'), form_data)
+            self.assertTrue(add_playlist_response)
+
+            # Check that playlist is created in database
+            playlist = Playlist.objects.get(name='test_playlist')
+            self.assertEqual(playlist.name, 'test_playlist')
+        else:
+            self.assertEqual(response, True)
 
 '''
     Helper methods for use in testing
 '''
+def create_user_and_log_in(username, password, optional_username=None):
+    user = add_user(username)
+    user.set_password(password)
+    user.save()
+
+    if optional_username:
+        profile_owner = add_user(optional_username)
+        profile_owner.save()
+    else:
+        profile_owner = None
+
+    return user, profile_owner
+
 
 def add_user(username):
     user = User.objects.get_or_create(username=username)[0]

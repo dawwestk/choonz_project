@@ -1,9 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from choonz.models import Playlist, UserProfile, Rating
-from datetime import datetime, date
-import pytz
-
+from datetime import datetime
 
 class PlaylistForm(forms.ModelForm):
     name = forms.CharField(max_length=Playlist.max_length_char, help_text="Please enter the playlist name.")
@@ -11,8 +9,8 @@ class PlaylistForm(forms.ModelForm):
                                   required=False)
     averageRating = forms.FloatField(widget=forms.HiddenInput(), initial=0.0)
     slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-    createdDate = forms.DateTimeField(widget=forms.HiddenInput(), initial=datetime.now)
-    lastUpdatedDate = forms.DateTimeField(widget=forms.HiddenInput(), initial=datetime.now)
+    createdDate = forms.DateTimeField(widget=forms.HiddenInput(), initial=datetime.now, required=False)
+    lastUpdatedDate = forms.DateTimeField(widget=forms.HiddenInput(), initial=datetime.now, required=False)
     tags = forms.CharField(max_length=Playlist.max_length_char,
                            help_text="Enter tags to help people find your playlist!", required=False)
 
@@ -21,34 +19,6 @@ class PlaylistForm(forms.ModelForm):
         # Associate ModelForm and a model (in this case, Playlist)
         model = Playlist
         fields = ('name', 'description', 'createdDate', 'lastUpdatedDate', 'tags', 'averageRating')
-
-
-'''
-class PageForm(forms.ModelForm):
-    title = forms.CharField(max_length=Playlist.max_length_char, help_text="Please enter the title of the page.")
-    url = forms.URLField(max_length=200, help_text="Please enter the URL of the page.")
-    views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
-
-    class Meta:
-        model = Page
-
-        # decide fields to include in form
-        # here we hide the foreign key (Playlist)
-        exclude = ('playlist',)
-
-        # we need either a fields or exclude line
-
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        url = cleaned_data.get('url')
-
-        # if url not empty and doesn't begin with http:// we add it
-        if url and not url.startswith('http://'):
-            url = f'http://{url}'
-            cleaned_data['url'] = url
-
-        return cleaned_data
-'''
 
 
 class UserForm(forms.ModelForm):

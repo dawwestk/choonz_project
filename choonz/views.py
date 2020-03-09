@@ -2,25 +2,20 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from choonz.models import Playlist, UserProfile, Song, Rating, Tag, Artist
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from choonz.forms import PlaylistForm, UserForm, UserProfileForm, RatingForm
-from datetime import datetime, timedelta
+from datetime import datetime
 import pytz
 import collections
 from django.views import View
 from django.utils.decorators import method_decorator
-from django.contrib.auth.forms import AdminPasswordChangeForm, PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
-from django.contrib import messages
-from social_django.models import UserSocialAuth
 from django.template.defaultfilters import slugify
 import spotipy
 import json
 from spotipy.oauth2 import SpotifyClientCredentials
 from django.conf import settings
-from django.db.models import Avg, Q, Count
+from django.db.models import Avg, Count
 
 '''
 
@@ -1003,206 +998,3 @@ class MyStatsView(View):
         context_dict['playlist_stats'] = stats
         context_dict['user_stats'] = user_stats
         return render(request, 'choonz/my_stats.html', context_dict)
-
-
-'''
-class StatsGraphView(View):
-    @method_decorator(login_required)
-    def get(self, request, username):
-        def get_labels():
-            return ["January", "February", "March", "April", "May", "June", "July"]
-
-        def get_data():
-            return [75, 44, 92, 11, 44, 95, 35]
-
-        ratings = get_data()
-        labels = get_labels()
-        output = {'labels': labels, 'ratings': ratings}
-        return HttpResponse(json.dumps(output), content_type="application/json")
-'''
-
-'''
-@login_required
-def add_playlist(request):
-    form = PlaylistForm()
-
-    # HTTP POST?
-    if request.method == "POST":
-        form = PlaylistForm(request.POST)
-
-        # if the form valid?
-        if form.is_valid():
-            form.save(commit=True)
-            # redirect back to index
-            return redirect('/choonz/')
-        else:
-            # form contained errors
-            # print them to the terminal
-            print(form.errors)
-
-    return render(request, 'choonz/add_playlist.html', {'form': form})
-
-
-class AddPageView(View):
-    def get_playlist_name(self, playlist_name_slug):
-        try:
-            playlist = Playlist.objects.get(slug=playlist_name_slug)
-        except Playlist.DoesNotExist:
-            playlist = None
-
-        return playlist
-
-    @method_decorator(login_required)
-    def get(self, request, playlist_name_slug):
-        form = PageForm()
-        playlist = self.get_playlist_name(playlist_name_slug)
-
-        if playlist is None:
-            return redirect(reverse('choonz:index'))
-
-        context_dict = {'form': form, 'playlist': playlist}
-        return render(request, 'choonz/add_page.html', context_dict)
-
-    @method_decorator(login_required)
-    def post(self, request, playlist_name_slug):
-        form = PageForm(request.POST)
-        playlist = self.get_playlist_name(playlist_name_slug)
-
-        if playlist is None:
-            return redirect(reverse('choonz:index'))
-
-        if form.is_valid():
-            page = form.save(commit=False)
-            page.playlist = playlist
-            page.views = 0
-            page.save()
-
-            return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist_name_slug}))
-        else:
-            print(form.errors)
-
-        context_dict = {'form': form, 'playlist': playlist}
-        return render(request, 'choonz/add_page.html', context_dict)
-'''
-
-'''
-    --------------- Login/Registration code now handled by registration-redux
-    
-def register(request):
-    registered = False
-
-    if request.method == 'POST':
-        # attempt to grab info from the raw form info
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
-
-        # if the two forms are valid
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-
-            # now hash the password, and update
-            user.set_password(user.password)
-            user.save()
-
-            # now sort out the UserProfile instance
-            # needed the User attribute first so commit = False for now
-            profile = profile_form.save(commit=False)
-            profile.user = user
-
-            # did the user provide a picture
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-
-            profile.save()
-
-            # profile registrationg was successful
-            registered = True
-        else:
-            # something was wrong on the forms
-            print(user_form.errors, profile_form.errors)
-    else:
-        # not an HTTP POST
-        # render blank forms for user input
-        user_form = UserForm()
-        profile_form = UserProfileForm()
-
-    return render(request, 'choonz/register.html', context = {'user_form': user_form, 'profile_form': profile_form, 'registered': registered})
-
-def user_login(request):
-    if request.method == 'POST':
-        # gather username and password from form
-        # use request.POST.get('') as it returns None if not found
-        # rather than a KeyError if we used request.POST['']
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        # built-in django machinery checks if this combination is valid
-        user = authenticate(username=username, password=password)
-
-        if user:
-            if user.is_active:
-                login(request, user)
-                return redirect(reverse('choonz:index'))
-            else:
-                return HttpResponse("Your choonz account is disabled.")
-        else:
-            # login details do not match any User
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
-
-    else:
-        # not a POST request
-        return render(request, 'choonz/login.html')
-
-@login_required
-def user_logout(request):
-    # We know the user is logged in because of the decorator
-    logout(request)
-    return redirect(reverse('choonz:index'))
-
-    --------------- Login/Registration code now handled by registration-redux
-'''
-
-'''
-def search(request):
-    result_list = []
-    query = ''
-    if request.method == 'POST':
-        query = request.POST['query'].strip()
-        if query:
-            result_list = run_query(query)
-    return render(request, 'choonz/search.html', {'result_list': result_list, 'query': query})
-
-
-class GoToView(View):
-    def get(self, request):
-        page_id = request.GET.get('page_id')
-        try:
-            page = Page.objects.get(id=page_id)
-            page.views = page.views + 1
-            page.save()
-            return redirect(page.url)
-        except Page.DoesNotExist:
-            return redirect(reverse('index'))
-'''
-
-'''
-class SearchAddPage(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        playlist_id = request.GET['playlist_id']
-        title = request.GET['title']
-        url = request.GET['url']
-
-        try:
-            playlist = Playlist.objects.get(id=int(playlist_id))
-        except Playlist.DoesNotExist:
-            return HttpResponse('Error - playlist not found.')
-        except ValueError:
-            return HttpResponse('Error - bad playlist ID.')
-
-        p = Page.objects.get_or_create(playlist=playlist, title=title, url=url)
-
-        pages = Page.objects.filter(playlist=playlist).order_by('-views')
-        return render(request, 'choonz/page_listing.html', {'pages': pages})
-'''
