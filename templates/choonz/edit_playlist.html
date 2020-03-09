@@ -87,7 +87,11 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="playlist-tags-prompt">Tags:</span>
                             </div>
+                        {% if playlist.get_playlist_tag_descriptions_as_string %}
                             <input type="text" name="tags" id="tags" class="form-control" value="{{ playlist.get_playlist_tag_descriptions_as_string }}, " readonly></input>
+                        {% else %}
+                            <input type="text" name="tags" id="tags" class="form-control" value="" readonly></input>
+                        {% endif %}
                         </p>
                     </div>
                     <div class="input-group mb-3">
@@ -154,13 +158,13 @@
             </div>
         </div>
         <hr>
-        {% if playlist.get_song_list %}
         <div class="container">
             <div class="card-body">
                 <div class="card-body" id="playlist-header">
                     <h4>All songs on {{ playlist.name }}</h4>
                 </div>
                 <ul id="edit-song-list">
+                {% if playlist.get_song_list %}
                     {% for song in playlist.get_song_list %}
                     <li class="choonz-row" id="{{song.slug}}">
                         <div class="col-md-9 title-and-artist-{{song.slug}}">
@@ -185,10 +189,12 @@
                         </div>
                     </li>
                     {% endfor %}
+                {% else %}
+                    
+                {% endif %}
                 </ul>
             </div>
         </div>
-        {% endif %}
     {% else %}
             <div class="card">
                 <h4>You cannot edit this playlist as you are not the owner.</h4>
