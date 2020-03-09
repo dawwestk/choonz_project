@@ -196,8 +196,6 @@ class RatingModelTests(TestCase):
 '''
     View related tests
 '''
-
-
 class IndexViewTests(TestCase):
     def test_index_view_with_no_playlists(self):
         """
@@ -208,7 +206,7 @@ class IndexViewTests(TestCase):
         self.assertContains(response, 'There are no playlists present.')
         self.assertQuerysetEqual(response.context['most_rated_playlists'], [])
 
-    def test_index_with_playlists(self):
+    def test_index_with_most_rated_playlists(self):
         '''
         With playlists we should see a list
         '''
@@ -224,6 +222,58 @@ class IndexViewTests(TestCase):
 
         num_playlists = len(response.context['most_rated_playlists'])
         self.assertEquals(num_playlists, 3)
+
+    def test_index_with_highest_rated_playlists(self):
+        '''
+        With playlists we should see a list
+        '''
+        add_playlist('tester-1')
+        add_playlist('tester-2')
+        add_playlist('tester-3')
+
+        response = self.client.get(reverse('choonz:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'tester-1')
+        self.assertContains(response, 'tester-2')
+        self.assertContains(response, 'tester-3')
+
+        num_playlists = len(response.context['highest_rated_playlists'])
+        self.assertEquals(num_playlists, 3)
+
+    def test_index_user_not_logged_in(self):
+        '''
+        Making sure that a non-logged-in user sees a link to login
+        '''
+
+        response = self.client.get(reverse('choonz:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '/accounts/login')
+        self.assertContains(response, '/accounts/register')
+        self.assertNotContains(response, '/choonz/add_playlist')
+
+    def test_index_user_logged_in(self):
+        '''
+        Making sure that a logged-in user can logout
+        '''
+        user = User.objects.get_or_create(username='test')[0]
+        user.set_password('test_password')
+        user.save()
+        response = self.client.login(username='test', password='test_password')
+        # should be logged in now
+        self.assertTrue(response)
+
+        if response:
+            index_response = self.client.get(reverse('choonz:index'))
+            self.assertContains(index_response, '/accounts/logout')
+            self.assertContains(index_response, '/choonz/list_playlists')
+
+
+
+
+
+'''
+    Helper methods for use in testing
+'''
 
 def add_user(username):
     user = User.objects.get_or_create(username=username)[0]
