@@ -343,16 +343,17 @@ class AddSongView(View):
             updated_song_details = True
 
         song.save()
-        if updated_song_details:
-            response_dict['status'] = True
-            response_dict['message'] = "Song data updated"
-            return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
         # Song already features on this playlist
         if song in playlist.get_song_list:
-            response_dict['status'] = True
-            response_dict['message'] = "Song already on playlist"
-            return HttpResponse(json.dumps(response_dict), content_type="application/json")
+            if updated_song_details:
+                response_dict['status'] = True
+                response_dict['message'] = "Song data updated"
+                return HttpResponse(json.dumps(response_dict), content_type="application/json")
+            else:
+                response_dict['status'] = True
+                response_dict['message'] = "Song already on playlist"
+                return HttpResponse(json.dumps(response_dict), content_type="application/json")
         else:
             playlist.songs.add(song)
             playlist.save()

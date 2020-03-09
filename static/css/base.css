@@ -523,7 +523,8 @@ td {
 }
 
 .cancel-song-remove,
-.confirm-song-remove{
+.confirm-song-remove,
+.undo-song-remove{
     display: none;
 }
 

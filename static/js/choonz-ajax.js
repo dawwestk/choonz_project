@@ -167,23 +167,55 @@ $(document).on("click", '.cancel-song-remove', function(e){
 $(document).on("click", '.confirm-song-remove', function(e){
 	var slug = $(this).attr('data-songSlug');
 	var parentLI = $('#' + slug)
+	var titleAndArtist = $('.title-and-artist-' + slug);
 	var confirmButton = $(this);
 	var cancelButton = $('#cancel-remove-' + slug);
-	var playlistSlug
-	playlistSlug = $(this).attr('data-playlistSlug');
-	var songSlug
-	songSlug = $(this).attr('data-songSlug');
+	var playlistSlug = $(this).attr('data-playlistSlug');
+	var songSlug = $(this).attr('data-songSlug');
+	var undoButton = $('#undo-remove-' + slug);
 
 	$.post('remove_song/', {'playlist_slug': playlistSlug, 'song_slug': songSlug, 'confirmed': true}, function(data){
 		if(data.status){
 			showAddSongPopUp(data.message);
-			parentLI.css('text-decoration', 'line-through');
+			titleAndArtist.css('text-decoration', 'line-through');
 			confirmButton.hide();
 			cancelButton.hide();
+			undoButton.show();
+
 		} else {
 			alert(data.message);
 		}
 	})
+
+})
+
+$(document).on("click", '.undo-song-remove', function(e){
+	var slug = $(this).attr('data-songSlug');
+	var parentLI = $('#' + slug)
+	var titleAndArtist = $('.title-and-artist-' + slug);
+	var playlistSlug = $(this).attr('data-playlistSlug');
+	var song_title = $(this).attr('data-songTitle');
+	var song_artist = $(this).attr('data-artistName');
+	var link_to_spotify = $(this).attr('data-linkToSpotify');
+	var link_other = $(this).attr('data-linkOther');
+
+	var removeButton = $('#remove-song-' + slug);
+	removeButton.css('display', 'inline-block');
+
+	$.post('add_song/', {'playlist_slug': playlistSlug, 'song_title': song_title, 'song_artist': song_artist, 'link_to_spotify': link_to_spotify, 'link_other': link_other}, function(data){
+		if(data.status){
+			$('#add_song_title').val("");
+			$('#add_song_artist').val("");
+			$('#add_song_spotify_link').val("");
+			$('#add_song_other_link').val("");
+			titleAndArtist.css('text-decoration', 'none');
+			showAddSongPopUp(data.message);
+		} else {
+			alert(data.message);
+		}
+	})
+
+	$(this).css('display', 'none');
 
 })
 
