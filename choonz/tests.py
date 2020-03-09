@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.db import IntegrityError
-from django.test import TestCase
+from django.test import TestCase, SimpleTestCase
 from django.urls import reverse
 from choonz.models import Playlist, Tag, Song, Artist, Rating
 from choonz.forms import PlaylistForm
