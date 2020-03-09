@@ -94,12 +94,20 @@
 		<div id="songs-listing">
 			<ul>
 				{% for song in songs %}
-				<li class="list-group-item">{{ song.title }} by 
-					{% if song.artist.webpage %}
-						<a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
-					{% else %}
-						{{ song.artist }}
-					{% endif %}
+				<li class="choonz-row">
+					<div class="col-md-8">
+						<div class="row">
+							{{ song.title }}
+						</div>
+						<div class="row">
+						by {% if song.artist.webpage %}
+							<a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
+							{% else %}
+								{{ song.artist }}
+							{% endif %}
+						</div>
+					</div>
+					<div class="col-md-4">
 					{% if song.linkToSpotify %}
 						<a class="btn btn-primary" href="{{ song.linkToSpotify }}" target="_blank" name="submit">Listen with Spotify</a>
 					{% else %}
@@ -107,6 +115,7 @@
 							<button class="btn btn-secondary" name="submit">Add Link to Spotify</button>
 						{% endif %}
 					{% endif %}
+					</div>
 				</li>
 				{% endfor %}
 			</ul>
