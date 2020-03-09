@@ -195,6 +195,23 @@
                 </ul>
             </div>
         </div>
+        <hr>
+        <div class="jumbotron m-2 p-1">
+            <h4>Don't like your playlist any more? Delete it using the button below! ** WARNING ** Cannot undo!</h4>
+            <form class="form-inline" id="user-form" method="post" action="{% url 'choonz:delete_playlist' playlist.slug %}">
+                {% csrf_token %}
+                <div class="container-fluid">
+                    <input id="playlist_id" name="playlist_id" type="hidden" value="{{ playlist.id }}">
+                    <a class="btn btn-danger btn-block delete-playlist-button" id="delete-playlist-button">Delete Playlist</a>
+                </div>
+                <div class="container-fluid" id="playlist-delete-buttons">
+                    <h4>Are you absolutely sure? This cannot be undone</h4>
+                    <button class="btn btn-info btn-block cancel-delete-playlist" type="button" id="cancel-delete-playlist">Do Not Delete</button>
+                    <div class="centred"> ~ or ~ </div>
+                    <button class="btn btn-danger btn-block confirm-delete-playlist" type="submit" id="confirm-delete-playlist" data-playlist_id="{{ playlist.id }}" name="submit">Delete Playlist</button>
+                </div>
+            </form>
+        </div>
     {% else %}
             <div class="card">
                 <h4>You cannot edit this playlist as you are not the owner.</h4>

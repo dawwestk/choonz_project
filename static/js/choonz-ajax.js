@@ -4,18 +4,6 @@ $.ajaxSetup({
 });
 
 $(document).ready(function(){
-	$('#like_btn').click(function(){
-		var playlistIdVar
-		playlistIdVar = $(this).attr('data-playlistid');
-
-		// url of get request
-		// then parameters
-		// then anonymous function to handle returned data
-		$.get('/choonz/like_playlist/', {'playlist_id': playlistIdVar}, function(data){
-			$('#like_count').html(data);
-			$('#like_btn').hide();
-		})
-	})
 
 	$('#add_song_btn').click(function(){
 		var playlistSlug
@@ -121,6 +109,18 @@ $(document).ready(function(){
 		$.get('/choonz/filter_playlists/', {'tags': '', 'creator': '', 'createdDate': ''}, function(data){
 			$('#playlist-listing').html(data);
 		})
+	})
+
+	$('#delete-playlist-button').click(function(){
+		var buttons = $('#playlist-delete-buttons');
+		if(buttons.css('display', 'none')){
+			buttons.css('display', 'inline-block');
+		}
+	})
+
+	$('#cancel-delete-playlist').click(function(){
+		var buttons = $('#playlist-delete-buttons');
+		buttons.css('display', 'none');
 	})
 	
 })

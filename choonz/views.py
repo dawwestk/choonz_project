@@ -433,6 +433,24 @@ class PublishPlaylistView(View):
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist.slug}))
 
 
+class DeletePlaylistView(View):
+    @method_decorator(login_required)
+    def post(self, request, playlist_name_slug):
+        playlist_id = request.POST['playlist_id']
+
+        try:
+            playlist = Playlist.objects.get(id=int(playlist_id))  # remember to cast int
+        except Playlist.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+
+        playlist.delete()
+        user = request.user
+
+        return redirect(reverse('choonz:profile', kwargs={'username': user.username}))
+
+
 class PlaylistFilterView(View):
     def get(self, request):
         user_profile = get_user_profile(request)

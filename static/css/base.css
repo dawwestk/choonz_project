@@ -552,4 +552,8 @@ td {
 .choonz-right{
     float:right;
 }
+
+#playlist-delete-buttons{
+    display: none;
+}
     

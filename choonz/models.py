@@ -83,6 +83,13 @@ class Playlist(models.Model):
             self.averageRating = 0
         super(Playlist, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        for s in self.get_song_list:
+            print("song found - " + str(s) + ", " + str(s.number_of_playlists))
+            if s.number_of_playlists <= 1:
+                s.delete()
+        super(Playlist, self).delete(*args, **kwargs)
+
     class Meta:
         verbose_name_plural = 'Playlists'
 

@@ -1,6 +1,6 @@
 from django.urls import path
 from choonz import views
-from choonz.views import AboutView, AddPlaylistView, IndexView, PlaylistRatingView, ShowPlaylistView, RestrictedView, RegisterProfileView, ProfileView, ListPlaylistView,  ListProfileView, TagSuggestionView, PlaylistEditorView, TestView, AddSongView, ImportPlaylistView, RemoveSongView, PlaylistSuggestionView
+from choonz.views import AboutView, AddPlaylistView, IndexView, PlaylistRatingView, ShowPlaylistView, RestrictedView, RegisterProfileView, ProfileView, ListPlaylistView,  ListProfileView, TagSuggestionView, PlaylistEditorView, TestView, AddSongView, ImportPlaylistView, RemoveSongView, PlaylistSuggestionView, DeletePlaylistView
 # AddPageView,GoToView, SearchAddPage LikePlaylistView, 
 
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path('playlist/<slug:playlist_name_slug>/edit_playlist/', views.PlaylistEditorView.as_view(), name='edit_playlist'),
     path('playlist/<slug:playlist_name_slug>/edit_playlist/add_song/', views.AddSongView.as_view(), name='add_song'),
     path('playlist/<slug:playlist_name_slug>/edit_playlist/remove_song/', views.RemoveSongView.as_view(), name='remove_song'),
+    path('playlist/<slug:playlist_name_slug>/edit_playlist/delete_playlist/', views.DeletePlaylistView.as_view(), name='delete_playlist'),
     path('playlist/<slug:playlist_name_slug>/import/', views.ImportPlaylistView.as_view(), name='import_playlist'),
     path('restricted/', views.RestrictedView.as_view(), name='restricted'),
     #path('goto/', views.GoToView.as_view(), name='goto'),

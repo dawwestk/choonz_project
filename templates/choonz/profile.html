@@ -254,9 +254,9 @@
                                 <ul class="list-group">
                                     {% for suggestion, percentage in playlist_suggestions.items %}
                                         <li class="list-group-item">
-                                            <a class="badge badge-light p-2"
+                                            <a class="badge badge-warning p-2"
                                                href="{% url 'choonz:show_playlist' suggestion.slug %}">{{ suggestion.name }}</a>
-                                            - <span class="badge badge-light p-2">{{ percentage }}%</span>
+                                            - <span class="badge badge-light p-2">{{ percentage }}% match</span>
                                             by {{ suggestion.creator }}
                                         </li>
                                     {% endfor %}
