@@ -162,16 +162,27 @@
                 </div>
                 <ul>
                     {% for song in playlist.get_song_list %}
-                    <li class="list-group-item">{{ song.title }} by 
-                        {% if song.artist.webpage %}
+                    <li class="choonz-row">
+                    <div class="col-md-9">
+                        <div class="centred-left-indent-5 row">
+                            <h5>{{ song.title }}</h5>
+                        </div>
+                        <div class="centred-left-indent-10 row">
+                        by {% if song.artist.webpage %}
                             <a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
-                        {% else %}
-                            {{ song.artist }}
-                        {% endif %}
+                            {% else %}
+                                {{ song.artist }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="choonz-col">
                         <button class="btn btn-danger" type="button" id="remove-song-btn">Remove</button>
                         <button class="btn btn-danger" type="button" id="confirm-remove-song-btn" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Confirm</button>
                         <button class="btn btn-secondary" type="button" id="cancel-remove-song-btn" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Cancel</button>
-                    </li>
+                    </div>
+                    </div>
+                </li>
                     {% endfor %}
                 </ul>
             </div>

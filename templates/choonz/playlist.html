@@ -96,10 +96,10 @@
 				{% for song in songs %}
 				<li class="choonz-row">
 					<div class="col-md-9">
-						<div class="centred row">
+						<div class="centred-left-indent-5 row">
 							<h5>{{ song.title }}</h5>
 						</div>
-						<div class="centred-left-indent row">
+						<div class="centred-left-indent-10 row">
 						by {% if song.artist.webpage %}
 							<a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
 							{% else %}

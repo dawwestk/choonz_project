@@ -498,8 +498,15 @@ td {
     margin: auto;
 }
 
-.centred-left-indent{
+.centred-left-indent-5{
     margin-left: 5%;
+    margin-bottom: auto;
+    margin-top: auto;
+    margin-right: auto;
+}
+
+.centred-left-indent-10{
+    margin-left: 10%;
     margin-bottom: auto;
     margin-top: auto;
     margin-right: auto;
