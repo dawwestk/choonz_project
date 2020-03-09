@@ -7,81 +7,89 @@
 {% endblock %}
 
 {% block body_block %}
-    <div class="container-fluid" id="headerContainer">
-        <h1 class="display-4" id="titleHeader">Choonbuilder</h1>
-        <p class="lead"></p>
-    </div>
-
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'choonz:add_playlist' %}">Add a Playlist</a>
-                </li>
-                {% if playlist %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit a Playlist</a>
-                </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'choonz:drafts' %}">Draft Playlists</a>
-                </li>
-            </ul>
+    <div class="container-fluid" id="choonbuilder">
+        <div class="container-fluid" id="headerContainer">
+            <h1 class="display-4" id="titleHeader">Choonbuilder</h1>
+            <p class="lead"></p>
         </div>
-        <div class="container">
-            <div class="row">
-                <form role="form" id="playlist_form" method="post" action="{% url 'choonz:add_playlist' %}">
-                    {% csrf_token %}
-                    {% for hidden in form.hidden_fields %}
-                        {{ hidden }}
-                    {% endfor %}
-                    {% for field in form.visible_fields %}
-                        {{ field.errors }}
-                    {% endfor %}
-                    <div class="card-body">
-                        <div class="input-group mb-3">
-                            <p class="required">
+
+        <div class="card text-center">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'choonz:add_playlist' %}">Add a Playlist</a>
+                    </li>
+                    {% if playlist %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit a
+                                Playlist</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'choonz:drafts' %}">Draft Playlists</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <form role="form" id="playlist_form" method="post" action="{% url 'choonz:add_playlist' %}">
+                        {% csrf_token %}
+                        {% for hidden in form.hidden_fields %}
+                            {{ hidden }}
+                        {% endfor %}
+                        {% for field in form.visible_fields %}
+                            {{ field.errors }}
+                        {% endfor %}
+                        <div class="card-body">
+                            <div class="input-group mb-3">
+                                <p class="required">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="playlist-name-prompt">Playlist name:</span>
                                 </div>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="{{ form.name.help_text }}" required autofocus size="50">
-                            </p>
-                        </div>
-                        <div class="input-group mb-3">
-                            <p class="required">
+                                <input type="text" name="name" id="name" class="form-control"
+                                       placeholder="{{ form.name.help_text }}" required autofocus size="50">
+                                </p>
+                            </div>
+                            <div class="input-group mb-3">
+                                <p class="required">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="playlist-description-prompt">Description:</span>
                                 </div>
-                                <input type="text" name="description" id="description" class="form-control" placeholder="{{ form.description.help_text }}" size="100">
-                            </p>
-                        </div>
-                        <div class="input-group mb-3">
-                            <p class="required">
+                                <input type="text" name="description" id="description" class="form-control"
+                                       placeholder="{{ form.description.help_text }}" size="100">
+                                </p>
+                            </div>
+                            <div class="input-group mb-3">
+                                <p class="required">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="playlist-tags-prompt">Tags:</span>
                                 </div>
-                                <input type="text" name="tags" id="tags" class="form-control" placeholder="{{ form.tags.help_text }}" readonly></input>
-                            </p>
-                        </div>
-                        <div class="input-group mb-3">
-                            <p class="required">
+                                <input type="text" name="tags" id="tags" class="form-control"
+                                       placeholder="{{ form.tags.help_text }}" readonly></input>
+                                </p>
+                            </div>
+                            <div class="input-group mb-3">
+                                <p class="required">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="playlist-search-tags-prompt">Add Tags:</span>
                                 </div>
-                                <textarea id="tag-search-input" class="form-control" placeholder="Filter tags..." rows="1"></textarea>
-                            </p>
-                            <div class="container m-4" id="tag-listing">
-                                {% block tag_list_block %}
-                                    {% get_tag_list tag %}
-                                {% endblock %}
+                                <textarea id="tag-search-input" class="form-control" placeholder="Filter tags..."
+                                          rows="1"></textarea>
+                                </p>
+                                <div class="container m-4" id="tag-listing">
+                                    {% block tag_list_block %}
+                                        {% get_tag_list tag %}
+                                    {% endblock %}
+                                </div>
                             </div>
+                            <button class="btn btn-primary" type="submit" name="submit">Create Playlist</button>
                         </div>
-                    <button class="btn btn-primary" type="submit" name="submit">Create Playlist</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+
 {% endblock %}
 
 

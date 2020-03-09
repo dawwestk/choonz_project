@@ -8,181 +8,187 @@
 
 {% block body_block %}
     <div class="container">
-    {% if selected_user == user %}
+        {% if selected_user == user %}
 
-        <div class="jumbotron p-3">
-            <div class="container">
-                <div class="row">
-                    <div class="col mb-3">
-                        <h1 class="jumbotron-heading">
-                            My Stats
-                        </h1> 
+            <div class="jumbotron p-3" id="myStatsHeader">
+                <div class="container" id="myStatsTextContainer">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <h1 class="jumbotron-heading" id="myStatsText">
+                                My Stats
+                            </h1>
+                        </div>
                     </div>
                 </div>
-                <button class="btn btn-info" type="submit" name="submit" id="view-tables-button">Tables</button>
-                <button class="btn btn-info" type="submit" name="submit" id="view-charts-button" onclick="loadCharts({{ playlist_stats.playlist_names }}, {{playlist_stats.playlist_aves }}, {{ playlist_stats.user_playlist_average_rating }},{{ user_stats.rating_dates }}, {{ user_stats.rating_stars }},{{ user_stats.rating_playlist }})">Charts</button>
+                <div class="container" id="myStatsButtonContainer">
+                    <button class="btn btn-info" type="submit" name="submit" id="view-tables-button">Tables</button>
+                    <button class="btn btn-info" type="submit" name="submit" id="view-charts-button"
+                            onclick="loadCharts({{ playlist_stats.playlist_names }}, {{ playlist_stats.playlist_aves }}, {{ playlist_stats.user_playlist_average_rating }},{{ user_stats.rating_dates }}, {{ user_stats.rating_stars }},{{ user_stats.rating_playlist }})">
+                        Charts
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <div id="table-view" class="card">
-            <div class="row p-4">
-                <div class="container">
-                    <h3>{{ user.username }}'s Playlist Stats</h3>
-                </div>
-            </div>
-            <div class="row p-4">
-                {% if playlist_stats %}
-                <div class="col">
-                    <div class="row centred">
-                        <table id="playlist-info-table">
-                            <tr>
-                                <th>Playlist Name</th>
-                                <th>Created Date</th>
-                                <th>Last Updated</th>
-                                <th>Average &#x2606;</th>
-                                <th>No. Ratings</th>
-                            </tr>
-                            {% for p in playlist_stats.all %}
-                                <tr>
-                                    <td>{{ p.name }}</td>
-                                    <td>{{ p.createdDate|date:"d/m/y" }}</td>
-                                    <td>{{ p.lastUpdatedDate|date:"d/m/y H:i:s" }}</td>
-                                    {% if p.getAverageRating %}
-                                        <td>{{ p.getAverageRating|floatformat }}</td>
-                                    {% else %}
-                                        <td>0</td>
-                                    {% endif %}
-                                    <td>{{ p.getNumberOfRatings }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="row centred">
-                        <table id="user-info-table">
-                            <tr>
-                                <th>Category</th>
-                                <th>Data</th>
-                            </tr>
-                            <tr>
-                                <td>{{ user.username }}'s average playlist rating</td>
-                                <td>{{ playlist_stats.user_playlist_average_rating }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ user.username }}'s most rated playlist</td>
-                                <td>{{ playlist_stats.most_rated_playlist }}</td>
-                            </tr>
-                            <tr>
-                                <td>{{ user.username }}'s highest rated playlist</td>
-                                <td>{{ playlist_stats.highest_rated_playlist }}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                {% else %}
-                <div class="row centred">
-                    <div class="card">
-                        <h4>You haven't created any playlists yet! Why not <a href="{% url 'choonz:add_playlist' %}">make one now?</a></h4>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-            <hr>
-            <div class="row p-4">
-                <div class="container">
-                    <h3>Ratings By {{ user.username }}</h3>
-                </div>
-            </div>
-            <div class="row p-4">
-                {% if user_stats %}
-                <div class="col">
-                    <div class="row centred">
-                        <table id="playlist-info-table">
-                            <tr>
-                                <th>Playlist Name</th>
-                                <th>Playlist Creator</th>
-                                <th>Rating Date</th>
-                                <th>Stars &#x2606;</th>
-                            </tr>
-                            {% for p in user_stats.user_ratings %}
-                                <tr>
-                                    <td>{{ p.playlist }}</td>
-                                    <td>{{ p.get_rated_playlist_creator }}</td>
-                                    <td>{{ p.date|date:"d/m/y H:i:s" }}</td>
-                                    <td>{{ p.stars|floatformat }}</td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="row centred">
-                        <table id="user-info-table">
-                            <tr>
-                                <th>Category</th>
-                                <th>Data</th>
-                            </tr>
-                            <tr>
-                                <td>Playlists you have rated:</td>
-                                <td>{{ user_stats.number_of_ratings }}</td>
-                            </tr>
-                            <tr>
-                                <td>Your favourite playlist:</td>
-                                <td>{{ user_stats.user_favourite_playlist }}</td>
-                            </tr>
-                            <tr>
-                                <td>Your least favourite playlist</td>
-                                <td>{{ user_stats.user_least_favourite_playlist }}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-        </div>
-
-        <div id="chart-view" class="card">
-            <div class="row p-4">
-                <div class="col">
+            <div id="table-view" class="card">
+                <div class="row p-4">
                     <div class="container">
-                        <h3>{{ user.username }}'s Playlist Graph</h3>
+                        <h3>{{ user.username }}'s Playlist Stats</h3>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="container">
-                        <h3>Rating Activity</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="row p-4">
-                <div class="col">
+                <div class="row p-4">
                     {% if playlist_stats %}
-                    <div class="row centred">
-                        <canvas id="playlist-rating-bar-chart" height="350" width="500"></canvas>
+                        <div class="col">
+                            <div class="row centred">
+                                <table id="playlist-info-table">
+                                    <tr>
+                                        <th>Playlist Name</th>
+                                        <th>Created Date</th>
+                                        <th>Last Updated</th>
+                                        <th>Average &#x2606;</th>
+                                        <th>No. Ratings</th>
+                                    </tr>
+                                    {% for p in playlist_stats.all %}
+                                        <tr>
+                                            <td>{{ p.name }}</td>
+                                            <td>{{ p.createdDate|date:"d/m/y" }}</td>
+                                            <td>{{ p.lastUpdatedDate|date:"d/m/y H:i:s" }}</td>
+                                            {% if p.getAverageRating %}
+                                                <td>{{ p.getAverageRating|floatformat }}</td>
+                                            {% else %}
+                                                <td>0</td>
+                                            {% endif %}
+                                            <td>{{ p.getNumberOfRatings }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row centred">
+                                <table id="user-info-table">
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Data</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ user.username }}'s average playlist rating</td>
+                                        <td>{{ playlist_stats.user_playlist_average_rating }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ user.username }}'s most rated playlist</td>
+                                        <td>{{ playlist_stats.most_rated_playlist }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ user.username }}'s highest rated playlist</td>
+                                        <td>{{ playlist_stats.highest_rated_playlist }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row centred">
+                            <div class="card">
+                                <h4>You haven't created any playlists yet! Why not <a
+                                        href="{% url 'choonz:add_playlist' %}">make one now?</a></h4>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <hr>
+                <div class="row p-4">
+                    <div class="container">
+                        <h3>Ratings By {{ user.username }}</h3>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="row centred">
-                        <canvas id="user-line-chart" height="350" width="500"></canvas>
-                    </div>
+                <div class="row p-4">
+                    {% if user_stats %}
+                        <div class="col">
+                            <div class="row centred">
+                                <table id="playlist-info-table">
+                                    <tr>
+                                        <th>Playlist Name</th>
+                                        <th>Playlist Creator</th>
+                                        <th>Rating Date</th>
+                                        <th>Stars &#x2606;</th>
+                                    </tr>
+                                    {% for p in user_stats.user_ratings %}
+                                        <tr>
+                                            <td>{{ p.playlist }}</td>
+                                            <td>{{ p.get_rated_playlist_creator }}</td>
+                                            <td>{{ p.date|date:"d/m/y H:i:s" }}</td>
+                                            <td>{{ p.stars|floatformat }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row centred">
+                                <table id="user-info-table">
+                                    <tr>
+                                        <th>Category</th>
+                                        <th>Data</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Playlists you have rated:</td>
+                                        <td>{{ user_stats.number_of_ratings }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Your favourite playlist:</td>
+                                        <td>{{ user_stats.user_favourite_playlist }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Your least favourite playlist</td>
+                                        <td>{{ user_stats.user_least_favourite_playlist }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </div>
-        </div>
-    {% else %}
-        <div class="jumbotron p-3">
-            <div class="container">
-                <div class="row">
-                    <div class="col mb-3">
-                        <h1 class="jumbotron-heading">
+
+            <div id="chart-view" class="card">
+                <div class="row p-4">
+                    <div class="col">
+                        <div class="container">
+                            <h3>{{ user.username }}'s Playlist Graph</h3>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="container">
+                            <h3>Rating Activity</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-4">
+                    <div class="col">
+                        {% if playlist_stats %}
+                            <div class="row centred">
+                                <canvas id="playlist-rating-bar-chart" height="350" width="500"></canvas>
+                            </div>
+                            </div>
+                            <div class="col">
+                            <div class="row centred">
+                                <canvas id="user-line-chart" height="350" width="500"></canvas>
+                            </div>
+                        {% endif %}
+                        </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="jumbotron p-3">
+                <div class="container">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <h1 class="jumbotron-heading">
                                 Sorry - you can only view your own stats page!
-                        </h1> 
+                            </h1>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    {% endif %}
+        {% endif %}
     </div>
 
 {% endblock %}
