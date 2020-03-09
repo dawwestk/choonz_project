@@ -57,6 +57,7 @@ $(document).ready(function(){
 				$('#add_song_spotify_link').val("");
 				$('#add_song_other_link').val("");
 				showAddSongPopUp(data.message);
+				$('#edit-song-list').append(generateNewSongListingForEditPage(data.new_slug, song_title, song_artist, playlistSlug));
 			} else {
 				alert(data.message);
 			}
@@ -230,6 +231,38 @@ function showAddSongPopUp(text) {
   // After 3 seconds, remove the show class from DIV
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
+
+function generateNewSongListingForEditPage(slug, title, artist, playlistSlug){
+	
+	var new_song_html = `
+	  <li class="choonz-row" id="${slug}">
+        <div class="col-md-9 title-and-artist-${slug}">
+            <div class="centred-left-indent-5 row">
+                <h5>${title}</h5>
+            </div>
+            <div class="centred-left-indent-10 row">
+            by ${artist}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="choonz-col">
+                <button class="btn btn-danger remove-song-button" type="button" id="remove-song-${slug}" data-songSlug="${slug}">Remove</button>
+                <button class="btn btn-danger confirm-song-remove" type="button" id="confirm-remove-${slug}" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}">Confirm</button>
+                <button class="btn btn-secondary cancel-song-remove" type="button" id="cancel-remove-${slug}" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}">Cancel</button>
+                <button class="btn btn-secondary undo-song-remove" type="button" id="undo-remove-${slug}" data-songSlug="${slug}" data-songTitle="${title}" data-artistName="${artist}" data-linkToSpotify="{{song.linkToSpotify}}" data-linkOther="{{song.linkOther}}" data-playlistSlug="${playlistSlug}">Undo Song Remove</button>
+            </div>
+        </div>
+    </li>
+	`;
+	return new_song_html;
+}
+
+
+/*
+
+	Helper methods used to verify POST requests using CSRF token
+
+*/
 
 function getCookie(name) {
     var cookieValue = null;

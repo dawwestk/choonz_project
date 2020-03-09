@@ -360,6 +360,7 @@ class AddSongView(View):
 
         response_dict['status'] = True
         response_dict['message'] = "Song successfully added to playlist"
+        response_dict['new_slug'] = song.slug
         return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
 
