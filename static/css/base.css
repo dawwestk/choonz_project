@@ -200,8 +200,9 @@ function closeNav() {
 }
 
 #profilePageButtons{
-    margin-left: 25%;
-    margin-top: 1%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 #profilePageHeaderText{
@@ -308,6 +309,7 @@ function closeNav() {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 #view-charts-button{
