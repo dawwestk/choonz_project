@@ -92,7 +92,7 @@ $(document).ready(function(){
 	})
 
 	$('#spotify-add-song-search').click(function(){
-		var query = $('#spotify_search-query').val();
+		var query = $('#spotify-search-query').val();
 		var playlistSlug = $(this).attr('data-playlistSlug');
 		$.post('/choonz/search_spotify/', {'query': query}, function(data){
 			
@@ -100,6 +100,12 @@ $(document).ready(function(){
 				$('#spotify-search-results').append(generateSpotifySearchResultForEditPage(data.results[i].track_name, data.results[i].artist_name, data.results[i].link, data.results[i].album_image, playlistSlug));
 			};
 		})
+	})
+
+	$('#spotify-search-query').keydown(function(e){
+		if (e.which == 13) {
+			$('#spotify-add-song-search').click();
+		}
 	})
 
 	$('#filter-button').click(function() {
@@ -169,9 +175,11 @@ $(document).on("keydown", '.add-url-to-song', function(e){
 	    //alert("calling get with linkToSpotify = " + linkToSpotify + "\nlinkOther = " + linkOther + "\nsong slug = " + song_slug);
 
 	    $.get('add_song/', {'song_slug': song_slug, 'link_to_spotify': linkToSpotify, 'link_other': linkOther}, function(data){
+	    	/*
 	    	if(data){
 	    		alert("URL updated");
 	    	}
+	    	*/
 	    })
 	}
 })
@@ -235,24 +243,6 @@ $(document).on("click", '.confirm-song-remove', function(e){
 
 })
 
-$(document).on("click", '.add-from-spotify', function(e){
-	var song_title = $(this).attr('data-songTitle');
-	var song_artist = $(this).attr('data-artistName');
-	var link_to_spotify = $(this).attr('data-linkToSpotify');
-	var playlistSlug = $(this).attr('data-playlistSlug');
-	var link_other = null;
-
-	$.post('add_song/', {'playlist_slug': playlistSlug, 'song_title': song_title, 'song_artist': song_artist, 'link_to_spotify': link_to_spotify, 'link_other': link_other}, function(data){
-		if(data.status){
-			$('#edit-song-list').append(generateNewSongListingForEditPage(data.new_slug, song_title, song_artist, playlistSlug, link_to_spotify, link_other));
-			showAddSongPopUp(data.message);
-		} else {
-			alert(data.message);
-		}
-	})
-
-})
-
 $(document).on("click", '.undo-song-remove', function(e){
 	var slug = $(this).attr('data-songSlug');
 	var parentLI = $('#' + slug)
@@ -278,9 +268,26 @@ $(document).on("click", '.undo-song-remove', function(e){
 			alert(data.message);
 		}
 	})
+	$(this).css('display', 'none');
+})
 
+$(document).on("click", '.add-from-spotify', function(e){
+	var song_title = $(this).attr('data-songTitle');
+	var song_artist = $(this).attr('data-artistName');
+	var link_to_spotify = $(this).attr('data-linkToSpotify');
+	var playlistSlug = $(this).attr('data-playlistSlug');
+	var link_other = null;
 	$(this).css('display', 'none');
 
+	$.post('add_song/', {'playlist_slug': playlistSlug, 'song_title': song_title, 'song_artist': song_artist, 'link_to_spotify': link_to_spotify, 'link_other': link_other}, function(data){
+		if(data.status){
+			$('#edit-song-list').append(generateNewSongListingForEditPage(data.new_slug, song_title, song_artist, playlistSlug, link_to_spotify, link_other));
+			showAddSongPopUp(data.message);
+			$(this).css('display', 'none');
+		} else {
+			alert(data.message);
+		}
+	})
 })
 
 function showAddSongPopUp(text) {
@@ -319,49 +326,49 @@ function generateSpotifySearchResultForEditPage(track_name, artist_name, link, t
 function generateNewSongListingForEditPage(slug, title, artist, playlistSlug, link_spotify, link_other){
 	
 	var new_song_html = `
-	  <li class="choonz-row" id="${slug}">
-        <div class="col-md-9 title-and-artist-${slug}">
-            <div class="row">
-                <div class="col-md-3">
-                    <h5>${title}</h5>
-                </div>
-                <div class="col">
-                    <strong>Spotify URL: </strong>`;
+	  <li class="choonz-row choonz-vertical-center" id="${slug}">
+	<div class="col-md-9 title-and-artist-${slug}">
+		<div class="row">
+			<div class="col-md-6">
+				<h5 class="centred-left-indent-5">${title}</h5>
+			</div>
+			<div class="col choonz-vertical-center">
+				<strong>Spotify URL </strong>`;
 	
 	if(link_spotify){
-		var first_input = `<input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value="${link_spotify}" readonly />`;
+		var first_input = `<input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value="${link_spotify}" />`;
 	} else {
-		var first_input = `<input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value="~ insert here ~" readonly />`;
+		var first_input = `<input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value="~ insert here ~" />`;
 	}
 
 	var middle = `</div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    by ${artist}
-                </div>
-                <div class="col">
-                    <strong>Other Link: </strong>`;
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<span class="centred-left-indent-10">by ${artist}</span>
+			</div>
+			<div class="col choonz-vertical-center">
+				<strong>Other Link : </strong>`;
 
     if(link_other){
-    	var second_input = `<input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value="${link_other}" readonly />`;
+    	var second_input = `<input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value="${link_other}" />`;
     } else {
-    	var second_input = `<input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value=" ~ insert here ~" readonly />`;
+    	var second_input = `<input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value="~ insert here ~" />`;
     }
                 
 	var end = `  
                 </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="choonz-col">
-                <button class="btn btn-danger remove-song-button" type="button" id="remove-song-${slug}" data-songSlug="${slug}">Remove</button>
-                <button class="btn btn-danger confirm-song-remove" type="button" id="confirm-remove-${slug}" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}">Confirm</button>
-                <button class="btn btn-secondary cancel-song-remove" type="button" id="cancel-remove-${slug}" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}">Cancel</button>
-                <button class="btn btn-secondary undo-song-remove" type="button" id="undo-remove-${slug}" data-songSlug="${slug}" data-songTitle="${title}" data-artistName="${artist}" data-linkToSpotify="${link_spotify}" data-linkOther="${link_other}" data-playlistSlug="${playlistSlug}">Undo Song Remove</button>
-            </div>
-        </div>
-    </li>
+		</div>
+	</div>
+	<div class="col-md-3 choonz-vertical-center">
+		<div class="choonz-col">
+			<button class="btn btn-danger remove-song-button" type="button" id="remove-song-${slug}" data-songSlug="${slug}">Remove</button>
+			<button class="btn btn-danger confirm-song-remove" type="button" id="confirm-remove-${slug}" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}">Confirm</button>
+			<button class="btn btn-secondary cancel-song-remove" type="button" id="cancel-remove-${slug}" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}">Cancel</button>
+			<button class="btn btn-secondary undo-song-remove" type="button" id="undo-remove-${slug}" data-songSlug="${slug}" data-songTitle="${title}" data-artistName="${artist}" data-linkToSpotify="${link_spotify}" data-linkOther="${link_other}" data-playlistSlug="${playlistSlug}">Undo Song Remove</button>
+		</div>
+	</div>
+</li>
 	`;
 	var full = new_song_html + first_input + middle + second_input + end;
 	return full;

@@ -286,7 +286,7 @@ def check_other_url(url):
         url = 'www.' + url
     if not 'https://' in url:
         url = 'https://' + url
-    if not 'http://' in url:
+    elif not 'http://' in url:
         url = 'http://' + url
     return url
 
