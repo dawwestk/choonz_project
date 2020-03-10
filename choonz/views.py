@@ -97,9 +97,9 @@ class ShowPlaylistView(View):
 
             # retrieve all users in this playlist (using filter())
             songs = Song.objects.filter(playlist=playlist)
-            song_list = songs.order_by('title')
+            #song_list = songs.order_by('title')
             # Add results to context dict
-            context_dict['songs'] = song_list
+            context_dict['songs'] = songs
 
             # Also add playlist to verify (in the template) it exists
             context_dict['playlist'] = playlist
