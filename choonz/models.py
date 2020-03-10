@@ -99,9 +99,6 @@ class Playlist(models.Model):
 
 class Artist(models.Model):
     name = models.CharField(max_length=max_char_length, blank=False)
-    webpage = models.URLField(blank=True, null=True)
-    linkToSpotify = models.URLField(blank=True)
-    numberOfPlaylists = models.IntegerField(default=0)
     slug = models.SlugField(unique=True)
 
     def save(self, *args, **kwargs):
