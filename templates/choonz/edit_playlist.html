@@ -64,7 +64,7 @@
     {% if user == playlist.creator %}
         <div class="container">
             <div class="container">
-                <button class="btn btn-primary btn-block" data-toggle="collapse" href="#collapse-edit-playlist-details" role="button"  id="edit-playlist-dropdown">Edit Playlist Details</button>
+                <button class="btn btn-light btn-block" data-toggle="collapse" href="#collapse-edit-playlist-details" role="button"  id="edit-playlist-dropdown">Edit Playlist Details</button>
             </div>
         </div>
         <div class="collapse container m-2" id="collapse-edit-playlist-details">
@@ -116,7 +116,7 @@
         <hr>
         <div class="container">
             <div class="container">
-                <button class="btn btn-primary btn-block" data-toggle="collapse" href="#collapse-add-song-fields" role="button"  id="add-songs-dropdown">Add Songs</button>
+                <button class="btn btn-light btn-block" data-toggle="collapse" href="#collapse-add-song-fields" role="button"  id="add-songs-dropdown">Add Songs</button>
             </div>
         </div>
         <div class="collapse container m-2" id="collapse-add-song-fields">
@@ -162,7 +162,7 @@
         <hr>
         <div class="container">
             <div class="container">
-                <button class="btn btn-primary btn-block" data-toggle="collapse" href="#collapse-spotify-search-field" role="button"  id="open-spotify-search-dropdown">Search Spotify</button>
+                <button class="btn btn-light btn-block" data-toggle="collapse" href="#collapse-spotify-search-field" role="button"  id="open-spotify-search-dropdown">Search Spotify</button>
             </div>
         </div>
         <div class="collapse container m-2" id="collapse-spotify-search-field">
@@ -172,7 +172,7 @@
                         <span class="input-group-text" id="spotify-search-text">Search Spotify here:</span>
                     </div>
                     <input class="form-control" type="text" name="query" id="spotify_search-query" value="{{ query }}"/>
-                    <button class="btn btn-primary" type="submit" data-playlistSlug="{{ playlist.slug }}" id="spotify-add-song-search">Search</button>
+                    <button class="btn btn-light" type="submit" data-playlistSlug="{{ playlist.slug }}" id="spotify-add-song-search">Search</button>
                 </div>
             </div>
 
