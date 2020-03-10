@@ -52,12 +52,16 @@
                                             <td>{{ p.name }}</td>
                                             <td>{{ p.createdDate|date:"d/m/y" }}</td>
                                             <td>{{ p.lastUpdatedDate|date:"d/m/y H:i:s" }}</td>
-                                            {% if p.getAverageRating %}
-                                                <td>{{ p.getAverageRating|floatformat }}</td>
+                                            {% if p.get_average_rating %}
+                                                <td>{{ p.get_average_rating|floatformat }}</td>
                                             {% else %}
                                                 <td>0</td>
                                             {% endif %}
-                                            <td>{{ p.getNumberOfRatings }}</td>
+                                            {% if p.get_number_of_ratings %}
+												<td>{{ p.get_number_of_ratings }}</td>
+											{% else %}
+												<td>0</td>
+											{% endif %}
                                         </tr>
                                     {% endfor %}
                                 </table>
