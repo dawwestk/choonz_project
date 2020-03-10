@@ -28,6 +28,4 @@ urlpatterns = [
     path('suggest_tag/', views.TagSuggestionView.as_view(), name='suggest_tag'),
     path('suggest_playlist/', views.PlaylistSuggestionView.as_view(), name='suggest_playlist'),
     path('filter_playlists/', views.PlaylistFilterView.as_view(), name='filter_playlists'),
-    path('drafts/', views.DraftView.as_view(), name='drafts'),
-    path('test/', views.TestView.as_view(), name='test'),
 ]

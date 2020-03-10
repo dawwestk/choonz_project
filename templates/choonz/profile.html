@@ -42,106 +42,94 @@
         </div>
     </div>
 
-    <div id="playlist-view" class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="index-card-header">
-                            <h2>Public Playlists</h2>
-                        </div>
-                        <p class="card-text">
-                            {% if public_playlists %}
-                                <ul class="list-group">
-                                    {% for playlist in public_playlists %}
-                                        <li class="list-group-item">
-                                            <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
-                                            <div>
-                                                <span class="badge badge-light p-2">Number of Ratings: {{ playlist.get_number_of_ratings }}</span>
-                                                <span class="badge badge-light p-2">Avg. Rating: {{ playlist.get_average_rating|floatformat }}</span>
-                                                {% if selected_user == user %}
-                                                    <a class="btn btn-info btn-sm" type="submit" name="submit"
-                                                            id="edit-playlist-button" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
-                                                    </a>
-                                                {% endif %}
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <div class="centred card">
-                                    <strong>No published playlists</strong>
-                                </div>
-                            {% endif %}
-                        </p>
-                    </div>
+    <div class="container-fluid" id="playlist-view">
+		<div class="row">
+			<div class="col index-card">
+                <div class="index-card-header">
+                    <h2>Public Playlists</h2>
                 </div>
+                <p class="card-text">
+                    {% if public_playlists %}
+                        <ul class="list-group">
+                            {% for playlist in public_playlists %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
+                                    <div>
+                                        <span class="badge badge-light p-2">Number of Ratings: {{ playlist.get_number_of_ratings }}</span>
+                                        <span class="badge badge-light p-2">Avg. Rating: {{ playlist.get_average_rating|floatformat }}</span>
+                                        {% if selected_user == user %}
+                                            <a class="btn btn-info btn-sm" type="submit" name="submit"
+                                                    id="edit-playlist-button" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="centred card">
+                            <strong>No published playlists</strong>
+                        </div>
+                    {% endif %}
+                </p>
             </div>
 
-            <div class="col-md-4">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <div class="index-card-header">
-                            <h2>Popular Playlists</h2>
-                        </div>
-                        <p class="card-text">
-                            {% if public_playlists %}
-                                <ul class="list-group">
-                                    {% for playlist in popular_playlists %}
-                                        <li class="list-group-item">
-                                            <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
-                                            <div>
-                                                <span class="badge badge-light p-2">Number of Ratings: {{ playlist.get_number_of_ratings }}</span>
-                                                <span class="badge badge-light p-2">Avg. Rating: {{ playlist.get_average_rating|floatformat }}</span>
-                                                {% if selected_user == user %}
-                                                    <a class="btn btn-info btn-sm" type="submit" name="submit"
-                                                            id="edit-playlist-button" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
-                                                    </a>
-                                                {% endif %}
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <div class="centred card">
-                                    <strong>No published playlists</strong>
-                                </div>
-                            {% endif %}
-                        </p>
-                    </div>
+            <div class="col index-card">
+                <div class="index-card-header">
+                    <h2>Popular Playlists</h2>
                 </div>
+                <p class="card-text">
+                    {% if public_playlists %}
+                        <ul class="list-group">
+                            {% for playlist in popular_playlists %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
+                                    <div>
+                                        <span class="badge badge-light p-2">Number of Ratings: {{ playlist.get_number_of_ratings }}</span>
+                                        <span class="badge badge-light p-2">Avg. Rating: {{ playlist.get_average_rating|floatformat }}</span>
+                                        {% if selected_user == user %}
+                                            <a class="btn btn-info btn-sm" type="submit" name="submit"
+                                                    id="edit-playlist-button" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="centred card">
+                            <strong>No published playlists</strong>
+                        </div>
+                    {% endif %}
+                </p>
             </div>
 
             {% if selected_user == user %}
-                <div class="col-md-4">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="index-card-header">
-                                <h2>Draft Playlists</h2>
-                            </div>
-                            <p class="card-text">
-                                {% if draft_playlists %}
-                                    <ul class="list-group">
-                                        {% for playlist in draft_playlists %}
-                                            <li class="list-group-item">
-                                                <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
-
-                                                <div>
-                                                    <a class="btn btn-info btn-sm" type="submit" name="submit"
-                                                            id="edit-playlist-button" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
-                                                    </a>
-                                                </div>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                {% else %}
-                                    <div class="centred card">
-                                        <strong>There are no playlists present.</strong>
-                                    </div>
-                                {% endif %}
-                            </p>
-                        </div>
+                <div class="col index-card">
+                    <div class="index-card-header">
+                        <h2>Draft Playlists</h2>
                     </div>
+                    <p class="card-text">
+                        {% if draft_playlists %}
+                            <ul class="list-group">
+                                {% for playlist in draft_playlists %}
+                                    <li class="list-group-item">
+                                        <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
+
+                                        <div>
+                                            <a class="btn btn-info btn-sm" type="submit" name="submit"
+                                                    id="edit-playlist-button" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
+                                            </a>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <div class="centred card">
+                                <strong>There are no playlists present.</strong>
+                            </div>
+                        {% endif %}
+                    </p>
                 </div>
             {% endif %}
         </div>
@@ -149,93 +137,82 @@
 
     <div id="rated-playlists-view" class="container">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card mb-6">
-                    <div class="card-body">
-                        <div class="index-card-header">
-                            <h2>{{ selected_user.username }}'s Ratings</h2>
-                        </div>
-                        <p class="card-text">
-                            {% if rated_playlists %}
-                                <ul class="list-group">
-                                    {% for playlist in rated_playlists %}
-                                        <li class="list-group-item no-overflow">
-                                            <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.playlist|truncatechars:40 }}</a>
-                                            <div>
-                                                {% if selected_user == user %}
-                                                    <span class="badge badge-light p-2">Your Rating: {{ playlist.stars }}</span>
-                                                    <span class="badge badge-light p-2">The Tags: {{ playlist.tags }}</span>
-                                                {% else %}
-                                                    <span class="badge badge-light p-2">The Tags: {{ playlist.tags }}</span>
-                                                    <span class="badge badge-light p-2">{{ selected_user.username }}'s Rating: {{ playlist.stars }}</span>
-                                                {% endif %}
-                                                <span class="badge badge-light p-2">Number of Ratings: {{ playlist.numberOfRatings }}</span>
-                                                <span class="badge badge-light p-2">Avg. Rating: {{ playlist.averageRating|floatformat }}</span>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <div class="centred card">
-                                    <strong>No rated playlists</strong>
-                                </div>
-                            {% endif %}
-                        </p>
-                    </div>
+            <div class="col index-card">
+                <div class="index-card-header">
+                    <h2>{{ selected_user.username }}'s Ratings</h2>
                 </div>
+                <p class="card-text">
+                    {% if rated_playlists %}
+                        <ul class="list-group">
+                            {% for playlist in rated_playlists %}
+                                <li class="list-group-item no-overflow">
+                                    <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.playlist|truncatechars:40 }}</a>
+                                    <div>
+                                        {% if selected_user == user %}
+                                            <span class="badge badge-light p-2">Your Rating: {{ playlist.stars }}</span>
+                                            <span class="badge badge-light p-2">The Tags: {{ playlist.tags }}</span>
+                                        {% else %}
+                                            <span class="badge badge-light p-2">The Tags: {{ playlist.tags }}</span>
+                                            <span class="badge badge-light p-2">{{ selected_user.username }}'s Rating: {{ playlist.stars }}</span>
+                                        {% endif %}
+                                        <span class="badge badge-light p-2">Number of Ratings: {{ playlist.numberOfRatings }}</span>
+                                        <span class="badge badge-light p-2">Avg. Rating: {{ playlist.averageRating|floatformat }}</span>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="centred card">
+                            <strong>No rated playlists</strong>
+                        </div>
+                    {% endif %}
+                </p>
             </div>
 
-            <div class="col-md-4">
-                <div class="card mb-6">
-                    <div class="card-body">
-                        <div class="index-card-header">
-                            <h2>{{ selected_user.username }}'s Top 10 Tags</h2>
-                        </div>
-                        <p class="card-text">
-                            {% if all_rated_tags %}
-                                <ul class="list-group">
-                                    {% for tag, count in tag_obs.items %}
-                                        <li class="list-group-item">
-                                            <span class="badge badge-light p-2">{{ tag }}</span>: ratings <span
-                                                class="badge badge-light p-2">{{ count }}</span>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <div class="centred card">
-                                    <strong>No rated playlists</strong>
-                                </div>
-                            {% endif %}
-                        </p>
-                    </div>
+            <div class="col index-card">
+                <div class="index-card-header">
+                    <h2>{{ selected_user.username }}'s Top 10 Tags</h2>
                 </div>
+                <p class="card-text">
+                    {% if all_rated_tags %}
+                        <ul class="list-group">
+                            {% for tag, count in tag_obs.items %}
+                                <li class="list-group-item">
+                                    <span class="badge badge-light p-2">{{ tag }}</span>: ratings <span
+                                        class="badge badge-light p-2">{{ count }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="centred card">
+                            <strong>No rated playlists</strong>
+                        </div>
+                    {% endif %}
+                </p>
             </div>
-            <div class="col-md-4">
-                <div class="card mb-6">
-                    <div class="card-body">
-                        <div class="index-card-header">
-                            <h2>Playlists For You</h2>
-                        </div>
-                        <p class="card-text">
-                            {% if playlist_suggestions %}
-                                <ul class="list-group">
-                                    {% for suggestion, percentage in playlist_suggestions.items %}
-                                        <li class="list-group-item">
-                                            <a class="badge badge-warning p-2"
-                                               href="{% url 'choonz:show_playlist' suggestion.slug %}">{{ suggestion.name }}</a>
-                                            - <span class="badge badge-light p-2">{{ percentage }}% match</span>
-                                            by {{ suggestion.creator }}
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% else %}
-                                <div class="centred card">
-                                    <strong>We can't recommend a playlist until you rate some that you like!</strong>
-                                </div>
-                            {% endif %}
-                        </p>
-                    </div>
+
+            <div class="col index-card">
+                <div class="index-card-header">
+                    <h2>Playlists For You</h2>
                 </div>
+                <p class="card-text">
+                    {% if playlist_suggestions %}
+                        <ul class="list-group">
+                            {% for suggestion, percentage in playlist_suggestions.items %}
+                                <li class="list-group-item">
+                                    <a class="badge badge-warning p-2"
+                                       href="{% url 'choonz:show_playlist' suggestion.slug %}">{{ suggestion.name }}</a>
+                                    - <span class="badge badge-light p-2">{{ percentage }}% match</span>
+                                    by {{ suggestion.creator }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="centred card">
+                            <strong>We can't recommend a playlist until you rate some that you like!</strong>
+                        </div>
+                    {% endif %}
+                </p>
             </div>
         </div>
     </div>

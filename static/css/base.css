@@ -59,6 +59,7 @@ body {
     background-color: #153a5e;
     padding-bottom: 1em;
     margin: 10px;
+    max-width: 33%;
 }
 
 .alt-logins{
