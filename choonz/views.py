@@ -281,8 +281,32 @@ class DraftView(View):
 
         return render(request, 'choonz/drafts.html', context_dict)
 
+def check_other_url(url):
+    if not 'www.' in url:
+        url = 'www.' + url
+    if not 'https://' in url:
+        url = 'https://' + url
+    if not 'http://' in url:
+        url = 'http://' + url
+    return url
 
 class AddSongView(View):
+    @method_decorator(login_required)
+    def get(self, request, playlist_name_slug):
+        song_slug = request.GET.get('song_slug')
+        song = Song.objects.get(slug=song_slug)
+
+        if request.GET.get('link_to_spotify'):
+            song.linkToSpotify = request.GET.get('link_to_spotify')
+
+        if request.GET.get('link_other'):
+            song.linkOther = check_other_url(request.GET.get('link_other'))
+
+        song.save()
+
+        return HttpResponse(True)
+
+
     @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
         playlist_slug = request.POST.get('playlist_slug')
@@ -301,7 +325,7 @@ class AddSongView(View):
         song_title = request.POST.get('song_title')
         song_artist = request.POST.get('song_artist')
         artist_slug = slugify(song_artist)
-        artist = None
+
         try:
             artist = Artist.objects.get(slug=artist_slug)
         except Artist.DoesNotExist:
@@ -313,8 +337,6 @@ class AddSongView(View):
             response_dict['message'] = "Value error, please check song details"
             return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
-        link_to_spotify = ''
-        link_other = ''
         updated_song_details = False
         if request.POST.get('link_to_spotify'):
             form_input_spotify_url = request.POST.get('link_to_spotify')

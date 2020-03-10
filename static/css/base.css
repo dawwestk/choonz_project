@@ -557,6 +557,8 @@ td {
 
 .choonz-col{
     margin: 8px;
+    padding-left: auto;
+    padding-right: auto;
 
 }
 
@@ -580,4 +582,16 @@ td {
     margin-bottom:-1px;
     background-color:#fff;
     border:1px solid rgba(0,0,0,.125)
+}
+
+.choonz-form-control{
+    display:inline-block;
+    width:75%;
+    text-align: center;
+    color:#495057;
+    background-color:#fff;
+    background-clip:padding-box;
+    border:1px solid #ced4da;
+    border-radius:.25rem;
+    transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}
 }

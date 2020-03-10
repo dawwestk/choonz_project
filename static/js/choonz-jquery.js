@@ -37,12 +37,6 @@ $(document).ready( function () {
 		$('#submit-rating-update').css('display', 'inline-block');
 		$('#cancel-rating-update').css('display', 'inline-block');
 		$(this).css('display', 'none');
-		//$('#stars').prop('readonly', true);
-		//$('#comment').prop('readonly', true);
-		//if($(this).val() !== ""){
-		 // 	$("input[name='right']").prop("readonly", true);
-		 // }else{
-		  //	$("input[name='right']").removeAttr("readonly");
 		  //}
 	
 	})

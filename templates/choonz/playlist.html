@@ -115,46 +115,37 @@
 		
 		<h3 class="card">Track List</h3>
 		{% if songs %}
-		<div id="songs-listing">
-			<ul>
-				{% for song in songs %}
-				<li class="choonz-row">
-					<div class="col-md-8">
-						<div class="centred-left-indent-5 row">
-							<h5>{{ song.title }}</h5>
+		<div class="container" id="songs-listing">
+			<div class="card-body">
+				<ul>
+					{% for song in songs %}
+					<li class="choonz-row">
+						<div class="col-md-7">
+							<div class="col">
+								<div class="centred-left-indent-5 row">
+									<h5>{{ song.title }}</h5>
+								</div>
+								<div class="centred-left-indent-10 row">
+									<span>by {{ song.artist }}</span>
+								</div>
+							</div>
 						</div>
-						<div class="centred-left-indent-10 row">
-						<span>by {% if song.artist.webpage %}
-							<a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
-							{% else %}
-								{{ song.artist }}
-							{% endif %}
-						</span>
-						</div>
-					</div>
-					<div class="col-md-4">
-						<div class="choonz-col">
-						{% if song.linkToSpotify %}
-							<a class="btn btn-primary" href="{{ song.linkToSpotify }}" target="_blank" name="submit">Listen with Spotify</a>
-						{% else %}
-							{% if user == playlist.creator %}
-								<button class="btn btn-secondary" name="submit">Add Link to Spotify</button>
+						<div class="col-md-5">
+							<div class="choonz-col">
+							{% if song.linkToSpotify %}
+								<a class="btn btn-primary" href="{{ song.linkToSpotify }}" target="_blank" name="submit">Listen with Spotify</a>
 							{% else %}
 								<span class="badge badge-dark">User has not provided a link to this song</span>
 							{% endif %}
-						{% endif %}
-						{% if song.linkOther %}
-							<a class="btn btn-primary" href="{{ song.linkOther }}" target="_blank" name="submit">Listen Online</a>
-						{% else %}
-							{% if user == playlist.creator %}
-								<button class="btn btn-secondary" name="submit">Add Link</button>
+							{% if song.linkOther %}
+								<a class="btn btn-primary" href="{{ song.linkOther }}" target="_blank" name="submit">Listen Online</a>
 							{% endif %}
-						{% endif %}
+							</div>
 						</div>
-					</div>
-				</li>
-				{% endfor %}
-			</ul>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
 		</div>
 
 		<h3 class="card">Ratings for {{ playlist.name }}</h3>

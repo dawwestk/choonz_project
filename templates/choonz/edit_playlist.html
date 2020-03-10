@@ -166,22 +166,23 @@
             </div>
         </div>
         <div class="collapse container m-2" id="collapse-spotify-search-field">
-            <div class="card-body">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="spotify-search-text">Search Spotify here:</span>
+            <div class="container">
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="spotify-search-text">Search Spotify here:</span>
+                        </div>
+                        <input class="form-control" type="text" name="query" id="spotify_search-query" value="{{ query }}"/>
+                        <button class="btn btn-light" type="submit" data-playlistSlug="{{ playlist.slug }}" id="spotify-add-song-search">Search</button>
                     </div>
-                    <input class="form-control" type="text" name="query" id="spotify_search-query" value="{{ query }}"/>
-                    <button class="btn btn-light" type="submit" data-playlistSlug="{{ playlist.slug }}" id="spotify-add-song-search">Search</button>
+                </div>
+
+                <div class="container">
+                    <ul id="spotify-search-results">
+                        
+                    </ul>
                 </div>
             </div>
-
-            <div class="container">
-                <ul id="spotify-search-results">
-                    
-                </ul>
-            </div>
-
         </div>
         <hr>
         <div class="container">
@@ -191,41 +192,53 @@
         </div>
         <hr>
         <div class="container">
-            <div class="card-body">
-                <div class="card-body" id="playlist-header">
-                    <h4>All songs on {{ playlist.name }}</h4>
-                </div>
-                <ul id="edit-song-list">
-                {% if playlist.get_song_list %}
-                    {% for song in playlist.get_song_list %}
-                    <li class="choonz-row" id="{{song.slug}}">
-                        <div class="col-md-9 title-and-artist-{{song.slug}}">
-                            <div class="centred-left-indent-5 row">
+            <div class="card-body" id="playlist-header">
+                <h4>All songs on {{ playlist.name }}</h4>
+            </div>
+            <ul id="edit-song-list">
+            {% if playlist.get_song_list %}
+                {% for song in playlist.get_song_list %}
+                <li class="choonz-row" id="{{song.slug}}">
+                    <div class="col-md-9 title-and-artist-{{song.slug}}">
+                        <div class="row">
+                            <div class="col-md-3">
                                 <h5>{{ song.title }}</h5>
                             </div>
-                            <div class="centred-left-indent-10 row">
-                            by {% if song.artist.webpage %}
-                                <a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
+                            <div class="col">
+                                <strong>Spotify URL: </strong>
+                                {% if song.linkToSpotify %}
+                                    <input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}" type="text" value="{{song.linkToSpotify}}" />
                                 {% else %}
-                                    {{ song.artist }}
+                                    <input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}" type="text" value="~ insert here ~" />
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="choonz-col">
-                                <button class="btn btn-danger remove-song-button" type="button" id="remove-song-{{song.slug}}" data-songSlug="{{song.slug}}">Remove</button>
-                                <button class="btn btn-danger confirm-song-remove" type="button" id="confirm-remove-{{song.slug}}" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Confirm</button>
-                                <button class="btn btn-secondary cancel-song-remove" type="button" id="cancel-remove-{{song.slug}}" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Cancel</button>
-                                <button class="btn btn-secondary undo-song-remove" type="button" id="undo-remove-{{song.slug}}" data-songSlug="{{ song.slug }}" data-songTitle="{{song.title}}" data-artistName="{{song.artist}}" data-linkToSpotify="{{song.linkToSpotify}}" data-linkOther="{{song.linkOther}}" data-playlistSlug="{{ playlist.slug }}">Undo Song Remove</button>
+                        <div class="row">
+                            <div class="col-md-3">
+                                by {{ song.artist }}
+                            </div>
+                            <div class="col">
+                                <strong>Other Link: </strong>
+                                {% if song.linkOther %}
+                                    <input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}" type="text" value="{{song.linkOther}}" />
+                                {% else %}
+                                   <input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}" type="text" value="~ insert here ~" />
+                                {% endif %}
                             </div>
                         </div>
-                    </li>
-                    {% endfor %}
-                {% else %}
-                    
-                {% endif %}
-                </ul>
-            </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="choonz-col">
+                            <button class="btn btn-danger remove-song-button" type="button" id="remove-song-{{song.slug}}" data-songSlug="{{song.slug}}">Remove</button>
+                            <button class="btn btn-danger confirm-song-remove" type="button" id="confirm-remove-{{song.slug}}" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Confirm</button>
+                            <button class="btn btn-secondary cancel-song-remove" type="button" id="cancel-remove-{{song.slug}}" data-songSlug="{{ song.slug }}" data-playlistSlug="{{ playlist.slug }}">Cancel</button>
+                            <button class="btn btn-secondary undo-song-remove" type="button" id="undo-remove-{{song.slug}}" data-songSlug="{{ song.slug }}" data-songTitle="{{song.title}}" data-artistName="{{song.artist}}" data-linkToSpotify="{{song.linkToSpotify}}" data-linkOther="{{song.linkOther}}" data-playlistSlug="{{ playlist.slug }}">Undo Song Remove</button>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            {% endif %}
+            </ul>
         </div>
         <hr>
         <div class="jumbotron m-2 p-1">
