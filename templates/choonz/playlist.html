@@ -119,7 +119,7 @@
 			<ul>
 				{% for song in songs %}
 				<li class="choonz-row">
-					<div class="col-md-9">
+					<div class="col-md-8">
 						<div class="centred-left-indent-5 row">
 							<h5>{{ song.title }}</h5>
 						</div>
@@ -132,16 +132,25 @@
 						</span>
 						</div>
 					</div>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<div class="choonz-col">
 						{% if song.linkToSpotify %}
 							<a class="btn btn-primary" href="{{ song.linkToSpotify }}" target="_blank" name="submit">Listen with Spotify</a>
 						{% else %}
 							{% if user == playlist.creator %}
 								<button class="btn btn-secondary" name="submit">Add Link to Spotify</button>
+							{% else %}
+								<span class="badge badge-dark">User has not provided a link to this song</span>
 							{% endif %}
 						{% endif %}
-					</div>
+						{% if song.linkOther %}
+							<a class="btn btn-primary" href="{{ song.linkOther }}" target="_blank" name="submit">Listen Online</a>
+						{% else %}
+							{% if user == playlist.creator %}
+								<button class="btn btn-secondary" name="submit">Add Link</button>
+							{% endif %}
+						{% endif %}
+						</div>
 					</div>
 				</li>
 				{% endfor %}

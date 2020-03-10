@@ -234,14 +234,6 @@ class PlaylistEditorView(View):
 
 class PlaylistRatingView(View):
     @method_decorator(login_required)
-    def get(self, request, playlist_name_slug):
-        user_profile = get_user_profile(request)
-        playlist = Playlist.objects.get(slug=playlist_name_slug)
-        form = RatingForm()
-        context_dict = {'user_profile': user_profile, 'form': form, 'playlist': playlist}
-        return render(request, 'choonz/rate_playlist.html', context_dict)
-
-    @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
         playlist = Playlist.objects.get(slug=playlist_name_slug)
         user_profile = get_user_profile(request)
@@ -856,44 +848,28 @@ def setup_spotify():
     return sp
 
 
-class RestrictedView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        sp = setup_spotify()
-
-        tracks = []
-
-        results = sp.search(q='dolly parton', limit=20)
-        for idx, track in enumerate(results['tracks']['items']):
-            tracks.append(track['name'])
-        context_dict = {}
-        context_dict['tracks'] = tracks
-        return render(request, 'choonz/restricted.html', context_dict)
-
+class SearchSpotifyView(View):
     @method_decorator(login_required)
     def post(self, request):
         sp = setup_spotify()
         results_list = []
 
         query = request.POST.get('query')
-        results = sp.search(q=query, limit=20)
+        results = sp.search(q=query, limit=10)
         for idx, track in enumerate(results['tracks']['items']):
             # track + any of the below (and more)
             # ['popularity'], ['preview_url'], ['external_urls']['spotify']
             # ['album']['name'], ['album']['images'][0]
             # ['artists']['name']
-            track_info = {}
-            track_info['track_name'] = track['name']
-            track_info['album_name'] = track['album']['name']
-            track_info['artist_name'] = track['artists'][0]['name']
-            track_info['album_image'] = track['album']['images'][0]['url']
-            track_info['link'] = track['external_urls']['spotify']
-            results_list.append(track_info)
-        context_dict = {}
-        context_dict['results'] = results_list
-        context_dict['query'] = query
+            track_info = {'track_name': track['name'], 'album_name': track['album']['name'],
+                          'artist_name': track['artists'][0]['name'], 'album_image': track['album']['images'][0]['url'],
+                          'link': track['external_urls']['spotify']}
 
-        return render(request, 'choonz/restricted.html', context_dict)
+            results_list.append(track_info)
+        context_dict = {'results': results_list, 'query': query}
+
+        #return render(request, 'choonz/song_search_results.html', context_dict)
+        return HttpResponse(json.dumps(context_dict), content_type="application/json")
 
 
 def visitor_cookie_handler(request):

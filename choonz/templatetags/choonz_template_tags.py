@@ -21,3 +21,11 @@ def get_playlist_list():
     output['playlist_suggestions'] = playlist_suggestions
 
     return output
+
+@register.inclusion_tag('choonz/song_search_results.html')
+def get_search_results(results=None):
+    output = {}
+    search_results = results
+    output['search_results'] = search_results
+
+    return output

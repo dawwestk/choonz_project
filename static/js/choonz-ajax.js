@@ -85,10 +85,20 @@ $(document).ready(function(){
 	})
 
 	$('#playlist-search-input').keyup(function() {
-		var query;
-		query = $(this).val();
+		var query = $(this).val();
 		$.get('/choonz/suggest_playlist/', {'suggestion': query}, function(data){
 			$('#playlist-listing').html(data);
+		})
+	})
+
+	$('#spotify-add-song-search').click(function(){
+		var query = $('#spotify_search-query').val();
+		var playlistSlug = $(this).attr('data-playlistSlug');
+		$.post('/choonz/search_spotify/', {'query': query}, function(data){
+			
+			for(var i = 0; i < data.results.length; i++) {
+				$('#spotify-search-results').append(generateSpotifySearchResultForEditPage(data.results[i].track_name, data.results[i].artist_name, data.results[i].link, data.results[i].album_image, playlistSlug));
+			};
 		})
 	})
 
@@ -190,6 +200,24 @@ $(document).on("click", '.confirm-song-remove', function(e){
 
 })
 
+$(document).on("click", '.add-from-spotify', function(e){
+	var song_title = $(this).attr('data-songTitle');
+	var song_artist = $(this).attr('data-artistName');
+	var link_to_spotify = $(this).attr('data-linkToSpotify');
+	var playlistSlug = $(this).attr('data-playlistSlug');
+	var link_other = null;
+
+	$.post('add_song/', {'playlist_slug': playlistSlug, 'song_title': song_title, 'song_artist': song_artist, 'link_to_spotify': link_to_spotify, 'link_other': link_other}, function(data){
+		if(data.status){
+			$('#edit-song-list').append(generateNewSongListingForEditPage(data.new_slug, song_title, song_artist, playlistSlug));
+			showAddSongPopUp(data.message);
+		} else {
+			alert(data.message);
+		}
+	})
+
+})
+
 $(document).on("click", '.undo-song-remove', function(e){
 	var slug = $(this).attr('data-songSlug');
 	var parentLI = $('#' + slug)
@@ -230,6 +258,27 @@ function showAddSongPopUp(text) {
 
   // After 3 seconds, remove the show class from DIV
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+function generateSpotifySearchResultForEditPage(track_name, artist_name, link, track_album_image, playlistSlug){
+	//alert(link);
+	var search_result_html = `
+		<li class="choonz-list-group-item">
+			<div class="choonz-row-border">
+				<div class="col-md-6">
+					<span><strong>${track_name}</strong> by ${artist_name}</span>
+				</div>
+				<div class="col-md-3">
+					<a href="${link}">Listen on Spotify</a>
+					<img width=30 height=30 src="${track_album_image}"/>
+				</div>
+				<div class="col-md-3">
+					<a class="btn btn-info add-from-spotify" data-songTitle="${track_name}" data-artistName="${artist_name}" data-linkToSpotify="${link}" data-playlistSlug=${playlistSlug}>Add to Playlist</a>
+				</div>
+			</div>
+		</li>`
+    
+    return search_result_html;
 }
 
 function generateNewSongListingForEditPage(slug, title, artist, playlistSlug){

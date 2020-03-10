@@ -1,0 +1,13 @@
+{% if results %}
+    <div class="card">
+        <ul>
+        {% for track in results %}
+            <li class="list-group-item"><span>{{ track.track_name }} by {{ track.artist_name }}         </span><span><a href="{{ track.link }}" target="_blank">Listen on Spotify       </a></span><img width=30 height=30 src="{{ track.album_image }}"/></li>
+        {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <div class="card">
+        <p><strong>Your search returned 0 results</strong></p>
+    </div>
+{% endif %}

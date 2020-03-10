@@ -544,6 +544,17 @@ td {
     margin-right:5%;
 }
 
+.choonz-row-border{
+    display:-ms-flexbox;
+    display:flex;
+    -ms-flex-wrap:wrap;
+    flex-wrap:wrap;
+    min-width:0;
+    word-wrap:break-word;
+    background-color:#fff;
+    background-clip:border-box;
+}
+
 .choonz-col{
     margin: 8px;
 
@@ -561,4 +572,12 @@ td {
 #cancel-rating-update{
     display: none;
     margin-right: 10px;
+}
+
+.choonz-list-group-item{
+    position:relative;
+    display:block;
+    margin-bottom:-1px;
+    background-color:#fff;
+    border:1px solid rgba(0,0,0,.125)
 }
