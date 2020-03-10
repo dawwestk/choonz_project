@@ -100,11 +100,12 @@
 							<h5>{{ song.title }}</h5>
 						</div>
 						<div class="centred-left-indent-10 row">
-						by {% if song.artist.webpage %}
+						<span>by {% if song.artist.webpage %}
 							<a href="{{ song.artist.webpage }}">{{ song.artist }}</a>
 							{% else %}
 								{{ song.artist }}
 							{% endif %}
+						</span>
 						</div>
 					</div>
 					<div class="col-md-3">
