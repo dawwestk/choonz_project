@@ -10,6 +10,7 @@
 					<img src="{{ MEDIA_URL }}{{ playlist.picture }}" width="30" height="30" alt="{{ playlist.name }}'s playlist image" />
 				{% endif %}
 				<strong>created on {{ playlist.createdDate }}</strong>
+				<span class="badge badge-light">Average Rating: {{ playlist.get_average_rating }}/5.0</span>
 
 			</div>
 			<div class="tag-list">Tags: {{ playlist.get_playlist_tag_descriptions_as_string }}</div>

@@ -29,6 +29,31 @@ $(document).ready( function () {
 	$('#view-tables-button').click(function(){
 		loadMyStatsPage();
 	})
+
+	// Playlist Page buttons
+	$('#show-update-rating-fields').click(function(){
+		$('#stars').removeAttr('readonly');
+		$('#comment').removeAttr('readonly');
+		$('#submit-rating-update').css('display', 'inline-block');
+		$('#cancel-rating-update').css('display', 'inline-block');
+		$(this).css('display', 'none');
+		//$('#stars').prop('readonly', true);
+		//$('#comment').prop('readonly', true);
+		//if($(this).val() !== ""){
+		 // 	$("input[name='right']").prop("readonly", true);
+		 // }else{
+		  //	$("input[name='right']").removeAttr("readonly");
+		  //}
+	
+	})
+
+	$('#cancel-rating-update').click(function(){
+		$(this).css('display', 'none');
+		$('#submit-rating-update').css('display', 'none');
+		$('#show-update-rating-fields').css('display', 'inline-block');	
+		$('#stars').prop('readonly', true);
+		$('#comment').prop('readonly', true);
+	})	
 		
 })
 

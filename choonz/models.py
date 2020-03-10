@@ -79,7 +79,7 @@ class Playlist(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        if self.averageRating < 0:
+        if float(self.averageRating) < 0:
             self.averageRating = 0
         super(Playlist, self).save(*args, **kwargs)
 
@@ -145,10 +145,10 @@ class Rating(models.Model):
         return self.user.username + " review of " + self.playlist.name
 
     def save(self, *args, **kwargs):
-        if self.stars < 0:
-            self.stars = 0
-        if self.stars > 5:
-            self.stars = 5
+        if float(self.stars) < 0:
+            self.stars = 0.0
+        if float(self.stars) > 5:
+            self.stars = 5.0
         super(Rating, self).save(*args, **kwargs)
 
 
