@@ -55,14 +55,6 @@
                                 <ul class="list-group">
                                     {% for playlist in public_playlists %}
                                         <li class="list-group-item">
-                                            {% if playlist.image %}
-                                                <img src="{{ MEDIA_URL }}{{ playlist.image }}" width="50" height="50"
-                                                     alt="Playlist image"/>
-                                            {% else %}
-                                                <img src="{% static 'images/default_profile_img.jpg' %}" width="50"
-                                                     height="50"
-                                                     alt="No playlist image"/>
-                                            {% endif %}
                                             <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
                                             <div>
                                                 <span class="badge badge-light p-2">Number of Ratings: {{ playlist.get_number_of_ratings }}</span>
@@ -97,14 +89,6 @@
                                 <ul class="list-group">
                                     {% for playlist in popular_playlists %}
                                         <li class="list-group-item">
-                                            {% if playlist.image %}
-                                                <img src="{{ MEDIA_URL }}{{ playlist.image }}" width="50" height="50"
-                                                     alt="Playlist image"/>
-                                            {% else %}
-                                                <img src="{% static 'images/default_profile_img.jpg' %}" width="50"
-                                                     height="50"
-                                                     alt="No playlist image"/>
-                                            {% endif %}
                                             <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
                                             <div>
                                                 <span class="badge badge-light p-2">Number of Ratings: {{ playlist.get_number_of_ratings }}</span>
@@ -140,15 +124,6 @@
                                     <ul class="list-group">
                                         {% for playlist in draft_playlists %}
                                             <li class="list-group-item">
-                                                {% if playlist.image %}
-                                                    <img src="{{ MEDIA_URL }}{{ playlist.image }}" width="50"
-                                                         height="50"
-                                                         alt="Playlist image"/>
-                                                {% else %}
-                                                    <img src="{% static 'images/default_profile_img.jpg' %}" width="50"
-                                                         height="50"
-                                                         alt="No playlist image"/>
-                                                {% endif %}
                                                 <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
 
                                                 <div>
@@ -185,14 +160,6 @@
                                 <ul class="list-group">
                                     {% for playlist in rated_playlists %}
                                         <li class="list-group-item no-overflow">
-                                            {% if playlist.image %}
-                                                <img src="{{ MEDIA_URL }}{{ playlist.image }}" width="50" height="50"
-                                                     alt="Playlist image"/>
-                                            {% else %}
-                                                <img src="{% static 'images/default_profile_img.jpg' %}" width="50"
-                                                     height="50"
-                                                     alt="No playlist image"/>
-                                            {% endif %}
                                             <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.playlist|truncatechars:40 }}</a>
                                             <div>
                                                 {% if selected_user == user %}
