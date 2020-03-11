@@ -255,7 +255,9 @@ class PlaylistRatingView(View):
                 rating.date = datetime.now(pytz.utc)
                 form.save(commit=True)
 
-            context_dict = {'user_profile': user_profile, "playlist": playlist, "songs": playlist.get_song_list, 'rating': rating, 'user_has_rated': True}
+            all_ratings = Rating.objects.filter(playlist=playlist)
+            context_dict = {'user_profile': user_profile, "playlist": playlist, "songs": playlist.get_song_list,
+                            'rating': rating, 'user_has_rated': True, 'ratings': all_ratings}
             return render(request, 'choonz/playlist.html', context_dict)
         else:
             # form contained errors
