@@ -34,9 +34,6 @@
                         {% for hidden in form.hidden_fields %}
                             {{ hidden }}
                         {% endfor %}
-                        {% for field in form.visible_fields %}
-                            {{ field.errors }}
-                        {% endfor %}
                         <div class="card-body">
                             <div class="input-group mb-3">
                                 <p class="required">
@@ -47,6 +44,11 @@
                                        placeholder="{{ form.name.help_text }}" required autofocus size="50">
                                 </p>
                             </div>
+                            <div class="text-danger">
+                                <p>
+                                    {{ form.name.errors}}
+                                </p>
+                            </div>
                             <div class="input-group mb-3">
                                 <p class="required">
                                 <div class="input-group-prepend">
@@ -54,6 +56,11 @@
                                 </div>
                                 <input type="text" name="description" id="description" class="form-control"
                                        placeholder="{{ form.description.help_text }}" size="100">
+                                </p>
+                            </div>
+                            <div class="text-danger">
+                                <p>
+                                    {{ form.description.errors}}
                                 </p>
                             </div>
                             <div class="input-group mb-3">

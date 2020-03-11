@@ -7,7 +7,7 @@
 
 {% block body_block %}
 
-    <div class="jumbotron p-3" id="profilePageHeader">
+    <div class="jumbotron p-3 page-header">
         <div class="container" id="testContainer">
             {% if page_user_profile.picture %}
                 <img class="profile-image" src="{{ MEDIA_URL }}{{ page_user_profile.picture }}" width="70"
@@ -18,7 +18,7 @@
             {% endif %}
 
 
-            <h1 id="profilePageHeaderText">
+            <h1 id="profilePageHeaderText page-header-font">
                 {% if selected_user == user %}
                     My Profile
                 {% else %}
@@ -27,16 +27,14 @@
             </h1>
         </div>
         <div class="container" id="profilePageButtons">
-
-
-            <button class="btn btn-info" type="submit" name="submit" id="view-playlists-button">Playlists</button>
-            <button class="btn btn-info" type="submit" name="submit" id="view-rated-playlists-button">Rated Playlists
+            <button class="btn btn-info m-1" type="submit" name="submit" id="view-playlists-button">Playlists</button>
+            <button class="btn btn-info m-1" type="submit" name="submit" id="view-rated-playlists-button">Rated Playlists
             </button>
             {% if selected_user == user %}
-                <button class="btn btn-info" type="submit" name="submit" id="edit-profile-button">Edit Profile</button>
-                <a class="btn btn-info" id="new-playlist-button" href="{% url 'choonz:add_playlist' %}">Create Playlist
+                <button class="btn btn-info m-1" type="submit" name="submit" id="edit-profile-button">Edit Profile</button>
+                <a class="btn btn-info m-1" id="new-playlist-button" href="{% url 'choonz:add_playlist' %}">Create Playlist
                 </a>
-                <a class="btn btn-info" href="{% url 'choonz:my_stats' user.username %}">View My Stats</a>
+                <a class="btn btn-info m-1" href="{% url 'choonz:my_stats' user.username %}">View My Stats</a>
 
             {% endif %}
         </div>
@@ -52,7 +50,7 @@
                     {% if public_playlists %}
                         <ul class="list-group">
                             {% for playlist in public_playlists %}
-                                <li class="list-group-item">
+                                <li class="list-group-item see-through">
                                     <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
                                     <div>
                                         <span class="badge badge-light p-2">Number of Ratings: {{ playlist.get_number_of_ratings }}</span>
@@ -82,7 +80,7 @@
                     {% if public_playlists %}
                         <ul class="list-group">
                             {% for playlist in popular_playlists %}
-                                <li class="list-group-item">
+                                <li class="list-group-item see-through">
                                     <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
                                     <div>
                                         <span class="badge badge-light p-2">Number of Ratings: {{ playlist.get_number_of_ratings }}</span>
@@ -113,7 +111,7 @@
                         {% if draft_playlists %}
                             <ul class="list-group">
                                 {% for playlist in draft_playlists %}
-                                    <li class="list-group-item">
+                                    <li class="list-group-item see-through">
                                         <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:20 }}</a>
 
                                         <div>
@@ -145,7 +143,7 @@
                     {% if rated_playlists %}
                         <ul class="list-group">
                             {% for playlist in rated_playlists %}
-                                <li class="list-group-item no-overflow">
+                                <li class="list-group-item no-overflow see-through">
                                     <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.playlist|truncatechars:40 }}</a>
                                     <div>
                                         {% if selected_user == user %}
@@ -177,7 +175,7 @@
                     {% if all_rated_tags %}
                         <ul class="list-group">
                             {% for tag, count in tag_obs.items %}
-                                <li class="list-group-item">
+                                <li class="list-group-item see-through">
                                     <span class="badge badge-light p-2">{{ tag }}</span>: ratings <span
                                         class="badge badge-light p-2">{{ count }}</span>
                                 </li>
@@ -199,7 +197,7 @@
                     {% if playlist_suggestions %}
                         <ul class="list-group">
                             {% for suggestion, percentage in playlist_suggestions.items %}
-                                <li class="list-group-item">
+                                <li class="list-group-item see-through">
                                     <a class="badge badge-warning p-2"
                                        href="{% url 'choonz:show_playlist' suggestion.slug %}">{{ suggestion.name }}</a>
                                     - <span class="badge badge-light p-2">{{ percentage }}% match</span>
@@ -218,29 +216,33 @@
     </div>
 
     {% if selected_user == user %}
-        <div id="edit-profile-view" class="container">
+        <div id="edit-profile-view" class="container-fluid">
             <div class="row">
-                <div class="col">
+                <div class="choonz-col">
                     <div class="card p-4">
-                        <div class="container-fluid">
-                            <div class="card p-4">
-                                {% if user_profile.picture %}
-                                    <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240"
-                                         alt="{{ selected_user.username }}'s profile image"/>
-                                {% else %}
-                                    <img src="{% static 'images/default_profile_img.jpg' %}" width="320" height="240"
-                                         alt="No profile image"/>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <h3 align="center">Profile Picture</h3>
+                            {% if user_profile.picture %}
+                                <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240"
+                                     alt="{{ selected_user.username }}'s profile image"/>
+                            {% else %}
+                                <img src="{% static 'images/default_profile_img.jpg' %}" width="320" height="240"
+                                     alt="No profile image"/>
+                            {% endif %}
+                        <h3 align="center">Your Profile Picture</h3>
                     </div>
                 </div>
                 <div class="col">
                     <div class="card p-2">
                         <form method="post" action="." enctype="multipart/form-data">
                             {% csrf_token %}
-                            {{ form.as_p }}
+                            <div class="input-group mb-3">
+			                    <p class="required">
+			                        <div class="input-group-prepend">
+			                            <span class="input-group-text" id="playlist-description-prompt">Select an image:</span>
+			                        </div>
+			                        {{ form.picture.errors }}
+			                        <input type="file" name="picture" id="picture_input" class="form-control" accept="image/*">
+			                    </p>
+			                </div>
                             <input class="btn btn-info btn-block" type="submit" value="Update"/>
                         </form>
                     </div>

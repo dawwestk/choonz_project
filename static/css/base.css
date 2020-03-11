@@ -73,21 +73,6 @@ body {
     background: rgba(204, 204, 204, 0.5);*/
 }
 
-#page-greeting{
-    color: white;
-    background-color: #153a5e;
-    opacity: 70%;
-    text-align: center;
-    border: 1px solid #919191;
-    border-radius: 25px;
-    padding: auto;
-    margin: auto;
-    }
-
-#greetingText{
-    opacity: 100%;
-}
-
 .card-text{
     background-color: #2c455d;
     }
@@ -125,8 +110,6 @@ body {
     overflow-x: auto;
 }
 
-
-
 .mainInner{
     display: table;
     height: 100%;
@@ -144,21 +127,6 @@ body {
 #baseMain {
     transition: margin-left 250ms
 }
-    /*baseMain is setting max width for entire website, sidebarmenu seems to retain it required margin regadless.
-    also I dont think transition or padding is doing anything here?*/
-
-/*
-JavaScript for transition for later: 
-function openNav() {
-    document.getElementById("mySidebar").style.width = "250px";
-    document.getElementById("main").style.marginLeft = "250px";
-}
-function closeNav() {
-    document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("main").style.marginLeft = "0";
-}
-*/
-
 
 #cardBox {
     display: flex;
@@ -188,7 +156,6 @@ function closeNav() {
     margin-left: 14%;
     margin-right: 15%;
     border-radius: 25px;
-
 }
 
 #testContainer{
@@ -206,14 +173,23 @@ function closeNav() {
     justify-content: center;
 }
 
-#profilePageHeaderText{
-    color: #19c2c8;
-}
-
 
 #titleHeader {
     color: #19c2c8;
     text-align: center;
+    font-family: 'Oleo Script', cursive;
+}
+
+.page-header{
+    background-color: #153a5e;
+    color: #19c2c8;
+    text-align: center;
+    border: 1px solid #919191;
+    border-radius: 25px;
+}
+
+.page-header-font{
+    color: #19c2c8;
     font-family: 'Oleo Script', cursive;
 }
 

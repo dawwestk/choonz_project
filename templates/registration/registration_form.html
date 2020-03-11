@@ -16,9 +16,6 @@
 			<div class="card p-4">
 				<form role="form" method="post" action=".">
 					{% csrf_token %}
-					{% for field in form.visible_fields %}
-	                    {{ field.errors }}
-	                {% endfor %}
 					<div class="card-body">
 						<div class="input-group mb-3">
 							<p class="required">
@@ -26,6 +23,11 @@
 	                                <span class="input-group-text" id="basic-addon1">Username:</span>
 	                            </div>
 	                            <input class="form-control" id="id_username" maxlength="30" name="username" type="text" />
+                            </p>
+                        </div>
+                        <div class="text-danger">
+                            <p>
+                                {{ form.username.errors}}
                             </p>
                         </div>
                         <p>
@@ -42,12 +44,22 @@
 	                            <input class="form-control" id="id_email" name="email" type="email" />
                             </p>
                         </div>
+                        <div class="text-danger">
+                            <p>
+                                {{ form.email.errors}}
+                            </p>
+                        </div>
                         <div class="input-group mb-3">
 							<p class="required">
 	                            <div class="input-group-prepend">
 	                                <span class="input-group-text" id="basic-addon1">Password:</span>
 	                            </div>
 	                            <input class="form-control" id="id_password1" name="password1" type="password" />
+                            </p>
+                        </div>
+                        <div class="text-danger">
+                            <p>
+                                {{ form.password1.errors}}
                             </p>
                         </div>
                         <div class="input-group mb-3">
@@ -63,6 +75,11 @@
 								Now, enter the same password as before, for verification.
 							</span>
 						</p>
+						<div class="text-danger">
+                            <p>
+                                {{ form.password2.errors}}
+                            </p>
+                        </div>
 					</div>
 					<button type="submit" class="btn btn-primary btn-block" id="registration-button">Submit</button>
 				</form>
