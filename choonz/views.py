@@ -703,7 +703,7 @@ class ProfileView(View):
             except Rating.DoesNotExist:
                 playlist_info["stars"] = 0
 
-            if playlist_info["stars"] > 2.5:
+            if playlist_info["stars"] >= 2.5:
                 for j in playlist_info['tags']:
                     try:
                         tag_obs[j] = tag_obs[j] + 1
