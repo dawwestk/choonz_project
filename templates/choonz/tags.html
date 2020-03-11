@@ -4,6 +4,7 @@
             <a class="btn btn-warning tag-suggestion m-1">{{ c.description }}</a>
         {% endfor %}
     {% else %}
-        <div class=""><strong>No matching tags.</strong></div>
+        <div class=""><strong>No tags match your search. Would you like to create one?</strong></div>
+        <a class="btn btn-info m-1" id="add-new-tag">+ Create New Tag</a>
     {% endif %}
 </div>

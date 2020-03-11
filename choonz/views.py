@@ -561,6 +561,7 @@ def get_playlist_list(max_results=0, starts_with=''):
 
 
 class TagSuggestionView(View):
+    @method_decorator(login_required)
     def get(self, request):
         user_profile = get_user_profile(request)
         if 'suggestion' in request.GET:
@@ -571,13 +572,39 @@ class TagSuggestionView(View):
         # possibly change the ordering to be by number of playlists?
         tag_list = get_tag_list(max_results=10, starts_with=suggestion).order_by('description')
 
-        # if nothing is written in the field so we want to show all or nothing?
+        # if nothing is written in the field do we want to show all or nothing?
         if len(tag_list) == 0:
-            tag_list = Tag.objects.order_by('description')
+            if suggestion == '*':
+                tag_list = Tag.objects.order_by('description')
+            else:
+                tag_list = None
 
         context_dict = {'user_profile': user_profile, 'tags': tag_list}
 
         return render(request, 'choonz/tags.html', context_dict)
+
+    @method_decorator(login_required)
+    def post(self, request):
+        tag_text = request.POST.get('tag_text')
+
+        tag_slug = slugify(tag_text)
+        response_dict = {'status': False}
+
+        try:
+            tag = Tag.objects.get(slug=tag_slug)
+            response_dict['message'] = "Tag already exists - check your spelling!"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
+        except Tag.DoesNotExist:
+            tag = Tag.objects.create(description=tag_text)
+            tag.save()
+            response_dict['status'] = True
+            response_dict['message'] = "Tag \"" + tag_text + "\" added!"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
+        except:
+            response_dict['message'] = "Invalid create-tag string"
+            return HttpResponse(json.dumps(response_dict), content_type="application/json")
+
+
 
 
 def get_tag_list(max_results=0, starts_with=''):

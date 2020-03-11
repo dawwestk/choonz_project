@@ -142,9 +142,31 @@ $(document).ready(function(){
 
 // separated from document.ready as the tag-suggestions are added/updated AFTER the DOM model is created
 $(document).on("click", ".tag-suggestion", function(e) {
+	var clickedTag = $(this).text();
+	addTagToList(clickedTag);
+})
+
+$(document).on("click", '#add-new-tag', function(e){
+	var tagText = $('#tag-search-input').val();
+	if(!(tagText == '')){
+		$.post('/choonz/suggest_tag/', {'tag_text': tagText}, function(data){
+			if(data.status){
+				$('#tag-search-input').val("");
+				showAddSongPopUp(data.message);
+				addTagToList(tagText);
+			} else {
+				showAddSongPopUp(data.message);
+			}
+		})
+	} else {
+		showAddSongPopUp("Invalid create-tag string");
+	} 
+})
+
+function addTagToList(tagToInsert){
+	var clickedTag = tagToInsert;
 	var tagInput = $('#tags');
 	var currentTags = tagInput.val();
-	var clickedTag = $(this).text();
 
 	// Check if tag already on the list
 	if (currentTags.includes(clickedTag)) {
@@ -156,7 +178,7 @@ $(document).on("click", ".tag-suggestion", function(e) {
 		var output = currentTags + clickedTag + ', ';
 		tagInput.val(output);
 	}
-})
+}
 
 $(document).on("keydown", '.add-url-to-song', function(e){
 	if (e.which == 13) {
