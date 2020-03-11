@@ -48,7 +48,7 @@ $(document).ready( function () {
 	})
 
 	// Options for star ratings
-	var options = {
+	var update = {
 	    max_value: 5,
 	    step_size: 0.5,
 	    initial_value: 0,
@@ -57,16 +57,26 @@ $(document).ready( function () {
 	    readonly: false,
 	    change_once: false, // Determines if the rating can only be set once
 	    ajax_method: 'POST',
-	    //url: 'http://localhost/test.php',
-	    //additional_data: {} // Additional data to send to the server
 	}
 
-	$(".rate").rate(options);
-	$(".rate").on("change", function(ev, data){
-		var stars = $('.rate').rate("getValue");
+	var mini_rating = {
+	    max_value: 5,
+	    step_size: 0.1,
+	    initial_value: 0,
+	    selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	    cursor: 'default',
+	    readonly: true,
+	    change_once: false, // Determines if the rating can only be set once
+	    ajax_method: 'POST',
+	}
+
+	$('.rate').rate(update);
+	$('.rate').on('change', function(ev, data){
+		var stars = $('.rate').rate('getValue');
         $('#stars-input').val(stars);
     });
 
+	$('.min-rating').rate(mini_rating);
 
 })
 

@@ -171,7 +171,8 @@
 				<ul>
 					{% for rating in ratings %}
 					<li class="list-group-item">{{ rating.stars }} &#x2606; - "{{ rating.comment }}" ~ 
-						<a href="{% url 'choonz:profile' rating.user.username %}">{{ rating.user.username }}</a>
+						<a href="{% url 'choonz:profile' rating.user.username %}">{{ rating.user.username }} </a>
+						<span class="badge badge-light">submitted on {{rating.date}}</span>
 					</li>
 					{% endfor %}
 				</ul>

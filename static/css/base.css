@@ -44,6 +44,7 @@ body {
 
 
 .list-group-item{
+    margin: auto;
     text-align: center;
 }
 
@@ -382,16 +383,14 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   bottom: 30px; /* 30px from the bottom */
 }
 
-/* Show the snackbar when clicking on a button (class added with JavaScript) */
+/* Show the popup when adding/removing songs */
 #addSongPopUp.show {
-  visibility: visible; /* Show the snackbar */
-  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
-  However, delay the fade out process for 2.5 seconds */
+  visibility: visible;
   -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
   animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
-/* Animations to fade the snackbar in and out */
+/* Animations to fade the popup in and out */
 @-webkit-keyframes fadein {
   from {bottom: 0; opacity: 0;}
   to {bottom: 30px; opacity: 1;}
@@ -412,6 +411,8 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
   to {bottom: 0; opacity: 0;}
 }
 
+/* -------------------------------------------- */
+
 
 #all-playlist-listing-page{
     position: relative;
@@ -427,6 +428,7 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     font-size: 15px;
     background-color: rgba(255,255,255,0.6);
     padding: 10px;
+    width: 100%;
 }
 
 .see-through a{
@@ -520,6 +522,33 @@ td {
     margin-right:5%;
 }
 
+.choonz-row-no-border{
+    display:-ms-flexbox;
+    display:flex;
+    -ms-flex-wrap:wrap;
+    flex-wrap:wrap;
+    min-width:0;
+    width: 100%;
+    word-wrap:break-word;
+    text-align: center;
+    background-clip:border-box;
+    border-radius:.25rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.choonz-badge{
+    display:inline-block;
+    padding:.25em .4em;
+    font-size:75%;
+    font-weight:700;
+    line-height:1;
+    text-align:center;
+    white-space:normal;
+    vertical-align:baseline;
+    border-radius:.25rem}
+}
+
 .choonz-row-border{
     display:-ms-flexbox;
     display:flex;
@@ -590,4 +619,9 @@ td {
 }
 .rate .rate-select-layer{
     color: orange;
+}
+
+.min-rating{
+    margin-left: 10px;
+    margin-right: 10px;
 }

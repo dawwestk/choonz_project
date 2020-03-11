@@ -696,6 +696,7 @@ class ProfileView(View):
             playlist_info["averageRating"] = playlist.get_average_rating
             playlist_info["numberOfRatings"] = playlist.get_number_of_ratings
             playlist_info["tags"] = playlist.get_playlist_tag_descriptions
+            playlist_info['tag_list'] = playlist.get_playlist_tag_descriptions_as_string
             try:
                 rating = Rating.objects.get(user=user, playlist=playlist)
                 playlist_info["stars"] = rating.stars
