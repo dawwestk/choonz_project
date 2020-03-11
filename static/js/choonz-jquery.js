@@ -32,33 +32,42 @@ $(document).ready( function () {
 
 	// Playlist Page buttons
 	$('#show-update-rating-fields').click(function(){
-		$('#stars').removeAttr('readonly');
+		$('#stars').prop('readonly', false);
 		$('#comment').removeAttr('readonly');
-		$('#submit-rating-update').css('display', 'inline-block');
-		$('#cancel-rating-update').css('display', 'inline-block');
+		$('#hidden-submit-rating-update').css('display', 'inline-block');
+		$('#hidden-cancel-rating-update').css('display', 'inline-block');
 		$(this).css('display', 'none');
-		  //}
-	
 	})
 
-	$('#cancel-rating-update').click(function(){
+	$('#hidden-cancel-rating-update').click(function(){
 		$(this).css('display', 'none');
-		$('#submit-rating-update').css('display', 'none');
+		$('#hidden-submit-rating-update').css('display', 'none');
 		$('#show-update-rating-fields').css('display', 'inline-block');	
 		$('#stars').prop('readonly', true);
 		$('#comment').prop('readonly', true);
 	})
 
-	$('#show-initial-rating-fields').click(function(){
-		$(this).css('display', 'none');
-		$('#initial-rating-fields').css('display', 'inline-block');
-	})
+	// Options for star ratings
+	var options = {
+	    max_value: 5,
+	    step_size: 0.5,
+	    initial_value: 0,
+	    selected_symbol_type: 'utf8_star', // Must be a key from symbols
+	    cursor: 'default',
+	    readonly: false,
+	    change_once: false, // Determines if the rating can only be set once
+	    ajax_method: 'POST',
+	    //url: 'http://localhost/test.php',
+	    //additional_data: {} // Additional data to send to the server
+	}
 
-	$('#cancel-rating-initial').click(function(){
-		$('#show-initial-rating-fields').css('display', 'inline-block');	
-		$('#initial-rating-fields').css('display', 'none');
-	})
-		
+	$(".rate").rate(options);
+	$(".rate").on("change", function(ev, data){
+		var stars = $('.rate').rate("getValue");
+        $('#stars-input').val(stars);
+    });
+
+
 })
 
 function loadCharts(bar_label_info, bar_data, bar_average, line_date_info, line_data, line_names){

@@ -541,9 +541,15 @@ td {
 }
     
 #submit-rating-update,
-#cancel-rating-update{
-    display: none;
+#cancel-rating-update,
+#show-update-rating-fields{
     margin-right: 10px;
+}
+
+#hidden-submit-rating-update,
+#hidden-cancel-rating-update{
+    margin-right: 10px;
+    display: none;
 }
 
 .choonz-list-group-item{
@@ -564,4 +570,24 @@ td {
     border:1px solid #ced4da;
     border-radius:.25rem;
     transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out}
+}
+
+
+/* Styling for rating stars */
+.rate-base-layer{
+    color: #aaa;
+}
+.rate-hover-layer{
+    color: orange;
+}
+.rate{
+    font-size: 35px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.rate .rate-hover-layer{
+    color: yellow;
+}
+.rate .rate-select-layer{
+    color: orange;
 }

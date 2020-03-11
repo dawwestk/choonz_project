@@ -197,11 +197,6 @@ $(document).on("keydown", '.add-url-to-song', function(e){
 	    //alert("calling get with linkToSpotify = " + linkToSpotify + "\nlinkOther = " + linkOther + "\nsong slug = " + song_slug);
 
 	    $.get('add_song/', {'song_slug': song_slug, 'link_to_spotify': linkToSpotify, 'link_other': linkOther}, function(data){
-	    	/*
-	    	if(data){
-	    		alert("URL updated");
-	    	}
-	    	*/
 	    })
 	}
 })

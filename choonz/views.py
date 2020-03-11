@@ -237,39 +237,33 @@ class PlaylistRatingView(View):
     def post(self, request, playlist_name_slug):
         playlist = Playlist.objects.get(slug=playlist_name_slug)
         user_profile = get_user_profile(request)
-        if request.POST.get('rating'):
-            rating = Rating.objects.get(id=request.POST.get('rating'))
-            form = RatingForm()
-            context_dict = {'user_profile': user_profile, 'form': form, 'playlist': playlist, 'rating': rating}
-            return render(request, 'choonz/rate_playlist.html', context_dict)
+        form = RatingForm(request.POST)
+
+        # if the form valid?
+        if form.is_valid():
+            try:
+                rating = Rating.objects.get(user=request.user, playlist=playlist)
+                rating.stars = request.POST.get('stars')
+                rating.comment = request.POST.get('comment')
+                rating.date = datetime.now(pytz.utc)
+                rating.save()
+
+            except Rating.DoesNotExist:
+                rating = form.save(commit=False)
+                rating.user = request.user
+                rating.playlist = playlist
+                rating.date = datetime.now(pytz.utc)
+                form.save(commit=True)
+
+            context_dict = {'user_profile': user_profile, "playlist": playlist, "songs": playlist.get_song_list, 'rating': rating, 'user_has_rated': True}
+            return render(request, 'choonz/playlist.html', context_dict)
         else:
-            form = RatingForm(request.POST)
+            # form contained errors
+            # print them to the terminal
+            print(form.errors)
 
-            # if the form valid?
-            if form.is_valid():
-                try:
-                    rating = Rating.objects.get(user=request.user, playlist=playlist)
-                    rating.stars = request.POST.get('stars')
-                    rating.comment = request.POST.get('comment')
-                    rating.date = datetime.now(pytz.utc)
-                    rating.save()
-
-                except Rating.DoesNotExist:
-                    rating = form.save(commit=False)
-                    rating.user = request.user
-                    rating.playlist = playlist
-                    rating.date = datetime.now(pytz.utc)
-                    form.save(commit=True)
-
-                context_dict = {'user_profile': user_profile, "playlist": playlist, "songs": playlist.get_song_list}
-                return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': playlist_name_slug}))
-            else:
-                # form contained errors
-                # print them to the terminal
-                print(form.errors)
-
-            context_dict = {'user_profile': user_profile, 'form': form, 'playlist': playlist}
-            return render(request, 'choonz/rate_playlist.html', context=context_dict)
+        context_dict = {'user_profile': user_profile, 'form': form, 'playlist': playlist, 'user_has_rated': False}
+        return render(request, 'choonz/playlist.html', context=context_dict)
 
 
 class DraftView(View):

@@ -12,13 +12,25 @@
 
 {% block body_block %}
 	{% if playlist %}
-		<div class="jumbotron p-4">
-			<div class="container">
-				<div class="row">
-					<div class="col">	
+		<div class="jumbotron p-2">
+			<div class="container m-1">
+				<div class="row">	
+				<div class="col">
+					<div class="row">	
 						<h1 class="jumbotron-heading">{{ playlist.name }}</h1>
 					</div>
-					<div class="col">
+					<p>created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a></p>
+						<p>
+					<div class="row">
+						<p>
+						<strong>Description: </strong>{{ playlist.description }}<br />
+							Created on: {{ playlist.createdDate }}<br />
+							Last updated: {{ playlist.lastUpdatedDate }}<br />
+						</p>
+					</div>
+				</div>	
+				<div class="col">
+					<div class="row">
 						<h4 class="jumbotron-heading">Average Rating: 
 						{% if playlist.get_average_rating %}
 							{{ playlist.get_average_rating|floatformat}}
@@ -27,99 +39,58 @@
 						{% endif %}
 						/5.0</h4>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col m-0">
-						created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a><br />
-						<strong>Description: </strong>{{ playlist.description }}<br />
-						Created on: {{ playlist.createdDate }}<br />
-						Last updated: {{ playlist.lastUpdatedDate }}
-						
-					</div>
-					<div class="col m-1">
+					<div class="row">
 						{% if user.is_authenticated %}
 							{% if user != playlist.creator %}
-								{% if user_has_rated %}
-									<div>
-										<h4>Your Rating</h4>
-										<form class="form-inline" id="user-form" method="post" action="{% url 'choonz:rate_playlist' playlist.slug %}">
-											{% csrf_token %}
-				                        {% for hidden in form.hidden_fields %}
-				                            {{ hidden }}
-				                        {% endfor %}
-										<div class="input-group mb-3">
-			                                <p class="required">
-			                                    <div class="input-group-prepend">
-			                                        <span class="input-group-text" id="basic-addon1">Stars rating: </span>
-			                                    </div>
-			                                        <input type="text" name="stars" id="stars" class="form-control" value="{{ rating.stars }}" required autofocus size="10" readonly />
-			                                </p>
-			                            </div>
-			                            <div class="text-danger">
-					                        <p>
-					                            {{ form.stars.errors}}
-					                        </p>
-					                    </div>
-										<div class="input-group mb-3">
-			                                <p class="required">
-			                                    <div class="input-group-prepend">
-			                                        <span class="input-group-text" id="basic-addon1">Comment: </span>
-			                                    </div>
-			                                    <input type="text" name="comment" id="comment" class="form-control" value="{{ rating.comment }}" size="100" readonly />
-			                                </p>
-			                            </div>
-			                            <div class="text-danger">
-					                        <p>
-					                            {{ form.comment.errors}}
-					                        </p>
-					                    </div>
-										<a class="btn btn-warning" id="show-update-rating-fields">Edit Your Rating</a>
-										<button class="btn btn-primary" id="submit-rating-update" type="submit">Submit</button>
-										<a class="btn btn-secondary" id="cancel-rating-update">Cancel</a>
-										</form>
+								<div>
+									<form class="form-inline" id="rating-form" method="post" action="{% url 'choonz:rate_playlist' playlist.slug %}">
+									{% csrf_token %}
+									{{ form.non_field_errors }}
+									<div class="input-group mb-3">
+		                                <p class="required">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text">Your rating: </span>
+		                                    </div>
+		                                {% if user_has_rated %}
+		                                    <div class="rate" id="stars" data-rate-value={{rating.stars}}></div>
+		                                    <input type="text" name="stars" id="stars-input" value="{{rating.stars}}" hidden />
+		                                {% else %}
+		                                	<div class="rate" id="stars" data-rate-value={{rating.stars}}></div>
+		                                    <input type="text" name="stars" id="stars-input" value="0" hidden />
+		                                {% endif %}
+		                                    <div class="text-danger">
+						                            {{ form.stars.errors }}
+						                    </div>
+		                                </p>
+		                            </div>
+
+									<div class="input-group mb-3">
+		                                <p class="required">
+		                                    <div class="input-group-prepend">
+		                                        <span class="input-group-text">Comment: </span>
+		                                    </div>
+		                                    {% if user_has_rated %}
+		                                    	<input type="text" name="comment" id="comment" class="form-control" value="{{ rating.comment }}" size="100" readonly />
+		                                    {% else %}
+		                                    	<input type="text" name="comment" id="comment" class="form-control" value="" size="100" />
+		                                    {% endif %}
+		                                </p>
+		                            </div>
+		                            <div class="text-danger">
+				                            {{ form.comment.errors }}
+				                    </div>
+				                    <div>
+				                  	{% if user_has_rated %}
+				                    	<a type="button" class="btn btn-warning" id="show-update-rating-fields">Edit Your Rating</a>
+				                    	<button class="btn btn-primary" id="hidden-submit-rating-update" type="submit">Submit</button>
+										<a type="button" class="btn btn-secondary" id="hidden-cancel-rating-update">Cancel</a>
+				                    {% else %}
+				                    	<button class="btn btn-primary" id="submit-rating-update" type="submit">Submit</button>
+										<a type="button" class="btn btn-secondary" id="cancel-rating-update">Cancel</a>
+									{% endif %}
 									</div>
-								{% else %}
-									<div>
-										<a class="btn btn-warning" id="show-initial-rating-fields">Rate this Playlist!</a>
-									</div>
-									<div id="initial-rating-fields">
-										<h4>Your Rating</h4>
-										<form class="form-inline" id="user-form" method="post" action="{% url 'choonz:rate_playlist' playlist.slug %}">
-											{% csrf_token %}
-				                        {% for hidden in form.hidden_fields %}
-				                            {{ hidden }}
-				                        {% endfor %}
-										<div class="input-group mb-3">
-			                                <p class="required">
-			                                    <div class="input-group-prepend">
-			                                        <span class="input-group-text" id="basic-addon1">Stars rating: </span>
-			                                    </div>
-			                                        <input type="text" name="stars" id="stars" class="form-control" value="" required autofocus size="10" />
-			                                </p>
-			                            </div>
-			                            <div class="text-danger">
-					                        <p>
-					                            {{ form.stars.errors}}
-					                        </p>
-					                    </div>
-										<div class="input-group mb-3">
-			                                <p class="required">
-			                                    <div class="input-group-prepend">
-			                                        <span class="input-group-text" id="basic-addon1">Comment: </span>
-			                                    </div>
-			                                    <input type="text" name="comment" id="comment" class="form-control" value="" size="100" />
-			                                </p>
-			                            </div>
-			                            <div class="text-danger">
-					                        <p>
-					                            {{ form.comment.errors}}
-					                        </p>
-					                    </div>
-										<button class="btn btn-primary mr-2" id="submit-rating-initial" type="submit">Submit</button>
-										<a class="btn btn-secondary" id="cancel-rating-initial">Cancel</a>
-										</form>
-									</div>
-								{% endif %}
+									</form>
+								</div>
 							{% else %}
 								{% if playlist.public %}
 									<div>
@@ -146,6 +117,7 @@
 							{% endif %}
 						{% endif %}
 					</div>
+				</div>
 				</div>
 			</div>
 		</div>
