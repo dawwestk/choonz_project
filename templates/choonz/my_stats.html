@@ -10,26 +10,22 @@
     <div class="container">
         {% if selected_user == user %}
 
-            <div class="jumbotron p-3" id="myStatsHeader">
-                <div class="container" id="myStatsTextContainer">
-                    <div class="row">
-                        <div class="col mb-3">
-                            <h1 class="jumbotron-heading" id="myStatsText">
-                                My Stats
-                            </h1>
-                        </div>
-                    </div>
+            <div class="jumbotron p-3 page-header">
+                <div class="container">
+                    <h1 class="jumbotron-heading page-header-font">
+                        My Stats
+                    </h1>
                 </div>
                 <div class="container" id="myStatsButtonContainer">
-                    <button class="btn btn-info" type="submit" name="submit" id="view-tables-button">Tables</button>
+                    <button class="btn btn-info" type="submit" name="submit" id="view-tables-button">View Stats Tables</button>
                     <button class="btn btn-info" type="submit" name="submit" id="view-charts-button"
                             onclick="loadCharts({{ playlist_stats.playlist_names }}, {{ playlist_stats.playlist_aves }}, {{ playlist_stats.user_playlist_average_rating }},{{ user_stats.rating_dates }}, {{ user_stats.rating_stars }},{{ user_stats.rating_playlist }})">
-                        Charts
+                        View Stats Charts
                     </button>
                 </div>
             </div>
 
-            <div id="table-view" class="card">
+            <div id="table-view" class="page-header">
                 <div class="row p-4">
                     <div class="container">
                         <h3>{{ user.username }}'s Playlist Stats</h3>
@@ -152,7 +148,7 @@
                 </div>
             </div>
 
-            <div id="chart-view" class="card">
+            <div id="chart-view" class="page-header">
                 <div class="row p-4">
                     <div class="col">
                         <div class="container">
@@ -168,12 +164,12 @@
                 <div class="row p-4">
                     <div class="col">
                         {% if playlist_stats %}
-                            <div class="row centred">
+                            <div class="row centred canvas-container">
                                 <canvas id="playlist-rating-bar-chart" height="350" width="500"></canvas>
                             </div>
                             </div>
                             <div class="col">
-                            <div class="row centred">
+                            <div class="row centred canvas-container">
                                 <canvas id="user-line-chart" height="350" width="500"></canvas>
                             </div>
                         {% endif %}

@@ -69,8 +69,6 @@ body {
 .list-group{
     margin: 0.5em;
     padding: 0.5em;
-    /*background: rgb(204, 204, 204);
-    background: rgba(204, 204, 204, 0.5);*/
 }
 
 .card-text{
@@ -141,6 +139,8 @@ body {
     padding-bottom: 20px;
     width: 100%;
     opacity: 95%;
+    border-bottom: 1px solid #919191;
+
 }
 
 #choonbuilder{
@@ -202,10 +202,12 @@ body {
     opacity: 95%;
     width: 100%;
     background-color: #153a5e;
+    border-top: 1px solid #919191;
 }
 
 .profile-image{
     border-radius: 50%;
+    border: 1px solid #919191;
 }
 
 .index-card-header{
@@ -264,18 +266,6 @@ body {
     font-weight: bold;
     cursor: pointer;
     text-decoration: none;
-}
-
-#myStatsHeader{
-    background-color: #153a5e;
-    border-radius: 25px;
-}
-
-#myStatsTextContainer{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    font-family: 'Oleo Script', cursive;
 }
 
 #myStatsText{
@@ -445,10 +435,15 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
 }
 
 canvas {
-    border: 1px solid rgb(0,0,0);
     margin: auto;
     height: 350px;
     display: none;
+}
+
+.canvas-container{
+    background-color: rgb(255,255,255);
+    padding: 0px;
+    border-radius:.25rem;
 }
 
 table{
@@ -456,6 +451,7 @@ table{
     margin:auto;
     padding: auto;
     width: 100%;
+    color: rgb(0,0,0);
 }
 
 th {
@@ -469,6 +465,7 @@ td {
     border: 1px solid rgb(0,0,0);
     padding: 5px;
     text-align: center;
+    background-color: rgb(255,255,255);
 }
 
 .centred{
