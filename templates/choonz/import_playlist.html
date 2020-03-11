@@ -23,14 +23,13 @@
                     <a class="nav-link" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit a Playlist</a>
                 </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'choonz:drafts' %}">Draft Playlists</a>
-                </li>
             </ul>
         </div>
         <div class="container">
+            <br />
             <h3 class="card"> Import a playlist from Spotify</h3>
             <div class="row">
+                <div class="container">
                 <form role="form" id="import_playlist_form" method="post" action="{% url 'choonz:import_playlist' playlist.slug %}">
                     {% csrf_token %}
                     {% for hidden in form.hidden_fields %}
@@ -56,6 +55,7 @@
                     <button class="btn btn-primary" type="submit" data-playlistSlug="{{ playlist.slug }}" name="submit">Import Playlist</button>
                     </div>
                 </form>
+            </div>
             </div>
         </div>
     </div>
