@@ -47,7 +47,17 @@ $(document).ready( function () {
 		$('#show-update-rating-fields').css('display', 'inline-block');	
 		$('#stars').prop('readonly', true);
 		$('#comment').prop('readonly', true);
-	})	
+	})
+
+	$('#show-initial-rating-fields').click(function(){
+		$(this).css('display', 'none');
+		$('#initial-rating-fields').css('display', 'inline-block');
+	})
+
+	$('#cancel-rating-initial').click(function(){
+		$('#show-initial-rating-fields').css('display', 'inline-block');	
+		$('#initial-rating-fields').css('display', 'none');
+	})
 		
 })
 

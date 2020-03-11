@@ -47,9 +47,6 @@
 				                        {% for hidden in form.hidden_fields %}
 				                            {{ hidden }}
 				                        {% endfor %}
-				                        {% for field in form.visible_fields %}
-				                            {{ field.errors }}
-				                        {% endfor %}
 										<div class="input-group mb-3">
 			                                <p class="required">
 			                                    <div class="input-group-prepend">
@@ -58,6 +55,11 @@
 			                                        <input type="text" name="stars" id="stars" class="form-control" value="{{ rating.stars }}" required autofocus size="10" readonly />
 			                                </p>
 			                            </div>
+			                            <div class="text-danger">
+					                        <p>
+					                            {{ form.stars.errors}}
+					                        </p>
+					                    </div>
 										<div class="input-group mb-3">
 			                                <p class="required">
 			                                    <div class="input-group-prepend">
@@ -66,6 +68,11 @@
 			                                    <input type="text" name="comment" id="comment" class="form-control" value="{{ rating.comment }}" size="100" readonly />
 			                                </p>
 			                            </div>
+			                            <div class="text-danger">
+					                        <p>
+					                            {{ form.comment.errors}}
+					                        </p>
+					                    </div>
 										<a class="btn btn-warning" id="show-update-rating-fields">Edit Your Rating</a>
 										<button class="btn btn-primary" id="submit-rating-update" type="submit">Submit</button>
 										<a class="btn btn-secondary" id="cancel-rating-update">Cancel</a>
@@ -73,7 +80,44 @@
 									</div>
 								{% else %}
 									<div>
-										<a class="btn btn-warning" href="{% url 'choonz:rate_playlist' playlist.slug %}">Rate this Playlist!</a>
+										<a class="btn btn-warning" id="show-initial-rating-fields">Rate this Playlist!</a>
+									</div>
+									<div id="initial-rating-fields">
+										<h4>Your Rating</h4>
+										<form class="form-inline" id="user-form" method="post" action="{% url 'choonz:rate_playlist' playlist.slug %}">
+											{% csrf_token %}
+				                        {% for hidden in form.hidden_fields %}
+				                            {{ hidden }}
+				                        {% endfor %}
+										<div class="input-group mb-3">
+			                                <p class="required">
+			                                    <div class="input-group-prepend">
+			                                        <span class="input-group-text" id="basic-addon1">Stars rating: </span>
+			                                    </div>
+			                                        <input type="text" name="stars" id="stars" class="form-control" value="" required autofocus size="10" />
+			                                </p>
+			                            </div>
+			                            <div class="text-danger">
+					                        <p>
+					                            {{ form.stars.errors}}
+					                        </p>
+					                    </div>
+										<div class="input-group mb-3">
+			                                <p class="required">
+			                                    <div class="input-group-prepend">
+			                                        <span class="input-group-text" id="basic-addon1">Comment: </span>
+			                                    </div>
+			                                    <input type="text" name="comment" id="comment" class="form-control" value="" size="100" />
+			                                </p>
+			                            </div>
+			                            <div class="text-danger">
+					                        <p>
+					                            {{ form.comment.errors}}
+					                        </p>
+					                    </div>
+										<button class="btn btn-primary mr-2" id="submit-rating-initial" type="submit">Submit</button>
+										<a class="btn btn-secondary" id="cancel-rating-initial">Cancel</a>
+										</form>
 									</div>
 								{% endif %}
 							{% else %}

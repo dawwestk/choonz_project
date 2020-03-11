@@ -432,18 +432,16 @@ input[type=checkbox]:checked ~ .sidebarIconToggle > .diagonal.part-2 {
     margin-top: 10px;
 }
 
-#playlist-listing{
-}
-
 .see-through{
     color: black;
-    font-weight: bold;
-    font-size: 20px;
+    font-size: 15px;
     background-color: rgba(255,255,255,0.6);
 }
 
 .see-through a{
-    color: #153a5e
+    color: #153a5e;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 canvas {
@@ -503,7 +501,9 @@ td {
 
 .cancel-song-remove,
 .confirm-song-remove,
-.undo-song-remove{
+.undo-song-remove,
+#initial-rating-fields,
+#playlist-delete-buttons{
     display: none;
 }
 
@@ -533,10 +533,6 @@ td {
     background-clip:border-box;
 }
 
-.choonz-col{
-    
-}
-
 .choonz-vertical-center{
     margin-top: auto;
     margin-bottom: auto;
@@ -544,10 +540,6 @@ td {
 
 .choonz-right{
     float:right;
-}
-
-#playlist-delete-buttons{
-    display: none;
 }
     
 #submit-rating-update,
