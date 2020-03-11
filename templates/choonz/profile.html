@@ -54,7 +54,7 @@
                                 	<div class="choonz-row-no-border">
                                     <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
                                     	<div class="choonz-row-no-border">
-                                    		<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}}
+                                    		<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
                                     	</div>
                                     </div>
                                     <div class="choonz-row-no-border">
@@ -87,7 +87,7 @@
                                 	<div class="choonz-row-no-border">
                                     <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
                                     	<div class="choonz-row-no-border">
-                                    		<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}}
+                                    		<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
                                     	</div>
                                     </div>
                                     <div class="choonz-row-no-border">
@@ -121,8 +121,8 @@
                                 	<div class="choonz-row-no-border">
                                     <a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
                                     	<div class="choonz-row-no-border">
-                                    		<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}}
-                                    	</div>
+                                    		<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
+                                    	</div> 
                                     </div>
                                         {% if selected_user == user %}
                                             <a class="btn btn-info btn-sm" type="submit" name="submit"
