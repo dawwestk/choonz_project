@@ -217,32 +217,32 @@ function loadUserChart(date_info, rating_info, name_info){
 
 // MyStats Views
 function loadMyStatsPage() {
-	$('#chart-view').hide();
-	$('#table-view').show();
+	$('#chart-view').css('display', 'none');
+	$('#table-view').css('display', 'block');
 }
 
 function showChartsView(){
-	$('#chart-view').show();
-	$('#table-view').hide();
+	$('#chart-view').css('display', 'block');
+	$('#table-view').css('display', 'none');
 }
 
 // Profile Views
 function showPlaylistView() {
-	$('#rated-playlists-view').hide();
-	$('#edit-profile-view').hide();
-	$('#playlist-view').show();
+	$('#rated-playlists-view').css('display', 'none');
+	$('#edit-profile-view').css('display', 'none');
+	$('#playlist-view').css('display', 'block');
 }
 
 function showRatedPlaylistsView() {
-	$('#playlist-view').hide();
-	$('#edit-profile-view').hide();
-	$('#rated-playlists-view').show();
+	$('#playlist-view').css('display', 'none');
+	$('#edit-profile-view').css('display', 'none');
+	$('#rated-playlists-view').css('display', 'block');
 }
 
 function showEditProfileView() {
-	$('#playlist-view').hide();
-	$('#rated-playlists-view').hide();
-	$('#edit-profile-view').show();
+	$('#playlist-view').css('display', 'none');
+	$('#rated-playlists-view').css('display', 'none');
+	$('#edit-profile-view').css('display', 'block');
 }
 
 function createNewPlaylistView() {

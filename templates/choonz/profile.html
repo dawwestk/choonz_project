@@ -144,7 +144,8 @@
         </div>
     </div>
 
-    <div id="rated-playlists-view" class="container">
+    <div class="choonz-container" id="rated-playlists-view">
+    	<div class="container-fluid">
         <div class="row">
             <div class="col index-card">
                 <div class="index-card-header">
@@ -164,7 +165,7 @@
                                     </div>                                    
                                     <div class="choonz-row-no-border">
                                         <span class="badge badge-light p-2">Your Rating: {{ playlist.stars }}</span>
-                                        <span class="choonz-badge badge-light p-2">Tags: {{ playlist.tag_list }}</span>
+                                        <span class="choonz-badge badge-light p-2 tag-list-badge">Tags: {{ playlist.tag_list }}</span>
                                     </div>
                                 </li>
                             {% endfor %}
@@ -185,9 +186,13 @@
                     {% if all_rated_tags %}
                         <ul class="list-group">
                             {% for tag, count in tag_obs.items %}
-                                <li class="list-group-item see-through">
-                                    <span class="badge badge-light p-2">{{ tag }}</span>: ratings <span
-                                        class="badge badge-light p-2">{{ count }}</span>
+                                <li class="list-group-item see-through py-4">
+                                    <span class="choonz-badge badge-warning p-2 tag-badge">{{ tag }}</span> rated 
+                                    {% if count > 1 %}
+                                    	<span>{{ count }} times</span>
+                                    {% else %}
+                                    	<span>once</span>
+                                    {% endif %}
                                 </li>
                             {% endfor %}
                         </ul>
@@ -208,7 +213,7 @@
                         <ul class="list-group">
                             {% for suggestion, percentage in playlist_suggestions.items %}
                                 <li class="list-group-item see-through">
-                                    <a class="choonz-badge badge-warning p-2"
+                                    <a class="choonz-badge badge-info p-2"
                                        href="{% url 'choonz:show_playlist' suggestion.slug %}">{{ suggestion.name }}</a>
                                     - <span class="badge badge-light p-2">{{ percentage }}% match</span>
                                     by {{ suggestion.creator }}
@@ -223,10 +228,12 @@
                 </p>
             </div>
         </div>
+    	</div>
     </div>
 
     {% if selected_user == user %}
-        <div id="edit-profile-view" class="container-fluid">
+        <div id="edit-profile-view" class="choonz-container">
+        	<div class="container-fluid ">
             <div class="row">
                 <div class="choonz-col">
                     <div class="card p-4">
@@ -241,10 +248,10 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card p-2">
+                    <div class="card p-2 mb-4">
                         <form method="post" action="." enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div class="input-group mb-3">
+                            <div class="input-group">
 			                    <p class="required">
 			                        <div class="input-group-prepend">
 			                            <span class="input-group-text" id="playlist-description-prompt">Select an image:</span>
@@ -263,7 +270,9 @@
                     </div>
                 </div>
             </div>
+        	</div>
         </div>
+        <br />
 
     {% endif %}
 {% endblock %}
