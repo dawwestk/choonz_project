@@ -31,20 +31,21 @@ class IndexView(View):
         # query database for all playlists, order by number of likes
         # retrieve only top 5, place in context_dict
         user_profile = get_user_profile(request)
+        num_playlists_in_filter = 8
 
-        most_rated_playlists = Playlist.objects.annotate(num_ratings=Count('rating')).order_by('-num_ratings')[:10]
-        highest_rated_playlists = Playlist.objects.values('slug', 'name', 'createdDate').annotate(
+        most_rated_playlists = Playlist.objects.annotate(num_ratings=Count('rating')).order_by('-num_ratings')[:num_playlists_in_filter]
+        highest_rated_playlists = Playlist.objects.annotate(
             average_rating=Avg('rating__stars')).order_by('-average_rating')
-        recently_created_playlists = Playlist.objects.all().order_by('-createdDate')[:10]
+        recently_created_playlists = Playlist.objects.all().order_by('-createdDate')[:num_playlists_in_filter]
 
         this_week = datetime.today() - timedelta(days=7)
         this_month = datetime.today() - timedelta(days=31)
-        playlists_this_week = highest_rated_playlists.filter(createdDate__gte=this_week)[:10]
-        playlists_this_month = highest_rated_playlists.filter(createdDate__gte=this_month)[:10]
+        playlists_this_week = highest_rated_playlists.filter(createdDate__gte=this_week)[:num_playlists_in_filter]
+        playlists_this_month = highest_rated_playlists.filter(createdDate__gte=this_month)[:num_playlists_in_filter]
 
         context_dict = {'boldmessage': 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!',
                         'most_rated_playlists': most_rated_playlists,
-                        'highest_rated_playlists': highest_rated_playlists[:10],
+                        'highest_rated_playlists': highest_rated_playlists[:num_playlists_in_filter],
                         'playlists_this_week': playlists_this_week,
                         'playlists_this_month': playlists_this_month,
                         'recent_playlists': recently_created_playlists, 'user_profile': user_profile}

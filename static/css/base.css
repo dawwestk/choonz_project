@@ -94,6 +94,7 @@ body {
     background-size: cover;
     overflow-y: auto;
     overflow-x: auto;
+    padding: 10px;
 }
 
 #card-body1{
@@ -540,7 +541,8 @@ td {
     text-align:center;
     white-space:normal;
     vertical-align:baseline;
-    border-radius:.25rem}
+    border-radius:.25rem;
+    width: 100%;
 }
 
 .tag-list-badge{
@@ -630,6 +632,9 @@ td {
 
 /* ----------------------- */
 
-#rated-playlists-view{
-    margin-top: 0px;
+.carousel-control-next,
+.carousel-control-prev {
+    filter: invert(100%);
+    outline: red;
+    color: red;
 }
