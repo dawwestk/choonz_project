@@ -150,9 +150,10 @@ def add_playlist(list, tags, creator, date1, description):
         p.tags.add(found_tag)
         #print(" - - added tag {0} to playlist {1}".format(str(found_tag.description), str(p.name)))
 
+    random_days = random.randint(3, 100)
     random_hours = random.randint(30, 100)
     random_minutes = random.randint(0, 60)
-    p.createdDate = date1 - timedelta(hours=random_hours, minutes=random_minutes)
+    p.createdDate = date1 - timedelta(days=random_days, hours=random_hours, minutes=random_minutes)
     p.lastUpdatedDate = p.createdDate + timedelta(hours=10, minutes=36)
 
     p.creator = creator

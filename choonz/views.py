@@ -5,7 +5,7 @@ from choonz.models import Playlist, UserProfile, Song, Rating, Tag, Artist
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from choonz.forms import PlaylistForm, UserForm, UserProfileForm, RatingForm
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 import collections
 from django.views import View
@@ -33,13 +33,20 @@ class IndexView(View):
         user_profile = get_user_profile(request)
 
         most_rated_playlists = Playlist.objects.annotate(num_ratings=Count('rating')).order_by('-num_ratings')[:10]
-        highest_rated_playlists = Playlist.objects.values('slug', 'name').annotate(
-            average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
+        highest_rated_playlists = Playlist.objects.values('slug', 'name', 'createdDate').annotate(
+            average_rating=Avg('rating__stars')).order_by('-average_rating')
         recently_created_playlists = Playlist.objects.all().order_by('-createdDate')[:10]
+
+        this_week = datetime.today() - timedelta(days=7)
+        this_month = datetime.today() - timedelta(days=31)
+        playlists_this_week = highest_rated_playlists.filter(createdDate__gte=this_week)[:10]
+        playlists_this_month = highest_rated_playlists.filter(createdDate__gte=this_month)[:10]
 
         context_dict = {'boldmessage': 'Crunchy Tunes, Creamy Beats, Cookie Music Tastes, Like A Candy Treat!',
                         'most_rated_playlists': most_rated_playlists,
-                        'highest_rated_playlists': highest_rated_playlists,
+                        'highest_rated_playlists': highest_rated_playlists[:10],
+                        'playlists_this_week': playlists_this_week,
+                        'playlists_this_month': playlists_this_month,
                         'recent_playlists': recently_created_playlists, 'user_profile': user_profile}
 
         # keep this call to increment the counter
