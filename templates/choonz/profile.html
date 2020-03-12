@@ -28,11 +28,14 @@
         </div>
         <div class="container" id="profilePageButtons">
             <button class="btn btn-info m-1" type="submit" name="submit" id="view-playlists-button">Playlists</button>
-            <button class="btn btn-info m-1" type="submit" name="submit" id="view-rated-playlists-button">Rated Playlists
+            <button class="btn btn-info m-1" type="submit" name="submit" id="view-rated-playlists-button">Rated
+                Playlists
             </button>
             {% if selected_user == user %}
-                <button class="btn btn-info m-1" type="submit" name="submit" id="edit-profile-button">Edit Profile</button>
-                <a class="btn btn-info m-1" id="new-playlist-button" href="{% url 'choonz:add_playlist' %}">Create Playlist
+                <button class="btn btn-info m-1" type="submit" name="submit" id="edit-profile-button">Edit Profile
+                </button>
+                <a class="btn btn-info m-1" id="new-playlist-button" href="{% url 'choonz:add_playlist' %}">Create
+                    Playlist
                 </a>
                 <a class="btn btn-info m-1" href="{% url 'choonz:my_stats' user.username %}">View My Stats</a>
 
@@ -41,8 +44,8 @@
     </div>
 
     <div class="container-fluid" id="playlist-view">
-		<div class="row">
-			<div class="col index-card">
+        <div class="row">
+            <div class="col index-card">
                 <div class="index-card-header">
                     <h2>Public Playlists</h2>
                 </div>
@@ -51,16 +54,20 @@
                         <ul class="list-group">
                             {% for playlist in public_playlists %}
                                 <li class="list-group-item see-through">
-                                	<div class="choonz-row-no-border">
-                                    <a class="choonz-badge p-2" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
-                                    	<div class="choonz-row-no-border badge-light">
-                                    		<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
-                                    	</div>
+                                    <div class="choonz-row-no-border">
+                                        <a class="choonz-badge p-2"
+                                           href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
+                                        <div class="choonz-row-no-border badge-light">
+                                            <div class="min-rating"
+                                                 data-rate-value="{{ playlist.get_average_rating }}"></div>
+                                            {{ playlist.get_number_of_ratings }} ratings
+                                        </div>
                                     </div>
                                     <div class="choonz-row-no-border">
                                         {% if selected_user == user %}
                                             <a class="choonz-badge" type="submit" name="submit"
-                                                    id="edit-playlist-button" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
+                                               id="edit-playlist-button"
+                                               href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
                                             </a>
                                         {% endif %}
                                     </div>
@@ -84,16 +91,20 @@
                         <ul class="list-group">
                             {% for playlist in popular_playlists %}
                                 <li class="list-group-item see-through">
-                                	<div class="choonz-row-no-border">
-                                    <a class="choonz-badge p-2" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
-                                    	<div class="choonz-row-no-border badge-light">
-                                    		<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
-                                    	</div>
+                                    <div class="choonz-row-no-border">
+                                        <a class="choonz-badge p-2"
+                                           href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
+                                        <div class="choonz-row-no-border badge-light">
+                                            <div class="min-rating"
+                                                 data-rate-value="{{ playlist.get_average_rating }}"></div>
+                                            {{ playlist.get_number_of_ratings }} ratings
+                                        </div>
                                     </div>
                                     <div class="choonz-row-no-border">
                                         {% if selected_user == user %}
                                             <a class="choonz-badge" type="submit" name="submit"
-                                                    id="edit-playlist-button" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
+                                               id="edit-playlist-button"
+                                               href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
                                             </a>
                                         {% endif %}
                                     </div>
@@ -118,34 +129,38 @@
                             <ul class="list-group">
                                 {% for playlist in draft_playlists %}
                                     <li class="list-group-item see-through">
-                                	<div class="choonz-row-no-border">
-                                    <a class="choonz-badge p-2" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
-                                    	<div class="choonz-row-no-border badge-light">
-                                    		<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
-                                    	</div> 
-                                    </div>
+                                        <div class="choonz-row-no-border">
+                                            <a class="choonz-badge p-2"
+                                               href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
+                                            <div class="choonz-row-no-border badge-light">
+                                                <div class="min-rating"
+                                                     data-rate-value="{{ playlist.get_average_rating }}"></div>
+                                                {{ playlist.get_number_of_ratings }} ratings
+                                            </div>
+                                        </div>
                                         {% if selected_user == user %}
                                             <a class="choonz-badge badge-warning" type="submit" name="submit"
-                                                    id="edit-playlist-button" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
+                                               id="edit-playlist-button"
+                                               href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
                                             </a>
                                         {% endif %}
+                                    </ul>
                                     </div>
-                                </li>
+                                    </li>
                                 {% endfor %}
-                            </ul>
+
                         {% else %}
                             <div class="list-group-item see-through">
-	                            <strong>There are no playlists present</strong>
-	                        </div>
+                                <strong>There are no playlists present</strong>
+                            </div>
                         {% endif %}
-                    </p>
+                </p>
                 </div>
             {% endif %}
-        </div>
+    </div>
     </div>
 
-    <div class="" id="rated-playlists-view">
-    	<div class="container-fluid">
+    <div class="container-fluid" id="rated-playlists-view">
         <div class="row">
             <div class="col index-card">
                 <div class="index-card-header">
@@ -155,14 +170,17 @@
                     {% if rated_playlists %}
                         <ul class="list-group">
                             {% for playlist in rated_playlists %}
-                            	<li class="list-group-item see-through">
-                                	<div class="choonz-row-no-border">
-                                    <a class="choonz-badge p-2" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.playlist|truncatechars:50 }}</a>
-                                    	<div class="choonz-row-no-border badge-light">
-                                    		Average: 
-                                    		<div class="min-rating" data-rate-value="{{playlist.averageRating}}"></div>{{playlist.numberOfRatings}} ratings
-                                    	</div>
-                                    </div>                                    
+                                <li class="list-group-item see-through">
+                                    <div class="choonz-row-no-border">
+                                        <a class="choonz-badge p-2"
+                                           href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.playlist|truncatechars:50 }}</a>
+                                        <div class="choonz-row-no-border badge-light">
+                                            Average:
+                                            <div class="min-rating"
+                                                 data-rate-value="{{ playlist.averageRating }}"></div>
+                                            {{ playlist.numberOfRatings }} ratings
+                                        </div>
+                                    </div>
                                     <div class="choonz-row-no-border">
                                         <span class="badge p-2">Your Rating: {{ playlist.stars }}</span>
                                         <span class="choonz-badge p-2 tag-list-badge">Tags: {{ playlist.tag_list }}</span>
@@ -187,11 +205,11 @@
                         <ul class="list-group">
                             {% for tag, count in tag_obs.items %}
                                 <li class="list-group-item see-through py-4">
-                                    <span class="choonz-badge badge-warning p-2 tag-badge">{{ tag }}</span> rated 
+                                    <span class="choonz-badge badge-warning p-2 tag-badge">{{ tag }}</span> rated
                                     {% if count > 1 %}
-                                    	<span>{{ count }} times</span>
+                                        <span>{{ count }} times</span>
                                     {% else %}
-                                    	<span>once</span>
+                                        <span>once</span>
                                     {% endif %}
                                 </li>
                             {% endfor %}
@@ -213,13 +231,16 @@
                         <ul class="list-group">
                             {% for suggestion, percentage in playlist_suggestions.items %}
                                 <li class="list-group-item see-through">
-                                	<div class="choonz-row-no-border">
-                                    <a class="choonz-badge p-2" href="{% url 'choonz:show_playlist' suggestion.slug %}">{{ suggestion.name|truncatechars:50 }}</a>
-                                    	<div class="choonz-row-no-border badge-light">
-                                    		Average: 
-                                    		<div class="min-rating" data-rate-value="{{suggestion.get_average_rating}}"></div>{{suggestion.get_number_of_ratings}} ratings
-                                    	</div>
-                                    </div>                                    
+                                    <div class="choonz-row-no-border">
+                                        <a class="choonz-badge p-2"
+                                           href="{% url 'choonz:show_playlist' suggestion.slug %}">{{ suggestion.name|truncatechars:50 }}</a>
+                                        <div class="choonz-row-no-border badge-light">
+                                            Average:
+                                            <div class="min-rating"
+                                                 data-rate-value="{{ suggestion.get_average_rating }}"></div>
+                                            {{ suggestion.get_number_of_ratings }} ratings
+                                        </div>
+                                    </div>
                                     <div class="choonz-row-no-border">
                                         <span class="badge p-2 mr-1">{{ percentage }}% match</span>
                                     </div>
@@ -228,21 +249,21 @@
                         </ul>
                     {% else %}
                         <div class="list-group-item see-through">
-                            <strong>We can't recommend a playlist until you rate some with 2.5 &#x2606; or above!</strong>
+                            <strong>We can't recommend a playlist until you rate some with 2.5 &#x2606; or
+                                above!</strong>
                         </div>
                     {% endif %}
                 </p>
             </div>
         </div>
-    	</div>
     </div>
 
     {% if selected_user == user %}
         <div id="edit-profile-view" class="">
-        	<div class="container-fluid ">
-            <div class="row">
-                <div class="choonz-col">
-                    <div class="card p-4">
+            <div class="container-fluid ">
+                <div class="row">
+                    <div class="choonz-col">
+                        <div class="card p-4">
                             {% if user_profile.picture %}
                                 <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240"
                                      alt="{{ selected_user.username }}'s profile image"/>
@@ -250,35 +271,94 @@
                                 <img src="{% static 'images/default_profile_img.jpg' %}" width="320" height="240"
                                      alt="No profile image"/>
                             {% endif %}
-                        <h3 align="center">Your Profile Picture</h3>
+                            <h3 align="center">Your Profile Picture</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="card p-2 mb-4">
-                        <form method="post" action="." enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="input-group">
-			                    <p class="required">
-			                        <div class="input-group-prepend">
-			                            <span class="input-group-text" id="playlist-description-prompt">Select an image:</span>
-			                        </div>
-			                        {{ form.picture.errors }}
-			                        <input type="file" name="picture" id="picture_input" class="form-control" accept="image/*">
-			                    </p>
-			                </div>
-                            <input class="btn btn-info btn-block" type="submit" value="Update"/>
-                        </form>
-                    </div>
-                    <div class="card p-2">
-                        <a class="btn btn-info" name="submit" id="update-password-button"
-                           href="{% url 'auth_password_change' %}">Change Password
-                        </a>
+                    <div class="col">
+                        <div class="card p-2 mb-4">
+                            <form method="post" action="." enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="input-group">
+                                    <p class="required">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"
+                                              id="playlist-description-prompt">Select an image:</span>
+                                    </div>
+                                    {{ form.picture.errors }}
+                                    <input type="file" name="picture" id="picture_input" class="form-control"
+                                           accept="image/*">
+                                    </p>
+                                </div>
+                                <input class="btn btn-info btn-block" type="submit" value="Update"/>
+                            </form>
+                        </div>
+                        <div class="card p-2">
+                            <a class="btn btn-info" name="submit" id="update-password-button"
+                               href="{% url 'auth_password_change' %}">Change Password
+                            </a>
+                            <br/>
+                            <h2>Settings</h2>
+
+                            <h3>GitHub</h3>
+                            {% if github_login %}
+                                <p>Connected as <a href="https://github.com/{{ github_login.extra_data.login }}/"
+                                                   target="_blank">{{ github_login.extra_data.login }}</a></p>
+                                {% if can_disconnect %}
+                                    <form method="post" action="{% url 'social:disconnect' 'github' %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Disconnect from GitHub</button>
+                                    </form>
+                                {% else %}
+                                    <button type="button" disabled>Disconnect from GitHub</button>
+                                    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a>
+                                        for your account before disconnecting from Github.</p>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'social:begin' 'github' %}">Connect to GitHub</a>
+                            {% endif %}
+
+                            <h3>Twitter</h3>
+                            {% if twitter_login %}
+                                <p>Connected as <a
+                                        href="https://twitter.com/{{ twitter_login.extra_data.access_token.screen_name }}/"
+                                        target="_blank">@{{ twitter_login.extra_data.access_token.screen_name }}</a></p>
+                                {% if can_disconnect %}
+                                    <form method="post" action="{% url 'social:disconnect' 'twitter' %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Disconnect from Twitter</button>
+                                    </form>
+                                {% else %}
+                                    <button type="button" disabled>Disconnect from Twitter</button>
+                                    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a>
+                                        for your account before disconnecting from Twitter.</p>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'social:begin' 'twitter' %}">Connect to Twitter</a>
+                            {% endif %}
+
+                            <h3>Facebook</h3>
+                            {% if spotify_login %}
+                                <p>Connected as <a href="https://spotify.com/{{ spotify_login.extra_data.id }}/"
+                                                   target="_blank">{{ spotify_login.extra_data.id }}</a></p>
+                                {% if can_disconnect %}
+                                    <form method="post" action="{% url 'social:disconnect' 'facebook' %}">
+                                        {% csrf_token %}
+                                        <button type="submit">Disconnect from Spotify</button>
+                                    </form>
+                                {% else %}
+                                    <button type="button" disabled>Disconnect from Spotify</button>
+                                    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a>
+                                        for your account before disconnecting from Spotify.</p>
+                                {% endif %}
+                            {% else %}
+                                <a href="{% url 'social:begin' 'spotify' %}">Connect to Spotify</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
-        	</div>
         </div>
-        <br />
+        <br/>
 
     {% endif %}
 {% endblock %}
