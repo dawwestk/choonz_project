@@ -30,7 +30,7 @@
 								{% for playlist in most_rated_playlists %}
 									<li class="list-group-item see-through">
 										<div class="choonz-row-no-border">
-		                                    <a class="choonz-badge badge-info" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
+		                                    <a class="choonz-badge" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
 	                                    	<div class="choonz-row-no-border badge-light">
 	                                    		Average: 
 		                                    	<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
@@ -57,7 +57,7 @@
 								{% for playlist in recent_playlists %}
 									<li class="list-group-item see-through">
 										<div class="choonz-row-no-border">
-		                                    <a class="choonz-badge badge-info" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
+		                                    <a class="choonz-badge" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
 	                                    	<div class="choonz-row-no-border badge-light">
 	                                    		Average: 
 		                                    	<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
@@ -86,7 +86,7 @@
 												{% for playlist in playlists_this_week %}
 													<li class="list-group-item see-through">
 														<div class="choonz-row-no-border">
-						                                    <a class="choonz-badge badge-info" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
+						                                    <a class="choonz-badge" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
 					                                    	<div class="choonz-row-no-border badge-light">
 					                                    		Average:
 						                                    	<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
@@ -108,7 +108,7 @@
 												{% for playlist in playlists_this_month %}
 													<li class="list-group-item see-through">
 														<div class="choonz-row-no-border">
-						                                    <a class="choonz-badge badge-info" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
+						                                    <a class="choonz-badge" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
 					                                    	<div class="choonz-row-no-border badge-light">
 					                                    		Average:
 						                                    	<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
@@ -130,7 +130,7 @@
 												{% for playlist in highest_rated_playlists %}
 													<li class="list-group-item see-through">
 														<div class="choonz-row-no-border">
-						                                    <a class="choonz-badge badge-info" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
+						                                    <a class="choonz-badge" href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
 					                                    	<div class="choonz-row-no-border badge-light">
 					                                    		Average:
 						                                    	<div class="min-rating" data-rate-value="{{playlist.get_average_rating}}"></div>{{playlist.get_number_of_ratings}} ratings
