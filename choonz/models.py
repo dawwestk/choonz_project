@@ -47,6 +47,7 @@ class Playlist(models.Model):
         ave = self.rating_set.aggregate(Avg('stars'))['stars__avg']
         if not ave:
             ave = 0.0
+        self.averageRating = ave
         return ave
 
     @property
