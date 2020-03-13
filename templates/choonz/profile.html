@@ -158,12 +158,15 @@
                         <ul class="list-group">
                             {% for tag, count in tag_obs.items %}
                                 <li class="list-group-item see-through py-4">
-                                    <span class="choonz-badge badge-warning p-2 tag-badge">{{ tag }}</span> rated
-                                    {% if count > 1 %}
-                                        <span>{{ count }} times</span>
-                                    {% else %}
-                                        <span>once</span>
-                                    {% endif %}
+                                    <span class="choonz-badge badge-warning p-2 tag-badge">{{ tag }}</span> 
+                                    <span class="choonz-row-no-border badge-light"><strong>rated
+	                                    {% if count > 1 %}
+	                                        <span> {{ count }} times</span>
+	                                    {% else %}
+	                                        <span> once</span>
+	                                    {% endif %}
+	                                </strong>
+	                                </span>
                                 </li>
                             {% endfor %}
                         </ul>

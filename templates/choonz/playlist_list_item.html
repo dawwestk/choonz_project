@@ -1,4 +1,4 @@
-<li class="list-group-item see-through">
+<li class="see-through">
     <div class="choonz-row-no-border">
         <a class="choonz-badge p-2"
            href="{% url 'choonz:show_playlist' playlist_slug %}">{{ playlist_name|truncatechars:50 }}</a>
@@ -10,7 +10,7 @@
     </div>
     <div class="choonz-row-no-border">
         {% if playlist_creator == user %}
-            <a class="choonz-badge" type="submit" name="submit"
+            <a class="choonz-badge badge-info" type="submit" name="submit"
                id="edit-playlist-button"
                href="{% url 'choonz:edit_playlist' playlist_slug %}">Edit
             </a>
