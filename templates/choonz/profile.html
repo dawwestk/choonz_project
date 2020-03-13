@@ -1,5 +1,6 @@
 {% extends 'choonz/base.html' %}
 {% load staticfiles %}
+{% load choonz_template_tags %}
 
 {% block title_block %}
     Profile for {{ selected_user.username }}
@@ -53,25 +54,9 @@
                     {% if public_playlists %}
                         <ul class="list-group">
                             {% for playlist in public_playlists %}
-                                <li class="list-group-item see-through">
-                                    <div class="choonz-row-no-border">
-                                        <a class="choonz-badge p-2"
-                                           href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
-                                        <div class="choonz-row-no-border badge-light">
-                                            <div class="min-rating"
-                                                 data-rate-value="{{ playlist.get_average_rating }}"></div>
-                                            {{ playlist.get_number_of_ratings }} ratings
-                                        </div>
-                                    </div>
-                                    <div class="choonz-row-no-border">
-                                        {% if selected_user == user %}
-                                            <a class="choonz-badge" type="submit" name="submit"
-                                               id="edit-playlist-button"
-                                               href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                </li>
+                                {% block public_playlist_item %}
+                                	{% get_playlist_list_item playlist user %}
+                                {% endblock %}
                             {% endfor %}
                         </ul>
                     {% else %}
@@ -90,25 +75,9 @@
                     {% if public_playlists %}
                         <ul class="list-group">
                             {% for playlist in popular_playlists %}
-                                <li class="list-group-item see-through">
-                                    <div class="choonz-row-no-border">
-                                        <a class="choonz-badge p-2"
-                                           href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
-                                        <div class="choonz-row-no-border badge-light">
-                                            <div class="min-rating"
-                                                 data-rate-value="{{ playlist.get_average_rating }}"></div>
-                                            {{ playlist.get_number_of_ratings }} ratings
-                                        </div>
-                                    </div>
-                                    <div class="choonz-row-no-border">
-                                        {% if selected_user == user %}
-                                            <a class="choonz-badge" type="submit" name="submit"
-                                               id="edit-playlist-button"
-                                               href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
-                                            </a>
-                                        {% endif %}
-                                    </div>
-                                </li>
+                                {% block popular_playlist_item %}
+                                	{% get_playlist_list_item playlist user %}
+                                {% endblock %}
                             {% endfor %}
                         </ul>
                     {% else %}
@@ -128,25 +97,9 @@
                         {% if draft_playlists %}
                             <ul class="list-group">
                                 {% for playlist in draft_playlists %}
-                                    <li class="list-group-item see-through">
-                                        <div class="choonz-row-no-border">
-                                            <a class="choonz-badge p-2"
-                                               href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
-                                            <div class="choonz-row-no-border badge-light">
-                                                <div class="min-rating"
-                                                     data-rate-value="{{ playlist.get_average_rating }}"></div>
-                                                {{ playlist.get_number_of_ratings }} ratings
-                                            </div>
-                                        </div>
-                                        {% if selected_user == user %}
-                                            <a class="choonz-badge badge-warning" type="submit" name="submit"
-                                               id="edit-playlist-button"
-                                               href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
-                                            </a>
-                                        {% endif %}
-                                    </ul>
-                                    </div>
-                                    </li>
+                                    {% block draft_playlist_item %}
+	                                	{% get_playlist_list_item playlist user %}
+	                                {% endblock %}
                                 {% endfor %}
 
                         {% else %}

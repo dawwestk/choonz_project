@@ -1,0 +1,19 @@
+<li class="list-group-item see-through">
+    <div class="choonz-row-no-border">
+        <a class="choonz-badge p-2"
+           href="{% url 'choonz:show_playlist' playlist_slug %}">{{ playlist_name|truncatechars:50 }}</a>
+        <div class="choonz-row-no-border badge-light">
+            <div class="min-rating"
+                 data-rate-value="{{ playlist_get_average_rating }}"></div>
+            {{ playlist_get_number_of_ratings }} ratings
+        </div>
+    </div>
+    <div class="choonz-row-no-border">
+        {% if playlist_creator == user %}
+            <a class="choonz-badge" type="submit" name="submit"
+               id="edit-playlist-button"
+               href="{% url 'choonz:edit_playlist' playlist_slug %}">Edit
+            </a>
+        {% endif %}
+    </div>
+</li>
