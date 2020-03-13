@@ -8,14 +8,14 @@
 
 {% block body_block %}
 	
-	<div class="jumbotron p-4" id="all-playlist-header">
+	<div class="container page-header p-4">
 		<div class="container">
-			<h1 class="jumbotron-heading" id="all-playlist-listing-header">All Playlists</h1>
+			<h1 class="container page-header-font" id="all-playlist-listing-header">All Playlists</h1>
 		</div>
 	</div>
 
 	<div class="container" id="all-playlist-listing-page">
-		<div class="row">
+		<div class="container page-header">
 			{% if playlist_list %}
 			<div class="container m-2">
 				<a class="btn btn-primary btn-block" data-toggle="collapse" href="#collapseFilters" role="button" id="filterPlaylistButton">
@@ -49,7 +49,7 @@
 			                    <input type="text" name="tags" id="tags" class="form-control" placeholder="" />
 			                </p>
 			            </div>
-			            <div class="card m-4" id="tag-listing">
+			            <div class="container m-4" id="tag-listing">
 			                {% block tag_list_block %}
 			                    {% get_tag_list tag %}
 			                {% endblock %}
@@ -82,7 +82,7 @@
 	                </p>
 	            </div>
 	        </div>
-			<div class="panel-body container-fluid" id="all-playlist-listing">
+			<div class="container-fluid" id="all-playlist-listing">
 				<div class="container-fluid" id="playlist-listing">
                     {% block autocomplete_block %}
                         {% get_playlist_list %}
@@ -98,9 +98,8 @@
 			{% endif %}
 		</div>
 	</div>
-	<div class="container">
-		<div class="card">
-			<p class="centred">Can't see a playlist that you like? Then why not <a href="{% url 'choonz:add_playlist' %}">make your own</a>?</p>
+	<div class="container page-header">
+		<div class="container">Can't see a playlist that you like? Then why not <a href="{% url 'choonz:add_playlist' %}">make your own</a>?</p>
 		</div>
 	</div>
 
