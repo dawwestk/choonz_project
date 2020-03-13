@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block body_block %}
-	<div class="jumbotron p-4">
-		<div class="container">
-			<h1 class="jumbotron-heading">Login to Choonz</h1>
+	<div class="container p-4">
+		<div class="container page-header p-4" id="login-container">
+			<h1 class="jumbotron-heading page-header-font">Login to Choonz</h1>
 			<form class="form-signin" role="form" method="post" action=".">
 				{% csrf_token %}
 				<div class="card-body">
@@ -46,7 +46,6 @@
 	            <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter <i style="font-size:24px" class="fa">&#xf099;</i></a><br>
 	            <a href="{% url 'social:begin' 'spotify' %}">Login with Spotify <i style="font-size:24px" class="fa">&#xf1bc;</i></a>
 	        </div>
-		</div>
 		<div>
 			<div class="alt-logins">
 				<p>
@@ -55,6 +54,8 @@
 				</p>
 			</div>
 		</div>
+		</div>
+		
 	</div>
 
 	

@@ -129,6 +129,14 @@ body {
     justify-content: center;
 }
 
+#main-container{
+	width: 75%;
+}
+
+#login-container{
+	width: 45%;
+}
+	
 #cardBox {
     display: flex;
     flex-wrap: wrap;
@@ -190,6 +198,15 @@ body {
     text-align: center;
     border: 1px solid #919191;
     border-radius: 25px;
+}
+
+.page-header a,
+.footer a{
+	color: rgb(255, 255, 255);
+}
+
+.footer {
+	color: #19c2c8;
 }
 
 .page-header-font{
@@ -467,8 +484,13 @@ td {
     background-color: rgb(255,255,255);
 }
 
+.jumbotron-heading .centred{
+	
+}
+
 .centred{
     margin: auto;
+	text-align: center;
 }
 
 .centred-left-indent-5{

@@ -5,15 +5,14 @@
 {% endblock %}
 
 {% block body_block %}
-	<div class="jumbotron p-4">
+	<div class="container p-4 page-header">
 		<div class="container">
-			<h1 class="jumbotron-heading">Register Here for a Choonz account!</h1>
+			<h1 class="jumbotron-heading page-header-font">Register Here for a Choonz account!</h1>
 		</div>
-	</div>
 
 	<div class="container">
 		<div class="container">
-			<div class="card p-4">
+			<div class="container p-4">
 				<form role="form" method="post" action=".">
 					{% csrf_token %}
 					<div class="card-body">
@@ -84,6 +83,7 @@
 					<button type="submit" class="btn btn-primary btn-block" id="registration-button">Submit</button>
 				</form>
 			</div>
+		</div>
 		</div>
 	</div>		
 
