@@ -198,6 +198,9 @@ body {
     text-align: center;
     border: 1px solid #919191;
     border-radius: 25px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 20px;
 }
 
 .page-header a,
@@ -212,6 +215,10 @@ body {
 .page-header-font{
     color: #19c2c8;
     font-family: 'Oleo Script', cursive;
+}
+
+#tag-listing{
+    color: black;
 }
 
 #headerJumbotron {
@@ -533,7 +540,6 @@ td {
     min-width:0;
     word-wrap:break-word;
     text-align: left;
-    background-color:#fff;
     background-clip:border-box;
     border:1px solid rgba(0,0,0,.125);
     border-radius:.25rem;

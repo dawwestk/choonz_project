@@ -12,12 +12,12 @@
 
 {% block body_block %}
 	{% if playlist %}
-		<div class="jumbotron p-2">
+		<div class="container page-header p-2">
 			<div class="container m-1">
 				<div class="row">	
 				<div class="col">
 					<div class="row">	
-						<h1 class="jumbotron-heading">{{ playlist.name }}</h1>
+						<h1 class="container page-header-font">{{ playlist.name }}</h1>
 					</div>
 					<p>created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a></p>
 						<p>
@@ -31,7 +31,7 @@
 				</div>	
 				<div class="col">
 					<div class="row">
-						<h4 class="jumbotron-heading">Average Rating: 
+						<h4 class="container page-header-font">Average Rating: 
 						{% if playlist.get_average_rating %}
 							{{ playlist.get_average_rating|floatformat}}
 						{% else %}
@@ -122,20 +122,22 @@
 			</div>
 		</div>
 		
-		<h3 class="card">Tags:</h3>
-		<div class="card m-4" id="tag-listing">
-            {% block sidebar_block %}
-                {% get_tag_list playlist %}
-            {% endblock %}
-        </div> 
+		<div class="container page-header">
+			<h3 class="container page-header-font">Tags:</h3>
+			<div class="container m-4" id="tag-listing">
+	            {% block sidebar_block %}
+	                {% get_tag_list playlist %}
+	            {% endblock %}
+	        </div> 
+	    </div>
 		
-		<h3 class="card">Track List</h3>
-		{% if songs %}
-		<div class="container" id="songs-listing">
-			<div class="card-body">
-				<ul>
+		<div class="container page-header">
+			<h3 class="container page-header-font">Track List</h3>
+			{% if songs %}
+			<div class="container" id="songs-listing">
+				<div class="container">
 					{% for song in songs %}
-					<li class="choonz-row">
+					<li class="choonz-row see-through">
 						<div class="col-md-7">
 							<div class="col">
 								<div class="centred-left-indent-5 row">
@@ -160,54 +162,54 @@
 						</div>
 					</li>
 					{% endfor %}
-				</ul>
+				</div>
 			</div>
 		</div>
 
-		<h3 class="card">Ratings for {{ playlist.name }}</h3>
-		<div class="container">
-			{% if ratings %}
-			<div id="rating-listing">
-				<ul>
+		<div class="container page-header">
+			<h3 class="container page-header-font">Ratings for {{ playlist.name }}</h3>
+			<div class="container">
+				{% if ratings %}
+				<div id="rating-listing">
 					{% for rating in ratings %}
-					<li class="list-group-item">{{ rating.stars }} &#x2606; - "{{ rating.comment }}" ~ 
+					<li class="list-group-item see-through">{{ rating.stars }} &#x2606; - "{{ rating.comment }}" ~ 
 						<a href="{% url 'choonz:profile' rating.user.username %}">{{ rating.user.username }} </a>
 						<span class="badge badge-light">submitted on {{rating.date}}</span>
 					</li>
 					{% endfor %}
-				</ul>
-			</div>
-			{% else %}
-					<div class="card">
+				</div>
+				{% else %}
+					<div class="container">
 						<strong>No ratings for current playlist.</strong>
 					</div>
-			{% endif %}
-		</div>
-		{% else %}
-		<div class="container">
-			{% if user.is_authenticated %}
-				{% if user != playlist.creator %}
-					<div class="card">
+				{% endif %}
+			</div>
+			{% else %}
+			<div class="container">
+				{% if user.is_authenticated %}
+					{% if user != playlist.creator %}
+						<div class="container">
+							<strong>No songs currently in playlist.</strong>
+						</div>
+					{% else %}
+						<div class="container">
+							<p><strong>Your playlist is looking a little bare! People can't rate it when it's empty!</strong></p>
+							<ul>
+								<li>Why not <a href="{% url 'choonz:edit_playlist' playlist.slug %}">add some songs</a>?</li>
+								<li>Or you could <a href="{% url 'choonz:import_playlist' playlist.slug %}">import a playlist from Spotify</a>?</li>
+							</ul>
+						</div>
+					{% endif %}
+				{% else %}
+					<div class="container">
 						<strong>No songs currently in playlist.</strong>
 					</div>
-				{% else %}
-					<div class="card">
-						<p><strong>Your playlist is looking a little bare! People can't rate it when it's empty!</strong></p>
-						<ul>
-							<li>Why not <a href="{% url 'choonz:edit_playlist' playlist.slug %}">add some songs</a>?</li>
-							<li>Or you could <a href="{% url 'choonz:import_playlist' playlist.slug %}">import a playlist from Spotify</a>?</li>
-						</ul>
-					</div>
 				{% endif %}
-			{% else %}
-				<div class="card">
-					<strong>No songs currently in playlist.</strong>
-				</div>
+			</div>
 			{% endif %}
-		</div>
-		{% endif %}
 
-	{% else %}
-		The specified playlist does not exist.
-	{% endif %}
+		{% else %}
+			The specified playlist does not exist.
+		{% endif %}
+		</div>
 {% endblock %}

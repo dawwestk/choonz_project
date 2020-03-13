@@ -373,8 +373,8 @@ def add_rating(playlist, user, stars=0, comment="blank test comment"):
     return rating
 
 
-def add_artist(name, webpage=None):
-    artist = Artist.objects.get_or_create(name=name, webpage=webpage)[0]
+def add_artist(name):
+    artist = Artist.objects.get_or_create(name=name)[0]
     artist.save()
 
     return artist
