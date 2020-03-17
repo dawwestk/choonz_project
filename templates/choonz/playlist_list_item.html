@@ -3,9 +3,10 @@
         <a class="choonz-badge p-2"
            href="{% url 'choonz:show_playlist' playlist_slug %}">{{ playlist_name|truncatechars:50 }}</a>
         <div class="choonz-row-no-border badge-light">
+            Average: 
             <div class="min-rating"
                  data-rate-value="{{ playlist_get_average_rating }}"></div>
-            {{ playlist_get_number_of_ratings }} ratings
+            from {{ playlist_get_number_of_ratings }} ratings
         </div>
     </div>
     <div class="choonz-row-no-border">
@@ -16,4 +17,10 @@
             </a>
         {% endif %}
     </div>
+    <div class="choonz-row-no-border">
+        {% if tags_wanted %}
+            <span class="choonz-badge badge-light p-2 tag-list-badge">Tags: {{ tags }}</span>
+        {% endif %}
+    </div>
+
 </li>

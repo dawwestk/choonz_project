@@ -4,7 +4,7 @@ from django.urls import reverse
 from choonz.models import Playlist, UserProfile, Song, Rating, Tag, Artist
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from choonz.forms import PlaylistForm, UserForm, UserProfileForm, RatingForm
+from choonz.forms import PlaylistForm, UserProfileForm, RatingForm
 from datetime import datetime, timedelta
 import pytz
 import collections

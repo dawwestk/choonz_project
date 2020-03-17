@@ -20,7 +20,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')     # location of media files
 
 # Registration
 REGISTRATION_OPEN = True    # if true, users can register
-REGISTRATION_AUTO_LOGIN = True  #if ture, the user will be auto logged in after registering
+REGISTRATION_AUTO_LOGIN = True  # if true, the user will be auto logged in after registering
 LOGIN_REDIRECT_URL = 'choonz:index'
 LOGIN_URL = 'auth_login'
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
@@ -163,7 +163,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.auth_allowed',
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
-    # 'choonz_project.utils.get_username',
     'social_core.pipeline.social_auth.associate_by_email',
     'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',

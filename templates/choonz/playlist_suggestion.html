@@ -1,18 +1,7 @@
+{% load choonz_template_tags %}
+
 {% if playlist_suggestions %}
     {% for playlist in playlist_suggestions %}
-    	<li class="list-group-item see-through">
-			<div class="list-group-item-heading">
-				<a href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name }} 
-				</a>
-				by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a>
-				{% if playlist.picture %}
-					<img src="{{ MEDIA_URL }}{{ playlist.picture }}" width="30" height="30" alt="{{ playlist.name }}'s playlist image" />
-				{% endif %}
-				<strong>created on {{ playlist.createdDate }}</strong>
-				<span class="badge badge-light">Average Rating: {{ playlist.get_average_rating }}/5.0</span>
-
-			</div>
-			<div class="tag-list">Tags: {{ playlist.get_playlist_tag_descriptions_as_string }}</div>
-		</li>
+        {% get_playlist_list_item playlist user tags_wanted %}
     {% endfor %}
 {% endif %}

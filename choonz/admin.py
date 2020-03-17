@@ -5,7 +5,7 @@ from choonz.models import Playlist, UserProfile
 
 class PlaylistAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug':('name',)}
-    list_display = ('name', 'creator', 'createdDate', 'averageRating')
+    list_display = ('name', 'creator', 'createdDate',) # 'averageRating')
 
 #class PageAdmin(admin.ModelAdmin):
 #    list_display = ('title', 'playlist', 'url')
