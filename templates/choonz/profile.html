@@ -248,13 +248,13 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="page-header p-2">
+                        <div class="page-header p-4">
                         	<h4 class="page-header">My Account Settings</h4>
-                            <h5>Change Account password:</h5><a class="btn btn-info" name="submit" id="update-password-button"
-                               href="{% url 'auth_password_change' %}">Change Password
+                            <a class="btn btn-info" name="submit" id="update-password-button"
+                               href="{% url 'auth_password_change' %}">Change Account Password
                             </a>
                         </div>
-                        <div class="page-header p-2">
+                        <div class="page-header p-4">
                             <h4 class="page-header">Connect to Social Media</h4>
 
                             <h3>GitHub
@@ -296,12 +296,12 @@
                             {% endif %}
                             </h3>
 
-                            <h3>Facebook 
+                            <h3>Spotify 
                             {% if spotify_login %}
                                 <p>Connected as <a href="https://spotify.com/{{ spotify_login.extra_data.id }}/"
                                                    target="_blank">{{ spotify_login.extra_data.id }}</a></p>
                                 {% if can_disconnect %}
-                                    <form method="post" action="{% url 'social:disconnect' 'facebook' %}">
+                                    <form method="post" action="{% url 'social:disconnect' 'spotify' %}">
                                         {% csrf_token %}
                                         <button class="btn btn-secondary" type="submit">Disconnect from Spotify</button>
                                     </form>
