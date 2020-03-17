@@ -219,7 +219,7 @@
             <div class="container-fluid ">
                 <div class="row">
                     <div class="choonz-col">
-                        <div class="card p-4">
+                        <div class="page-header p-4">
                             {% if user_profile.picture %}
                                 <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240"
                                      alt="{{ selected_user.username }}'s profile image"/>
@@ -229,16 +229,14 @@
                             {% endif %}
                             <h3 align="center">Your Profile Picture</h3>
                         </div>
-                    </div>
-                    <div class="col">
-                        <div class="card p-2 mb-4">
+                        <div class="page-header p-4">
                             <form method="post" action="." enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <div class="input-group">
                                     <p class="required">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"
-                                              id="playlist-description-prompt">Select an image:</span>
+                                              id="playlist-description-prompt">Change your profile picture:</span>
                                     </div>
                                     {{ form.picture.errors }}
                                     <input type="file" name="picture" id="picture_input" class="form-control"
@@ -248,21 +246,25 @@
                                 <input class="btn btn-info btn-block" type="submit" value="Update"/>
                             </form>
                         </div>
-                        <div class="card p-2">
-                            <a class="btn btn-info" name="submit" id="update-password-button"
+                    </div>
+                    <div class="col">
+                        <div class="page-header p-2">
+                        	<h4 class="page-header">My Account Settings</h4>
+                            <h5>Change Account password:</h5><a class="btn btn-info" name="submit" id="update-password-button"
                                href="{% url 'auth_password_change' %}">Change Password
                             </a>
-                            <br/>
-                            <h2>Settings</h2>
+                        </div>
+                        <div class="page-header p-2">
+                            <h4 class="page-header">Connect to Social Media</h4>
 
-                            <h3>GitHub</h3>
+                            <h3>GitHub
                             {% if github_login %}
                                 <p>Connected as <a href="https://github.com/{{ github_login.extra_data.login }}/"
                                                    target="_blank">{{ github_login.extra_data.login }}</a></p>
                                 {% if can_disconnect %}
                                     <form method="post" action="{% url 'social:disconnect' 'github' %}">
                                         {% csrf_token %}
-                                        <button type="submit">Disconnect from GitHub</button>
+                                        <button class="btn btn-secondary" type="submit">Disconnect from GitHub</button>
                                     </form>
                                 {% else %}
                                     <button type="button" disabled>Disconnect from GitHub</button>
@@ -270,10 +272,11 @@
                                         for your account before disconnecting from Github.</p>
                                 {% endif %}
                             {% else %}
-                                <a href="{% url 'social:begin' 'github' %}">Connect to GitHub</a>
+                                <a class="btn btn-primary" href="{% url 'social:begin' 'github' %}">Connect to GitHub <i style="font-size:24px" class="fa">&#xf09b;</i></a>
                             {% endif %}
+                            </h3>
 
-                            <h3>Twitter</h3>
+                            <h3>Twitter 
                             {% if twitter_login %}
                                 <p>Connected as <a
                                         href="https://twitter.com/{{ twitter_login.extra_data.access_token.screen_name }}/"
@@ -281,7 +284,7 @@
                                 {% if can_disconnect %}
                                     <form method="post" action="{% url 'social:disconnect' 'twitter' %}">
                                         {% csrf_token %}
-                                        <button type="submit">Disconnect from Twitter</button>
+                                        <button class="btn btn-secondary" type="submit">Disconnect from Twitter</button>
                                     </form>
                                 {% else %}
                                     <button type="button" disabled>Disconnect from Twitter</button>
@@ -289,17 +292,18 @@
                                         for your account before disconnecting from Twitter.</p>
                                 {% endif %}
                             {% else %}
-                                <a href="{% url 'social:begin' 'twitter' %}">Connect to Twitter</a>
+                                <a class="btn btn-primary" href="{% url 'social:begin' 'twitter' %}">Connect to Twitter <i style="font-size:24px" class="fa">&#xf099;</i></a>
                             {% endif %}
+                            </h3>
 
-                            <h3>Facebook</h3>
+                            <h3>Facebook 
                             {% if spotify_login %}
                                 <p>Connected as <a href="https://spotify.com/{{ spotify_login.extra_data.id }}/"
                                                    target="_blank">{{ spotify_login.extra_data.id }}</a></p>
                                 {% if can_disconnect %}
                                     <form method="post" action="{% url 'social:disconnect' 'facebook' %}">
                                         {% csrf_token %}
-                                        <button type="submit">Disconnect from Spotify</button>
+                                        <button class="btn btn-secondary" type="submit">Disconnect from Spotify</button>
                                     </form>
                                 {% else %}
                                     <button type="button" disabled>Disconnect from Spotify</button>
@@ -307,8 +311,9 @@
                                         for your account before disconnecting from Spotify.</p>
                                 {% endif %}
                             {% else %}
-                                <a href="{% url 'social:begin' 'spotify' %}">Connect to Spotify</a>
+                                <a class="btn btn-primary" href="{% url 'social:begin' 'spotify' %}">Connect to Spotify <i style="font-size:24px" class="fa">&#xf1bc;</i></a>
                             {% endif %}
+                            </h3>
                         </div>
                     </div>
                 </div>
