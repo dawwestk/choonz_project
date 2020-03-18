@@ -1,0 +1,7 @@
+{% load choonz_template_tags %}
+
+{% if songs %}
+    {% for song in songs %}
+        {% get_song_detail_for_edit_page playlist_slug song %}
+    {% endfor %}
+{% endif %}

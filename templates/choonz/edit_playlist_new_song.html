@@ -1,0 +1,38 @@
+<li class="choonz-row choonz-vertical-center" id="{{song_slug}}">
+    <div class="col-md-9 title-and-artist-{{song_slug}}">
+        <div class="row">
+            <div class="col-md-6">
+                <h5 class="centred-left-indent-5">{{song_title}}</h5>
+            </div>
+            <div class="col choonz-vertical-center">
+                <strong>Spotify URL: </strong>
+                {% if song_link_spotify %}
+                    <input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="{{song_slug}}" data-playlistSlug="{{playlist_slug}}" type="text" value="{{song_link_spotify}}" />
+                {% else %}
+                    <input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="{{song_slug}}" data-playlistSlug="{{playlist_slug}}" type="text" value="~ insert here ~" />
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="centred-left-indent-10">by {{song_artist}}</div>
+            </div>
+            <div class="col choonz-vertical-center">
+                <strong>Other Link: </strong>
+                {% if song_link_other %}
+                    <input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="{{song_slug}}" data-playlistSlug="{{playlist_slug}}" type="text" value="{{song_link_other}}" />
+                {% else %}
+                   <input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="{{song_slug}}" data-playlistSlug="{{playlist_slug}}" type="text" value="~ insert here ~" />
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 choonz-vertical-center">
+        <div class="choonz-col">
+            <button class="btn btn-danger remove-song-button" type="button" id="remove-song-{{song_slug}}" data-songSlug="{{song_slug}}">Remove</button>
+            <button class="btn btn-danger confirm-song-remove" type="button" id="confirm-remove-{{song_slug}}" data-songSlug="{{song_slug}}" data-playlistSlug="{{playlist_slug}}">Confirm</button>
+            <button class="btn btn-secondary cancel-song-remove" type="button" id="cancel-remove-{{song_slug}}" data-songSlug="{{song_slug}}" data-playlistSlug="{{playlist_slug}}">Cancel</button>
+            <button class="btn btn-secondary undo-song-remove" type="button" id="undo-remove-{{song_slug}}" data-songSlug="{{song_slug}}" data-songTitle="{{song_title}}" data-artistName="{{song_artist}}" data-linkToSpotify="{{song_link_spotify}}" data-linkOther="{{song_link_other}}" data-playlistSlug="{{playlist_slug}}">Undo Song Remove</button>
+        </div>
+    </div>
+</li>

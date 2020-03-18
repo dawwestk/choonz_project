@@ -1,19 +1,23 @@
 <li class="see-through">
     <div class="choonz-row-no-border">
         <a class="choonz-badge p-2"
-           href="{% url 'choonz:show_playlist' playlist_slug %}">{{ playlist_name|truncatechars:50 }}</a>
+           href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
         <div class="choonz-row-no-border badge-light">
+            {% if minimised_stars %}
+                Average: {{ average }} &#x2606; from {{ playlist.get_number_of_ratings }} ratings
+            {% else %}
             Average: 
             <div class="min-rating"
-                 data-rate-value="{{ playlist_get_average_rating }}"></div>
-            from {{ playlist_get_number_of_ratings }} ratings
+                 data-rate-value="{{ average }}"></div>
+            from {{ playlist.get_number_of_ratings }} ratings
+            {% endif %}
         </div>
     </div>
     <div class="choonz-row-no-border">
-        {% if playlist_creator == user %}
+        {% if playlist.creator == user %}
             <a class="choonz-badge badge-info" type="submit" name="submit"
                id="edit-playlist-button"
-               href="{% url 'choonz:edit_playlist' playlist_slug %}">Edit
+               href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit
             </a>
         {% endif %}
     </div>

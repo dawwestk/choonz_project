@@ -20,13 +20,9 @@
 						<h1 class="container page-header-font">{{ playlist.name }}</h1>
 					</div>
 					<p>created by <a href="{% url 'choonz:profile' playlist.creator %}">{{ playlist.creator }}</a></p>
-						<p>
 					<div class="row">
-						<p>
-						<strong>Description: </strong>{{ playlist.description }}<br />
-							Created on: {{ playlist.createdDate }}<br />
-							Last updated: {{ playlist.lastUpdatedDate }}<br />
-						</p>
+						Description: {{ playlist.description }}<br/>
+						Created on: {{ playlist.createdDate }}, Last updated: {{ playlist.lastUpdatedDate }}
 					</div>
 				</div>	
 				<div class="col">
@@ -42,11 +38,11 @@
 					<div class="row">
 						{% if user.is_authenticated %}
 							{% if user != playlist.creator %}
-								<div>
+								<div class="page-header p-2">
 									<form class="form-inline" id="rating-form" method="post" action="{% url 'choonz:rate_playlist' playlist.slug %}">
 									{% csrf_token %}
 									{{ form.non_field_errors }}
-									<div class="input-group mb-3">
+									<div class="row centred mb-3">
 		                                <p class="required">
 		                                    <div class="input-group-prepend">
 		                                        <span class="input-group-text">Your rating: </span>
@@ -64,53 +60,53 @@
 		                                </p>
 		                            </div>
 
-									<div class="input-group mb-3">
+									<div class="row centred mb-3">
 		                                <p class="required">
 		                                    <div class="input-group-prepend">
 		                                        <span class="input-group-text">Comment: </span>
 		                                    </div>
 		                                    {% if user_has_rated %}
-		                                    	<input type="text" name="comment" id="comment" class="form-control" value="{{ rating.comment }}" size="100" readonly />
+		                                    	<input type="text" name="comment" id="comment" class="form-control" value="{{ rating.comment }}" size="50" readonly />
 		                                    {% else %}
-		                                    	<input type="text" name="comment" id="comment" class="form-control" value="" size="100" />
+		                                    	<input type="text" name="comment" id="comment" class="form-control" value="" size="50" />
 		                                    {% endif %}
 		                                </p>
 		                            </div>
 		                            <div class="text-danger">
 				                            {{ form.comment.errors }}
 				                    </div>
-				                    <div>
+				                    <div class="container-fluid">
 				                  	{% if user_has_rated %}
-				                    	<a type="button" class="btn btn-warning" id="show-update-rating-fields">Edit Your Rating</a>
+				                    	<a type="button" class="btn btn-warning btn-block" id="show-update-rating-fields">Edit Your Rating</a>
 				                    	<button class="btn btn-primary" id="hidden-submit-rating-update" type="submit">Submit</button>
-										<a type="button" class="btn btn-secondary" id="hidden-cancel-rating-update">Cancel</a>
+										<a type="button" class="btn btn-secondary btn-block" id="hidden-cancel-rating-update">Cancel</a>
 				                    {% else %}
-				                    	<button class="btn btn-primary" id="submit-rating-update" type="submit">Submit</button>
-										<a type="button" class="btn btn-secondary" id="cancel-rating-update">Cancel</a>
+				                    	<button class="btn btn-primary btn-block" id="submit-rating-update" type="submit">Submit</button>
+										<a type="button" class="btn btn-secondary btn-block" id="cancel-rating-update">Cancel</a>
 									{% endif %}
 									</div>
 									</form>
 								</div>
 							{% else %}
 								{% if playlist.public %}
-									<div>
+									<div class="page-header p-2">
 										<form class="form-inline" id="user-form" method="get" action="{% url 'choonz:publish_playlist' %}">
 											{% csrf_token %}
 											<input id="playlist_id" name="playlist_id" type="hidden" value="{{ playlist.id }}">
-											<button class="btn btn-warning" type="submit" data-playlist_id="{{ playlist.id }}" name="submit">Send to Drafts</button>
+											<button class="btn btn-warning btn-block m-1" type="submit" data-playlist_id="{{ playlist.id }}" name="submit">Send to Drafts</button>
 										</form>
 									</div>
 								{% else %}
-									<div class="row">
-										<div class="col p-0">
+									<div class="row page-header p-2">
+										<div class="col p-1">
 											<form class="form-inline" id="user-form" method="post" action="{% url 'choonz:publish_playlist' %}">
 												{% csrf_token %}
 												<input id="playlist_id" name="playlist_id" type="hidden" value="{{ playlist.id }}">
-												<button class="btn btn-warning" type="submit" data-playlist_id="{{ playlist.id }}" name="submit">Publish this Playlist!</button>
+												<button class="btn btn-warning btn-block m-1" type="submit" data-playlist_id="{{ playlist.id }}" name="submit">Publish this Playlist!</button>
 											</form>
 										</div>
-										<div class="col p-0">
-											<a class="btn btn-info" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit Playlist</a>
+										<div class="col p-1">
+											<a class="btn btn-info btn-block m-1 mr-2" href="{% url 'choonz:edit_playlist' playlist.slug %}">Edit Playlist</a>
 										</div>
 									</div>
 								{% endif %}
@@ -123,8 +119,8 @@
 		</div>
 		
 		<div class="container page-header">
-			<h3 class="container page-header-font">Tags:</h3>
-			<div class="container m-4" id="tag-listing">
+			<h3 class="container page-header-font">Tags on this Playlist</h3>
+			<div class="container" id="tag-listing">
 	            {% block sidebar_block %}
 	                {% get_tag_list playlist %}
 	            {% endblock %}
@@ -195,8 +191,8 @@
 						<div class="container">
 							<p><strong>Your playlist is looking a little bare! People can't rate it when it's empty!</strong></p>
 							<ul>
-								<li>Why not <a href="{% url 'choonz:edit_playlist' playlist.slug %}">add some songs</a>?</li>
-								<li>Or you could <a href="{% url 'choonz:import_playlist' playlist.slug %}">import a playlist from Spotify</a>?</li>
+								<li class="see-through">Why not <a href="{% url 'choonz:edit_playlist' playlist.slug %}">add some songs</a>?</li>
+								<li class="see-through">Or you could <a href="{% url 'choonz:import_playlist' playlist.slug %}">import a playlist from Spotify</a>?</li>
 							</ul>
 						</div>
 					{% endif %}

@@ -45,7 +45,10 @@ $(document).ready(function(){
 				$('#add_song_spotify_link').val("");
 				$('#add_song_other_link').val("");
 				showAddSongPopUp(data.message);
-				$('#edit-song-list').append(generateNewSongListingForEditPage(data.new_slug, song_title, song_artist, playlistSlug));
+				//$('#edit-song-list').append(generateNewSongListingForEditPage(data.new_slug, song_title, song_artist, playlistSlug));
+				$.get('/choonz/add_new_song_details/', {'playlist_slug': playlistSlug, 'song_slug': data.new_slug}, function(song_data){
+					$('#edit-song-list').html(data);
+				})
 			} else {
 				alert(data.message);
 			}
@@ -350,7 +353,7 @@ function generateNewSongListingForEditPage(slug, title, artist, playlistSlug, li
 				<h5 class="centred-left-indent-5">${title}</h5>
 			</div>
 			<div class="col choonz-vertical-center">
-				<strong>Spotify URL </strong>`;
+				<strong>Spotify URL: </strong>`;
 	
 	if(link_spotify){
 		var first_input = `<input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value="${link_spotify}" />`;
@@ -365,7 +368,7 @@ function generateNewSongListingForEditPage(slug, title, artist, playlistSlug, li
 				<span class="centred-left-indent-10">by ${artist}</span>
 			</div>
 			<div class="col choonz-vertical-center">
-				<strong>Other Link : </strong>`;
+				<strong>Other Link: </strong>`;
 
     if(link_other){
     	var second_input = `<input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="${slug}" data-playlistSlug="${playlistSlug}" type="text" value="${link_other}" />`;

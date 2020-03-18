@@ -1,6 +1,10 @@
 from django.urls import path
 from choonz import views
-from choonz.views import AboutView, AddPlaylistView, IndexView, PlaylistRatingView, ShowPlaylistView, SearchSpotifyView, RegisterProfileView, ProfileView, ListPlaylistView,  ListProfileView, TagSuggestionView, PlaylistEditorView, TestView, AddSongView, ImportPlaylistView, RemoveSongView, PlaylistSuggestionView, DeletePlaylistView
+from choonz.templatetags import choonz_template_tags
+from choonz.views import AboutView, AddPlaylistView, IndexView, PlaylistRatingView, ShowPlaylistView, SearchSpotifyView,\
+    RegisterProfileView, ProfileView, ListPlaylistView,  ListProfileView, TagSuggestionView, PlaylistEditorView, \
+    TestView, AddSongView, ImportPlaylistView, RemoveSongView, PlaylistSuggestionView, DeletePlaylistView, \
+    AddSongDetailView
 # AddPageView,GoToView, SearchAddPage LikePlaylistView, 
 
 
@@ -28,4 +32,5 @@ urlpatterns = [
     path('suggest_tag/', views.TagSuggestionView.as_view(), name='suggest_tag'),
     path('suggest_playlist/', views.PlaylistSuggestionView.as_view(), name='suggest_playlist'),
     path('filter_playlists/', views.PlaylistFilterView.as_view(), name='filter_playlists'),
+    path('add_new_song_details/', views.AddSongDetailView.as_view(), name='add_new_song_details'),
 ]

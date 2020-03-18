@@ -2,6 +2,6 @@
 
 {% if playlist_suggestions %}
     {% for playlist in playlist_suggestions %}
-        {% get_playlist_list_item playlist user tags_wanted %}
+        {% get_playlist_list_item playlist user tags_wanted minimised_stars %}
     {% endfor %}
 {% endif %}

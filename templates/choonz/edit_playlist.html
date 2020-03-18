@@ -193,48 +193,9 @@
                 <h4>All songs on {{ playlist.name }}</h4>
             </div>
             <ul id="edit-song-list">
-            {% if playlist.get_song_list %}
-                {% for song in playlist.get_song_list %}
-                <li class="choonz-row choonz-vertical-center" id="{{song.slug}}">
-                    <div class="col-md-9 title-and-artist-{{song.slug}}">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h5 class="centred-left-indent-5">{{song.title}}</h5>
-                            </div>
-                            <div class="col choonz-vertical-center">
-                                <strong>Spotify URL </strong>
-                                {% if song.linkToSpotify %}
-                                    <input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}" type="text" value="{{song.linkToSpotify}}" />
-                                {% else %}
-                                    <input class="choonz-form-control add-url-to-song" data-urlType="spotify" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}" type="text" value="~ insert here ~" />
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="centred-left-indent-10">by {{song.artist}}</div>
-                            </div>
-                            <div class="col choonz-vertical-center">
-                                <strong>Other Link : </strong>
-                                {% if song.linkOther %}
-                                    <input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}" type="text" value="{{song.linkOther}}" />
-                                {% else %}
-                                   <input class="choonz-form-control add-url-to-song" data-urlType="other" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}" type="text" value="~ insert here ~" />
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 choonz-vertical-center">
-                        <div class="choonz-col">
-                            <button class="btn btn-danger remove-song-button" type="button" id="remove-song-{{song.slug}}" data-songSlug="{{song.slug}}">Remove</button>
-                            <button class="btn btn-danger confirm-song-remove" type="button" id="confirm-remove-{{song.slug}}" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}">Confirm</button>
-                            <button class="btn btn-secondary cancel-song-remove" type="button" id="cancel-remove-{{song.slug}}" data-songSlug="{{song.slug}}" data-playlistSlug="{{playlist.slug}}">Cancel</button>
-                            <button class="btn btn-secondary undo-song-remove" type="button" id="undo-remove-{{song.slug}}" data-songSlug="{{song.slug}}" data-songTitle="{{song.title}}" data-artistName="{{song.artist}}" data-linkToSpotify="{{song.linkToSpotify}}" data-linkOther="{{song.linkOther}}" data-playlistSlug="{{playlist.slug}}">Undo Song Remove</button>
-                        </div>
-                    </div>
-                </li>
-                {% endfor %}
-            {% endif %}
+            {% block all_songs %}
+                {% get_songs_on_playlist playlist.slug %}
+            {% endblock %}
             </ul>
         </div>
         <hr>

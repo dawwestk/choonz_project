@@ -1,5 +1,5 @@
 from django import template
-from choonz.models import Tag, Playlist
+from choonz.models import Tag, Playlist, Song
 
 register = template.Library()
 
@@ -17,9 +17,10 @@ def get_tag_list(playlist=None):
 
 
 @register.inclusion_tag('choonz/playlist_suggestion.html')
-def get_playlist_list(tags_wanted=False):
+def get_playlist_list(tags_wanted=False, minimised_stars=False):
     playlist_suggestions = Playlist.objects.all()
-    output = {'playlist_suggestions': playlist_suggestions, 'tags_wanted': tags_wanted}
+    output = {'playlist_suggestions': playlist_suggestions, 'tags_wanted': tags_wanted,
+              'minimised_stars': minimised_stars}
 
     return output
 
@@ -33,11 +34,32 @@ def get_search_results(results=None):
 
 
 @register.inclusion_tag('choonz/playlist_list_item.html')
-def get_playlist_list_item(playlist, user, tags_wanted=False):
-    output = {'playlist_slug': playlist.slug, 'playlist_name': playlist.name,
-              'playlist_get_average_rating': playlist.get_average_rating,
-              'playlist_get_number_of_ratings': playlist.get_number_of_ratings,
-              'playlist_creator': playlist.creator, 'user': user, 'tags_wanted': tags_wanted,
-              'tags': playlist.get_playlist_tag_descriptions}
+def get_playlist_list_item(playlist, user, tags_wanted=False, minimised_stars=False):
+    output = {'playlist': playlist, 'user': user, 'tags_wanted': tags_wanted,
+              'tags': playlist.get_playlist_tag_descriptions, 'minimised_stars': minimised_stars,
+              'average': playlist.get_average_rating}
+
+    return output
+
+
+@register.inclusion_tag('choonz/edit_playlist_list_songs.html')
+def get_songs_on_playlist(playlist_slug):
+    playlist = Playlist.objects.get(slug=playlist_slug)
+    songs = playlist.get_song_list
+    output = {'playlist_slug': playlist_slug, 'songs': songs}
+
+    return output
+
+
+@register.inclusion_tag('choonz/edit_playlist_new_song.html')
+def get_song_detail_for_edit_page(playlist_slug, song):
+    song_slug = song.slug
+    song_title = song.title
+    song_link_spotify = song.linkToSpotify
+    song_link_other = song.linkOther
+    song_artist = song.artist.name
+    output = {'playlist_slug': playlist_slug, 'song_slug': song_slug, 'song_title': song_title,
+              'song_link_spotify': song_link_spotify, 'song_link_other': song_link_other,
+              'song_artist': song_artist}
 
     return output

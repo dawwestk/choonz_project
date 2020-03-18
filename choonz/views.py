@@ -5,6 +5,7 @@ from choonz.models import Playlist, UserProfile, Song, Rating, Tag, Artist
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from choonz.forms import PlaylistForm, UserProfileForm, RatingForm
+from choonz.templatetags import choonz_template_tags
 from datetime import datetime, timedelta
 import pytz
 import collections
@@ -238,6 +239,16 @@ class PlaylistEditorView(View):
         response_dict['status'] = True
         response_dict['message'] = "Playlist details updated"
         return HttpResponse(json.dumps(response_dict), content_type="application/json")
+
+
+class AddSongDetailView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        playlist_slug = request.GET['playlist_slug']
+        song_slug = request.GET['song_slug']
+        print(playlist_slug + " - " + song_slug)
+        context_dict = choonz_template_tags.get_song_detail_for_edit_page(playlist_slug, song_slug)
+        return HttpResponse(json.dumps(context_dict), content_type="application/json")
 
 
 class PlaylistRatingView(View):
@@ -495,7 +506,8 @@ class PlaylistFilterView(View):
         if len(playlist_list) == 0:
             playlist_list = Playlist.objects.order_by('name')
 
-        context_dict = {'user_profile': user_profile, 'playlist_suggestions': playlist_list}
+        context_dict = {'user_profile': user_profile, 'playlist_suggestions': playlist_list,
+                        'user': request.GET.get('user'), 'tags_wanted': True, 'minimised_stars': True}
 
         return render(request, 'choonz/playlist_suggestion.html', context_dict)
 
@@ -546,7 +558,8 @@ class PlaylistSuggestionView(View):
         if len(playlist_list) == 0:
             playlist_list = Playlist.objects.order_by('name')
 
-        context_dict = {'user_profile': user_profile, 'playlist_suggestions': playlist_list}
+        context_dict = {'user_profile': user_profile, 'playlist_suggestions': playlist_list,
+                        'user': request.GET.get('user'), 'tags_wanted': True, 'minimised_stars': True}
 
         return render(request, 'choonz/playlist_suggestion.html', context_dict)
 
@@ -622,7 +635,6 @@ def get_tag_list(max_results=0, starts_with=''):
             tag_list = tag_list[:max_results]
 
     return tag_list
-
 
 '''
     ------------------------------------------------------------------------------------

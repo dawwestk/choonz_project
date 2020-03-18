@@ -199,11 +199,15 @@ body {
     background-color: #153a5e;
     color: #19c2c8;
     text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     border: 1px solid #919191;
     border-radius: 25px;
     margin-bottom: 10px;
     padding-top: 10px;
     padding-bottom: 20px;
+    width: 100%;
 }
 
 .page-header a,
@@ -672,4 +676,8 @@ td {
     filter: invert(100%);
     outline: red;
     color: red;
+}
+
+#added-songs{
+    display: none;
 }
