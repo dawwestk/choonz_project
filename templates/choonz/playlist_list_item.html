@@ -4,7 +4,7 @@
            href="{% url 'choonz:show_playlist' playlist.slug %}">{{ playlist.name|truncatechars:50 }}</a>
         <div class="choonz-row-no-border badge-light">
             {% if minimised_stars %}
-                Average: {{ average|floatformat:"0" }} &#x2606; from {{ playlist.get_number_of_ratings }} ratings
+                Average: {{ average|floatformat }} &#x2606; from {{ playlist.get_number_of_ratings }} ratings
             {% else %}
             Average: 
             <div class="min-rating"

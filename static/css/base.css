@@ -681,3 +681,7 @@ td {
 #added-songs{
     display: none;
 }
+
+#show-update-rating-fields{
+    color: black;
+}
