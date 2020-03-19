@@ -796,18 +796,6 @@ def suggest_playlist_from_tags(tag_obs, user, already_rated):
     return recommendations
 
 
-
-class ListProfileView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        user_profile = get_user_profile(request)
-        profiles = UserProfile.objects.all()
-
-        context_dict = {'user_profile': user_profile, 'user_profile_list': profiles}
-
-        return render(request, 'choonz/list_profiles.html', context_dict)
-
-
 '''
 
     Misc Views/Methods
