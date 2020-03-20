@@ -139,6 +139,17 @@ body {
 #login-container{
 	width: 45%;
 }
+
+#registration-form,
+#registration-form-profile-picture{
+    width: 60%;
+}
+
+.input-header{
+    justify-content: center;
+    text-align: center;
+    min-width: 156px;
+}
 	
 #cardBox {
     display: flex;

@@ -7,35 +7,33 @@
 
 {% block body_block %}
 
-	<div class="jumbotron p-4">
+	<div class="page-header p-4">
 		<div class="container">
-			<h1 class="jumbotron-heading">Register Here - Step 2</h1>
+			<h1 class="page-header-font">Register Here - Step 2</h1>
 		</div>
 	</div>
-	<div class="container">
-		<div class="row">
-			<div class="container">
-				<div class="card p-4">
-					<form method="post" action="{% url 'choonz:register_profile' %}" enctype="multipart/form-data">
-						{% csrf_token %}
-						<div class="card-body">
-							<div class="input-group mb-3">
-								<p class="required">
-		                            <div class="input-group-prepend">
-		                                <span class="input-group-text" id="basic-addon1">Profile Picture:</span>
-		                            </div>
-		                            <input class="form-control" type="file" id="picture" name="picture" accept="image/*">
-		                        </p>
-		                    </div>
-		                    <p>
-		                    	<span class="helptext">
-									Upload a profile picture!
-								</span>
-							</p>
-						</div>
-						<input class="btn btn-primary" type="submit" value="Create Profile" />
-					</form>
-				</div>
+	<div class="container" id="registration-form-profile-picture">
+		<div class="page-header">
+			<div class="container p-4">
+				<form method="post" action="{% url 'choonz:register_profile' %}" enctype="multipart/form-data">
+					{% csrf_token %}
+					<div class="card-body">
+						<div class="input-group mb-3">
+							<p class="required">
+	                            <div class="input-group-prepend">
+	                                <span class="input-group-text" id="basic-addon1">Profile Picture:</span>
+	                            </div>
+	                            <input class="form-control" type="file" id="picture" name="picture" accept="image/*">
+	                        </p>
+	                    </div>
+	                    <h4>
+	                    	<span class="helptext">
+								Upload a profile picture!
+							</span>
+						</h4>
+					</div>
+					<input class="btn btn-primary" type="submit" value="Create Profile" />
+				</form>
 			</div>
 		</div>
 	</div>
