@@ -96,9 +96,9 @@ $(document).ready(function(){
 
 	$('#spotify-add-song-search').click(function(){
 		var query = $('#spotify-search-query').val();
+		$('#spotify-search-results').empty();
 		var playlistSlug = $(this).attr('data-playlistSlug');
 		$.post('/choonz/search_spotify/', {'query': query}, function(data){
-			
 			for(var i = 0; i < data.results.length; i++) {
 				$('#spotify-search-results').append(generateSpotifySearchResultForEditPage(data.results[i].track_name, data.results[i].artist_name, data.results[i].link, data.results[i].album_image, playlistSlug));
 			};
