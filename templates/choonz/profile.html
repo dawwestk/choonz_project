@@ -215,19 +215,21 @@
     </div>
 
     {% if selected_user == user %}
-        <div id="edit-profile-view" class="">
+        <div id="edit-profile-view">
             <div class="container-fluid ">
                 <div class="row">
                     <div class="choonz-col">
                         <div class="page-header p-4">
-                            {% if user_profile.picture %}
-                                <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240"
-                                     alt="{{ selected_user.username }}'s profile image"/>
-                            {% else %}
-                                <img src="{% static 'images/default_profile_img.jpg' %}" width="320" height="240"
-                                     alt="No profile image"/>
-                            {% endif %}
-                            <h3 align="center">Your Profile Picture</h3>
+                        	<div class="container">
+	                            {% if user_profile.picture %}
+	                                <img src="{{ MEDIA_URL }}{{ user_profile.picture }}" width="320" height="240"
+	                                     alt="{{ selected_user.username }}'s profile image"/>
+	                            {% else %}
+	                                <img src="{% static 'images/default_profile_img.jpg' %}" width="320" height="240"
+	                                     alt="No profile image"/>
+	                            {% endif %}
+	                            <h3 align="center">Your Profile Picture</h3>
+	                    	</div>
                         </div>
                         <div class="page-header p-4">
                             <form method="post" action="." enctype="multipart/form-data">
@@ -254,66 +256,65 @@
                                href="{% url 'auth_password_change' %}">Change Account Password
                             </a>
                         </div>
-                        <div class="page-header p-4">
+                        <div class="page-header p-4 pb-5">
                             <h4 class="page-header">Connect to Social Media</h4>
-
-                            <h3>GitHub
-                            {% if github_login %}
-                                <p>Connected as <a href="https://github.com/{{ github_login.extra_data.login }}/"
-                                                   target="_blank">{{ github_login.extra_data.login }}</a></p>
-                                {% if can_disconnect %}
-                                    <form method="post" action="{% url 'social:disconnect' 'github' %}">
-                                        {% csrf_token %}
-                                        <button class="btn btn-secondary" type="submit">Disconnect from GitHub</button>
-                                    </form>
-                                {% else %}
-                                    <button type="button" disabled>Disconnect from GitHub</button>
-                                    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a>
-                                        for your account before disconnecting from Github.</p>
-                                {% endif %}
-                            {% else %}
-                                <a class="btn btn-primary" href="{% url 'social:begin' 'github' %}">Connect to GitHub <i style="font-size:24px" class="fa">&#xf09b;</i></a>
-                            {% endif %}
-                            </h3>
-
-                            <h3>Twitter 
-                            {% if twitter_login %}
-                                <p>Connected as <a
-                                        href="https://twitter.com/{{ twitter_login.extra_data.access_token.screen_name }}/"
-                                        target="_blank">@{{ twitter_login.extra_data.access_token.screen_name }}</a></p>
-                                {% if can_disconnect %}
-                                    <form method="post" action="{% url 'social:disconnect' 'twitter' %}">
-                                        {% csrf_token %}
-                                        <button class="btn btn-secondary" type="submit">Disconnect from Twitter</button>
-                                    </form>
-                                {% else %}
-                                    <button type="button" disabled>Disconnect from Twitter</button>
-                                    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a>
-                                        for your account before disconnecting from Twitter.</p>
-                                {% endif %}
-                            {% else %}
-                                <a class="btn btn-primary" href="{% url 'social:begin' 'twitter' %}">Connect to Twitter <i style="font-size:24px" class="fa">&#xf099;</i></a>
-                            {% endif %}
-                            </h3>
-
-                            <h3>Spotify 
-                            {% if spotify_login %}
-                                <p>Connected as <a href="https://spotify.com/{{ spotify_login.extra_data.id }}/"
-                                                   target="_blank">{{ spotify_login.extra_data.id }}</a></p>
-                                {% if can_disconnect %}
-                                    <form method="post" action="{% url 'social:disconnect' 'spotify' %}">
-                                        {% csrf_token %}
-                                        <button class="btn btn-secondary" type="submit">Disconnect from Spotify</button>
-                                    </form>
-                                {% else %}
-                                    <button type="button" disabled>Disconnect from Spotify</button>
-                                    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a>
-                                        for your account before disconnecting from Spotify.</p>
-                                {% endif %}
-                            {% else %}
-                                <a class="btn btn-primary" href="{% url 'social:begin' 'spotify' %}">Connect to Spotify <i style="font-size:24px" class="fa">&#xf1bc;</i></a>
-                            {% endif %}
-                            </h3>
+                            <div class="container">
+	                            <h3>GitHub
+	                            {% if github_login %}
+	                                <p>Connected as <a href="https://github.com/{{ github_login.extra_data.login }}/"
+	                                                   target="_blank">{{ github_login.extra_data.login }}</a></p>
+	                                {% if can_disconnect %}
+	                                    <form method="post" action="{% url 'social:disconnect' 'github' %}">
+	                                        {% csrf_token %}
+	                                        <button class="btn btn-secondary" type="submit">Disconnect from GitHub</button>
+	                                    </form>
+	                                {% else %}
+	                                    <button type="button" disabled>Disconnect from GitHub</button>
+	                                    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a>
+	                                        for your account before disconnecting from Github.</p>
+	                                {% endif %}
+	                            {% else %}
+	                                <a class="btn btn-primary" href="{% url 'social:begin' 'github' %}">Connect to GitHub <i style="font-size:24px" class="fa">&#xf09b;</i></a>
+	                            {% endif %}
+	                            </h3>
+	                            <h3>Twitter 
+	                            {% if twitter_login %}
+	                                <p>Connected as <a
+	                                        href="https://twitter.com/{{ twitter_login.extra_data.access_token.screen_name }}/"
+	                                        target="_blank">@{{ twitter_login.extra_data.access_token.screen_name }}</a></p>
+	                                {% if can_disconnect %}
+	                                    <form method="post" action="{% url 'social:disconnect' 'twitter' %}">
+	                                        {% csrf_token %}
+	                                        <button class="btn btn-secondary" type="submit">Disconnect from Twitter</button>
+	                                    </form>
+	                                {% else %}
+	                                    <button type="button" disabled>Disconnect from Twitter</button>
+	                                    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a>
+	                                        for your account before disconnecting from Twitter.</p>
+	                                {% endif %}
+	                            {% else %}
+	                                <a class="btn btn-primary" href="{% url 'social:begin' 'twitter' %}">Connect to Twitter <i style="font-size:24px" class="fa">&#xf099;</i></a>
+	                            {% endif %}
+	                            </h3>
+	                            <h3>Spotify 
+	                            {% if spotify_login %}
+	                                <p>Connected as <a href="https://spotify.com/{{ spotify_login.extra_data.id }}/"
+	                                                   target="_blank">{{ spotify_login.extra_data.id }}</a></p>
+	                                {% if can_disconnect %}
+	                                    <form method="post" action="{% url 'social:disconnect' 'spotify' %}">
+	                                        {% csrf_token %}
+	                                        <button class="btn btn-secondary" type="submit">Disconnect from Spotify</button>
+	                                    </form>
+	                                {% else %}
+	                                    <button type="button" disabled>Disconnect from Spotify</button>
+	                                    <p style="color: red">You must <a href="{% url 'password' %}">define a password</a>
+	                                        for your account before disconnecting from Spotify.</p>
+	                                {% endif %}
+	                            {% else %}
+	                                <a class="btn btn-primary" href="{% url 'social:begin' 'spotify' %}">Connect to Spotify <i style="font-size:24px" class="fa">&#xf1bc;</i></a>
+	                            {% endif %}
+	                            </h3>
+	                        </div>
                         </div>
                     </div>
                 </div>
