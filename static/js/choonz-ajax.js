@@ -47,7 +47,7 @@ $(document).ready(function(){
 				showAddSongPopUp(data.message);
 				//$('#edit-song-list').append(generateNewSongListingForEditPage(data.new_slug, song_title, song_artist, playlistSlug));
 				$.get('/choonz/add_new_song_details/', {'playlist_slug': playlistSlug, 'song_slug': data.new_slug}, function(song_data){
-					$('#edit-song-list').html(data);
+					$('#edit-song-list').append(song_data);
 				})
 			} else {
 				alert(data.message);

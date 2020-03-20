@@ -192,11 +192,11 @@
             <div class="card-body" id="playlist-header">
                 <h4>All songs on {{ playlist.name }}</h4>
             </div>
-            <ul id="edit-song-list">
+            <div>
             {% block all_songs %}
                 {% get_songs_on_playlist playlist.slug %}
             {% endblock %}
-            </ul>
+            </div>
         </div>
         <hr>
         <div class="jumbotron m-2 p-1">

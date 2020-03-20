@@ -60,6 +60,10 @@ class Playlist(models.Model):
         return list(self.songs.all())
 
     @property
+    def get_song_list_as_slugs(self):
+        return list(self.songs.values('slug').all())
+
+    @property
     def get_playlist_tag_list(self):
         return list(self.tags.all())
 

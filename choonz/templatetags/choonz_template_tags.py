@@ -1,4 +1,5 @@
 from django import template
+
 from choonz.models import Tag, Playlist, Song
 
 register = template.Library()
@@ -47,12 +48,14 @@ def get_songs_on_playlist(playlist_slug):
     playlist = Playlist.objects.get(slug=playlist_slug)
     songs = playlist.get_song_list
     output = {'playlist_slug': playlist_slug, 'songs': songs}
-
+    print(output)
     return output
 
 
 @register.inclusion_tag('choonz/edit_playlist_new_song.html')
 def get_song_detail_for_edit_page(playlist_slug, song):
+    print("received playlist_slug = " + playlist_slug + " and song = " + song)
+    song = Song.objects.get(slug=song)
     song_slug = song.slug
     song_title = song.title
     song_link_spotify = song.linkToSpotify
@@ -61,5 +64,6 @@ def get_song_detail_for_edit_page(playlist_slug, song):
     output = {'playlist_slug': playlist_slug, 'song_slug': song_slug, 'song_title': song_title,
               'song_link_spotify': song_link_spotify, 'song_link_other': song_link_other,
               'song_artist': song_artist}
+    print(output)
 
     return output

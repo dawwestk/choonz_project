@@ -246,9 +246,9 @@ class AddSongDetailView(View):
     def get(self, request):
         playlist_slug = request.GET['playlist_slug']
         song_slug = request.GET['song_slug']
-        print(playlist_slug + " - " + song_slug)
         context_dict = choonz_template_tags.get_song_detail_for_edit_page(playlist_slug, song_slug)
-        return HttpResponse(json.dumps(context_dict), content_type="application/json")
+        print("context = " + str(context_dict))
+        return render(request, 'choonz/edit_playlist_new_song.html', context_dict)
 
 
 class PlaylistRatingView(View):
