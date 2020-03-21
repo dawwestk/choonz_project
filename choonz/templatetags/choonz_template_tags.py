@@ -1,17 +1,18 @@
 from django import template
-
 from choonz.models import Tag, Playlist, Song
-
 register = template.Library()
 
 
 @register.inclusion_tag('choonz/tags.html')
 def get_tag_list(playlist=None):
     output = {}
+
+    # If given a playlist, find all tags associated with it
     if playlist:
         tags = playlist.get_playlist_tag_list
         output['tags'] = tags
     else:
+        # if not, return all tags
         output['tags'] = Tag.objects.all()
 
     return output
@@ -53,6 +54,7 @@ def get_songs_on_playlist(playlist_slug):
 
 @register.inclusion_tag('choonz/edit_playlist_new_song.html')
 def get_song_detail_for_edit_page(playlist_slug, song):
+    # When a new song is added, return details to populate HTML template
     song = Song.objects.get(slug=song)
     song_slug = song.slug
     song_title = song.title

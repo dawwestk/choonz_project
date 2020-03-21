@@ -27,18 +27,17 @@ from django.db.models import Avg, Count
 
 class IndexView(View):
     def get(self, request):
-        # construct a dictionary to pass template engine as its context
-        # boldmessage matches template variable in index.html
-        # query database for all playlists, order by number of likes
-        # retrieve only top 5, place in context_dict
         user_profile = get_user_profile(request)
         num_playlists_in_filter = 8
 
-        most_rated_playlists = Playlist.objects.annotate(num_ratings=Count('rating')).order_by('-num_ratings')[:num_playlists_in_filter]
+        # Playlists are split into most rated, highest rated and recently created for Index Page
+        most_rated_playlists = Playlist.objects.annotate(num_ratings=Count('rating')).order_by('-num_ratings')[
+                               :num_playlists_in_filter]
         highest_rated_playlists = Playlist.objects.annotate(
             average_rating=Avg('rating__stars')).order_by('-average_rating')
         recently_created_playlists = Playlist.objects.all().order_by('-createdDate')[:num_playlists_in_filter]
 
+        # Highly rated are split into weekly/monthly
         this_week = datetime.today() - timedelta(days=7)
         this_month = datetime.today() - timedelta(days=31)
         playlists_this_week = highest_rated_playlists.filter(createdDate__gte=this_week)[:num_playlists_in_filter]
@@ -50,9 +49,6 @@ class IndexView(View):
                         'playlists_this_week': playlists_this_week,
                         'playlists_this_month': playlists_this_month,
                         'recent_playlists': recently_created_playlists, 'user_profile': user_profile}
-
-        # keep this call to increment the counter
-        visitor_cookie_handler(request)
 
         # return rendered response to send to the client
         response = render(request, 'choonz/index.html', context=context_dict)
@@ -80,8 +76,6 @@ class ContactView(View):
     def get(self, request):
         user_profile = get_user_profile(request)
         context_dict = {'user_profile': user_profile}
-        visitor_cookie_handler(request)
-        context_dict['visits'] = request.session['visits']
 
         return render(request, 'choonz/contact.html', context_dict)
 
@@ -94,7 +88,7 @@ class ContactView(View):
 
 
 class ShowPlaylistView(View):
-
+    # Helper method creates context dictionary with Playlist/User details
     def create_context_dict(self, playlist_name_slug, request):
         user_profile = get_user_profile(request)
         context_dict = {'user_profile': user_profile}
@@ -106,7 +100,7 @@ class ShowPlaylistView(View):
 
             # retrieve all users in this playlist (using filter())
             songs = Song.objects.filter(playlist=playlist)
-            #song_list = songs.order_by('title')
+
             # Add results to context dict
             context_dict['songs'] = songs
 
@@ -137,10 +131,12 @@ class ShowPlaylistView(View):
 
         return context_dict
 
+    # Viewing a playlist does not require a login
     def get(self, request, playlist_name_slug):
         context_dict = self.create_context_dict(playlist_name_slug, request)
         return render(request, 'choonz/playlist.html', context_dict)
 
+    # Posting a rating does require a login
     @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
         context_dict = self.create_context_dict(playlist_name_slug, request)
@@ -162,7 +158,8 @@ class AddPlaylistView(View):
         form = PlaylistForm(request.POST)
         user_profile = get_user_profile(request)
         context_dict = {'user_profile': user_profile}
-        # if the form valid?
+
+        # is the form valid?
         if form.is_valid():
             playlist = form.save(commit=False)
             playlist.creator = request.user
@@ -192,6 +189,8 @@ class PlaylistEditorView(View):
     def get(self, request, playlist_name_slug):
         user_profile = get_user_profile(request)
         playlist = Playlist.objects.get(slug=playlist_name_slug)
+
+        # Give user opportunity to edit any of their own playlists
         playlist_list = Playlist.objects.filter(creator=request.user)
 
         context_dict = {'user_profile': user_profile, 'playlist': playlist, 'playlist_name_slug': playlist_name_slug,
@@ -203,8 +202,10 @@ class PlaylistEditorView(View):
     def post(self, request, playlist_name_slug):
         playlist = Playlist.objects.get(slug=playlist_name_slug)
 
+        # Response dictionary used to flag whether playlist edit was successful or not
         response_dict = {'status': False}
 
+        # Trying to edit the playlist name
         if request.POST.get('playlist_name'):
             new_name = request.POST.get('playlist_name')
             playlist.name = new_name
@@ -213,24 +214,31 @@ class PlaylistEditorView(View):
             except:
                 response_dict['message'] = "Playlist name already exists!"
                 return HttpResponse(json.dumps(response_dict), content_type="application/json")
+
+        # Editing the playlist description
         if request.POST.get('playlist_description'):
             new_description = request.POST.get('playlist_description')
             playlist.description = new_description
             try:
                 playlist.save()
             except:
-                # description doesn't need to be unique - error?
+                # Description doesn't need to be unique, but there could be a database error
                 print("description error")
+
+        # If tags are being updated
         if request.POST.get('playlist_tags'):
-            playlist.tags.clear()
+            # Process tag string
             new_tags = request.POST.get('playlist_tags')
             tag_string = new_tags.replace(', ', ',')
             tag_list = tag_string.split(',')
             for t in tag_list:
+                # Search for each tag in database
                 if t:
                     found_tag = Tag.objects.get(description=t)
                     playlist.tags.add(found_tag)
             try:
+                # Clear old tags, save
+                playlist.tags.clear()
                 playlist.save()
             except:
                 response_dict['message'] = "Invalid tags!"
@@ -257,9 +265,10 @@ class PlaylistRatingView(View):
         user_profile = get_user_profile(request)
         form = RatingForm(request.POST)
 
-        # if the form valid?
+        # is the form valid?
         if form.is_valid():
             try:
+                # Update an already existing rating
                 rating = Rating.objects.get(user=request.user, playlist=playlist)
                 rating.stars = request.POST.get('stars')
                 rating.comment = request.POST.get('comment')
@@ -267,6 +276,7 @@ class PlaylistRatingView(View):
                 rating.save()
 
             except Rating.DoesNotExist:
+                # If not found, create a new rating
                 rating = form.save(commit=False)
                 rating.user = request.user
                 rating.playlist = playlist
@@ -286,15 +296,7 @@ class PlaylistRatingView(View):
         return render(request, 'choonz/playlist.html', context=context_dict)
 
 
-class DraftView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        user_profile = get_user_profile(request)
-        profiles = UserProfile.objects.all()
-        context_dict = {'user_profile': user_profile, 'profiles': profiles}
-
-        return render(request, 'choonz/drafts.html', context_dict)
-
+# Process the other URL to ensure it has the relevant prefix
 def check_other_url(url):
     if not 'www.' in url:
         url = 'www.' + url
@@ -303,6 +305,7 @@ def check_other_url(url):
     elif not 'http://' in url:
         url = 'http://' + url
     return url
+
 
 class AddSongView(View):
     @method_decorator(login_required)
@@ -320,13 +323,14 @@ class AddSongView(View):
 
         return HttpResponse(True)
 
-
     @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
         playlist_slug = request.POST.get('playlist_slug')
 
+        # Response dictionary shows whether addition of song to playlist was successful
         response_dict = {'status': False}
 
+        # Find the playlist (or stop method)
         try:
             playlist = Playlist.objects.get(slug=playlist_slug)  # remember to cast int
         except Playlist.DoesNotExist:
@@ -336,21 +340,25 @@ class AddSongView(View):
             response_dict['message'] = "Value error, please check song details"
             return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
+        # Pull relevant data from POST request
         song_title = request.POST.get('song_title')
         song_artist = request.POST.get('song_artist')
         artist_slug = slugify(song_artist)
 
+        # Does the artist already exist? If not, create
         try:
             artist = Artist.objects.get(slug=artist_slug)
         except Artist.DoesNotExist:
             artist = Artist.objects.create(name=song_artist)
 
+        # Get or create the song - check for invalid charaters
         try:
             song = Song.objects.get_or_create(artist=artist, title=song_title)[0]
         except ValueError:
             response_dict['message'] = "Value error, please check song details"
             return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
+        # If the song is already on the playlist, are the details being updated?
         updated_song_details = False
         if request.POST.get('link_to_spotify'):
             form_input_spotify_url = request.POST.get('link_to_spotify')
@@ -411,6 +419,7 @@ class RemoveSongView(View):
             response_dict['message'] = "Value error, please check song details"
             return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
+        # Identify the song by its slug
         song_slug = request.POST.get('song_slug')
         song = Song.objects.get(slug=song_slug)
 
@@ -437,6 +446,7 @@ class PublishPlaylistView(View):
         except ValueError:
             return HttpResponse(-1)
 
+        # GET method used to make playlist hidden (not public)
         playlist.public = False
         playlist.save()
         user = request.user
@@ -454,6 +464,7 @@ class PublishPlaylistView(View):
         except ValueError:
             return HttpResponse(-1)
 
+        # POST method used to make playlist public
         playlist.public = True
         playlist.save()
         user = request.user
@@ -482,7 +493,8 @@ class DeletePlaylistView(View):
 class PlaylistFilterView(View):
     def get(self, request):
         user_profile = get_user_profile(request)
-        playlist_list = None
+
+        # Process filter data - clean tags
         if 'tags' in request.GET:
             tags = request.GET['tags']
             tags = tags.split(",")
@@ -490,16 +502,19 @@ class PlaylistFilterView(View):
         else:
             tags = ''
 
+        # Process filter data - collect creator info
         if 'creator' in request.GET:
             creator = request.GET['creator']
         else:
             creator = ''
 
+        # Process filter data - collect date info
         if 'createdDate' in request.GET:
             created_date = request.GET['createdDate']
         else:
             created_date = ''
 
+        # Send to helper method
         playlist_list = filter_playlists(tags, creator, created_date)
 
         if len(playlist_list) == 0:
@@ -512,14 +527,19 @@ class PlaylistFilterView(View):
 
 
 def filter_playlists(tags, creator, created_date):
+    # Start with all playlist objects
     playlist_list = Playlist.objects.all()
 
+    # If the user provided tags to filter by
     if tags:
         for t in tags:
             if t:
+                # List all playlists which contain these tags
                 playlist_list = playlist_list.filter(tags__slug__contains=t)
 
+    # If the user provided a creator to search by
     if creator:
+        # Filter playlists by creator = <username provided>
         try:
             creator = User.objects.get(username=creator)
         except User.DoesNotExist:
@@ -528,6 +548,8 @@ def filter_playlists(tags, creator, created_date):
             creator = None
         playlist_list = playlist_list.filter(creator=creator)
 
+    # If a date was given, filter by it (greater than or equal to it)
+    # i.e. Playlists made ON or AFTER date
     if created_date:
         playlist_list = playlist_list.filter(createdDate__gte=created_date)
 
@@ -547,6 +569,8 @@ class ListPlaylistView(View):
 class PlaylistSuggestionView(View):
     def get(self, request):
         user_profile = get_user_profile(request)
+
+        # If the search input is not blank, filter by it
         if 'suggestion' in request.GET:
             suggestion = request.GET['suggestion']
         else:
@@ -564,11 +588,14 @@ class PlaylistSuggestionView(View):
 
 
 def get_playlist_list(max_results=0, starts_with=''):
+    # Initially, suggestion list is empty
     playlist_list = []
 
+    # If playlists begin with suggestion text, add them
     if starts_with:
         playlist_list = Playlist.objects.filter(name__istartswith=starts_with)
 
+    # Slice results to limit list of suggestions
     if max_results > 0:
         if len(playlist_list) > max_results:
             playlist_list = playlist_list[:max_results]
@@ -585,10 +612,9 @@ class TagSuggestionView(View):
         else:
             suggestion = ''
 
-        # possibly change the ordering to be by number of playlists?
         tag_list = get_tag_list(max_results=10, starts_with=suggestion).order_by('description')
 
-        # if nothing is written in the field do we want to show all or nothing?
+        # If nothing is written in the field show all
         if len(tag_list) == 0:
             if suggestion == '*':
                 tag_list = Tag.objects.order_by('description')
@@ -603,6 +629,7 @@ class TagSuggestionView(View):
     def post(self, request):
         tag_text = request.POST.get('tag_text')
 
+        # Slugify tag to ensure uniqueness
         tag_slug = slugify(tag_text)
         response_dict = {'status': False}
 
@@ -621,8 +648,6 @@ class TagSuggestionView(View):
             return HttpResponse(json.dumps(response_dict), content_type="application/json")
 
 
-
-
 def get_tag_list(max_results=0, starts_with=''):
     tag_list = []
 
@@ -634,6 +659,7 @@ def get_tag_list(max_results=0, starts_with=''):
             tag_list = tag_list[:max_results]
 
     return tag_list
+
 
 '''
     ------------------------------------------------------------------------------------
@@ -660,9 +686,6 @@ class RegisterProfileView(View):
             # needed the User attribute first so commit = False for now
             profile = profile_form.save(commit=False)
             profile.user = request.user
-            # did the user provide a picture
-            # if 'picture' in request.FILES:
-            #    profile.picture = request.FILES['picture']
 
             profile.save()
             return redirect(reverse('choonz:index'))
@@ -697,9 +720,11 @@ class ProfileView(View):
         except TypeError:
             return redirect(reverse('choonz:index'))
 
+        # Filter playlists for different displays
         public_playlists = Playlist.objects.filter(creator=user, public=True)
         draft_playlists = Playlist.objects.filter(creator=user, public=False)
-        popular_playlists = Playlist.objects.filter(creator=user).annotate(average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
+        popular_playlists = Playlist.objects.filter(creator=user).annotate(
+            average_rating=Avg('rating__stars')).order_by('-average_rating')[:10]
 
         # All Ratings the profile owner has given
         ratings_by_user = list(Rating.objects.filter(user=user).values_list("playlist", flat=True).order_by('-stars'))
@@ -707,6 +732,9 @@ class ProfileView(View):
         all_rated_tags = []
         rated_playlists = []
         tag_obs = {}
+
+        # Need to create a dictionary to list rated playlists with both playlist info
+        # and info related to the user's rating of said playlist
         for i in range(0, len(ratings_by_user)):
             playlist_info = {}
             playlist = Playlist.objects.get(id=ratings_by_user[i])
@@ -732,13 +760,15 @@ class ProfileView(View):
 
             rated_playlists.append(playlist_info)
 
+        # Tags are sorted by number of times rated
         sorted_tag_obs = sort_dicts_by_values(tag_obs, True, 10)
         tag_obs = collections.OrderedDict(sorted_tag_obs)
         playlist_suggestions = suggest_playlist_from_tags(tag_obs, user, ratings_by_user)
         context_dict = {'page_user_profile': page_user_profile, 'user_profile': my_user_profile, 'selected_user': user,
                         'form': form, 'public_playlists': public_playlists, 'draft_playlists': draft_playlists,
                         'rated_playlists': rated_playlists, 'popular_playlists': popular_playlists,
-                        'all_rated_tags': all_rated_tags, 'tag_obs': tag_obs, 'playlist_suggestions': playlist_suggestions}
+                        'all_rated_tags': all_rated_tags, 'tag_obs': tag_obs,
+                        'playlist_suggestions': playlist_suggestions}
 
         return render(request, 'choonz/profile.html', context_dict)
 
@@ -761,34 +791,51 @@ class ProfileView(View):
 
         return render(request, 'choonz/profile.html', context_dict)
 
+
 def sort_dicts_by_values(dict, reverse=False, limit=10):
-    return {k: v for k, v in sorted(dict.items(), reverse=reverse, key=lambda item: item[1])[:limit]}
+    # Sort dictionary by values (largest first)
+    return {key: val for key, val in sorted(dict.items(), reverse=reverse, key=lambda item: item[1])[:limit]}
+
 
 def suggest_playlist_from_tags(tag_obs, user, already_rated):
+    # User should not be suggested their own playlist
     all_playlists = Playlist.objects.exclude(creator=user)
 
     tag_count = {}
     recommendations = {}
 
+    # To generate a % weighting for each tag, we need sum of number of ratings per tag
     total_tag_weighting = sum(tag_obs.values())
 
+    # If there are tags with ratings
     if total_tag_weighting > 0:
         for tag in tag_obs:
+            # Each tag should be given a % weighting
             tag_count[tag] = round(tag_obs[tag] / total_tag_weighting * 100)
 
         for playlist in all_playlists:
+            # Only show playlists the user has NOT already rated in the past
             if playlist.id not in already_rated:
+                # Count the number of tags on a playlist
                 tags_on_playlist = len(playlist.get_playlist_tag_descriptions)
+
+                # If there are tags - we might want to suggest this playlist
                 if tags_on_playlist > 0:
                     tag_match_counter = 0
                     tag_match_percentage = 0
+
+                    # Loop through tags on playlist
+                    # IF the tag has a user-liking %, add this to total
+                    # And increase the tag_match_counter (total number of tags which the user likes)
                     for tag in playlist.get_playlist_tag_descriptions:
                         try:
                             tag_match_percentage = tag_match_percentage + tag_count[tag]
                             tag_match_counter = tag_match_counter + 1
                         except:
                             continue
-                    tag_match_coverage = round(tag_match_counter/tags_on_playlist, 2)
+                    # How many of the tags on this playlist are on the user's tag list?
+                    tag_match_coverage = round(tag_match_counter / tags_on_playlist, 2)
+                    # How many of the users favourite tags are on there?
                     overall_percentage = round(tag_match_percentage * tag_match_coverage, 2)
                     if overall_percentage > 0:
                         recommendations[playlist] = overall_percentage
@@ -815,19 +862,26 @@ class ImportPlaylistView(View):
 
     @method_decorator(login_required)
     def post(self, request, playlist_name_slug):
+
+        # Create a connection to spotify
         sp = setup_spotify()
         choonz_playlist = Playlist.objects.get(slug=playlist_name_slug)
+
+        # Collect Spotify username and playlist to search for
         username = request.POST.get('spotify_username')
         playlist_name = request.POST.get('spotify_playlist_name')
 
+        # Find the user on Spotify, collect their playlists
         playlists = sp.user_playlists(username)
         while playlists:
             for i, playlist in enumerate(playlists['items']):
+                # If the user has a playlist that matches the user input
                 if playlist['name'] == playlist_name:
-                    # print(playlist)
-                    # print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'], playlist['name']))
+                    # Pull all songs from it
                     results = sp.playlist(playlist['id'], fields="tracks")
                     tracks = results['tracks']
+
+                    # Use add_tracks method to add songs to the playlist
                     add_tracks(tracks, choonz_playlist)
                 try:
                     if playlists['next']:
@@ -840,27 +894,7 @@ class ImportPlaylistView(View):
         return redirect(reverse('choonz:show_playlist', kwargs={'playlist_name_slug': choonz_playlist.slug}))
 
 
-class TestView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        sp = setup_spotify()
-        username = request.user.username
-
-        playlists = sp.user_playlists(username)
-        while playlists:
-            for i, playlist in enumerate(playlists['items']):
-                print("%4d %s %s" % (i + 1 + playlists['offset'], playlist['uri'], playlist['name']))
-                results = sp.playlist(playlist['id'], fields="tracks")
-                tracks = results['tracks']
-                spotify_show_tracks(tracks)
-            if playlists['next']:
-                playlists = sp.next(playlists)
-            else:
-                playlists = None
-
-        return HttpResponse("Printed playlists")
-
-
+# Parse tracks, pull out relevant info to add songs to database
 def add_tracks(tracks, playlist):
     choonz_playlist = playlist
     for i, item in enumerate(tracks['items']):
@@ -895,8 +929,6 @@ def spotify_show_tracks(tracks):
 
 
 def setup_spotify():
-    # SPOTIPY_CLIENT_ID = 'e09593bcb854470184181ebe501205af'
-    # SPOTIPY_CLIENT_SECRET = '35de71dede0449cd9df50f1f6fabc1d2'
     cid = settings.SPOTIPY_CLIENT_ID
     secret = settings.SPOTIPY_CLIENT_SECRET
     sp = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=cid, client_secret=secret))
@@ -909,6 +941,7 @@ class SearchSpotifyView(View):
         sp = setup_spotify()
         results_list = []
 
+        # Pull search query from input
         query = request.POST.get('query')
         results = sp.search(q=query, limit=10)
         for idx, track in enumerate(results['tracks']['items']):
@@ -923,7 +956,6 @@ class SearchSpotifyView(View):
             results_list.append(track_info)
         context_dict = {'results': results_list, 'query': query}
 
-        #return render(request, 'choonz/song_search_results.html', context_dict)
         return HttpResponse(json.dumps(context_dict), content_type="application/json")
 
 
@@ -1022,7 +1054,7 @@ class MyStatsView(View):
                 user_playlist_average_rating = 0
 
             most_rated_playlist = \
-            Playlist.objects.filter(creator=user).annotate(num_ratings=Count('rating')).order_by('-num_ratings')[0]
+                Playlist.objects.filter(creator=user).annotate(num_ratings=Count('rating')).order_by('-num_ratings')[0]
             highest_rated_playlist = Playlist.objects.filter(creator=user).values('slug', 'name').annotate(
                 average_rating=Avg('rating__stars')).order_by('-average_rating')[0]['name']
 

@@ -79,10 +79,13 @@ class Playlist(models.Model):
     def __str__(self):
         return self.name
 
+    # When saving a playlist, the slug should be populated
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Playlist, self).save(*args, **kwargs)
 
+    # Deletion of a playlist should remove any songs which only featured
+    # on this playlist (and no others) - not automatic as ManyToMany field
     def delete(self, *args, **kwargs):
         for s in self.get_song_list:
             print("song found - " + str(s) + ", " + str(s.number_of_playlists))
@@ -156,8 +159,5 @@ class UserProfile(models.Model):
     # link UserProfile to User model instance
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to='profile_images', blank=True)
-    #github_login = models.CharField(max_length=max_char_length, null=True, blank=True)
-    #spotify_login = models.CharField(max_length=max_char_length, null=True, blank=True)
-    #twitter_login = models.CharField(max_length=max_char_length, null=True, blank=True)
     def __str__(self):
         return self.user.username

@@ -3,7 +3,7 @@ from choonz import views
 from choonz.templatetags import choonz_template_tags
 from choonz.views import AboutView, AddPlaylistView, IndexView, PlaylistRatingView, ShowPlaylistView, SearchSpotifyView,\
     RegisterProfileView, ProfileView, ListPlaylistView, TagSuggestionView, PlaylistEditorView, \
-    TestView, AddSongView, ImportPlaylistView, RemoveSongView, PlaylistSuggestionView, DeletePlaylistView, \
+    AddSongView, ImportPlaylistView, RemoveSongView, PlaylistSuggestionView, DeletePlaylistView, \
     AddSongDetailView
 # AddPageView,GoToView, SearchAddPage LikePlaylistView, 
 
