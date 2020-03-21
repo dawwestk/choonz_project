@@ -247,7 +247,6 @@ class AddSongDetailView(View):
         playlist_slug = request.GET['playlist_slug']
         song_slug = request.GET['song_slug']
         context_dict = choonz_template_tags.get_song_detail_for_edit_page(playlist_slug, song_slug)
-        print("context = " + str(context_dict))
         return render(request, 'choonz/edit_playlist_new_song.html', context_dict)
 
 
@@ -773,26 +772,28 @@ def suggest_playlist_from_tags(tag_obs, user, already_rated):
 
     total_tag_weighting = sum(tag_obs.values())
 
-    for tag in tag_obs:
-        tag_count[tag] = round(tag_obs[tag] / total_tag_weighting * 100)
+    if total_tag_weighting > 0:
+        for tag in tag_obs:
+            tag_count[tag] = round(tag_obs[tag] / total_tag_weighting * 100)
 
-    for playlist in all_playlists:
-        if playlist.id not in already_rated:
-            tags_on_playlist = len(playlist.get_playlist_tag_descriptions)
-            tag_match_counter = 0
-            tag_match_percentage = 0
-            for tag in playlist.get_playlist_tag_descriptions:
-                try:
-                    tag_match_percentage = tag_match_percentage + tag_count[tag]
-                    tag_match_counter = tag_match_counter + 1
-                except:
-                    continue
-            tag_match_coverage = round(tag_match_counter/tags_on_playlist, 2)
-            overall_percentage = round(tag_match_percentage * tag_match_coverage, 2)
-            if overall_percentage > 0:
-                recommendations[playlist] = overall_percentage
+        for playlist in all_playlists:
+            if playlist.id not in already_rated:
+                tags_on_playlist = len(playlist.get_playlist_tag_descriptions)
+                if tags_on_playlist > 0:
+                    tag_match_counter = 0
+                    tag_match_percentage = 0
+                    for tag in playlist.get_playlist_tag_descriptions:
+                        try:
+                            tag_match_percentage = tag_match_percentage + tag_count[tag]
+                            tag_match_counter = tag_match_counter + 1
+                        except:
+                            continue
+                    tag_match_coverage = round(tag_match_counter/tags_on_playlist, 2)
+                    overall_percentage = round(tag_match_percentage * tag_match_coverage, 2)
+                    if overall_percentage > 0:
+                        recommendations[playlist] = overall_percentage
+        recommendations = sort_dicts_by_values(recommendations, True, 10)
 
-    recommendations = sort_dicts_by_values(recommendations, True, 10)
     return recommendations
 
 
